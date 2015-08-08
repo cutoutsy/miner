@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <workspace>1</workspace>
+    <id>2</id>
+    <name>hotelmt</name>
+    <description>this project for getting the hotel url of each city</description>
+    <datasource>meituancityurl</datasource>
+
+    <schedule>0/5 * * * * ?</schedule>
+
+    <state>die</state>
+
+    <condition>alone</condition>
+    <executenum>0</executenum>
+</project>
