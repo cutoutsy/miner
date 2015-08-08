@@ -36,6 +36,7 @@ public class Project {
     private String condition;
 
     public Project(String projectName) {
+
         redis = RedisUtil.GetRedis();
 
         List<String> projectList = MysqlUtil.getProject(projectName);
