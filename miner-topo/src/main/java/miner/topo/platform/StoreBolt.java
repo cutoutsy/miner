@@ -27,6 +27,7 @@ public class StoreBolt extends BaseBasicBolt {
 			logger.info("globalInfo:"+globalInfo);
 			logger.info("resoure:"+resource);
 
+
 		} catch (Exception ex) {
 			logger.error("store error!"+ex);
 			ex.printStackTrace();

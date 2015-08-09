@@ -8,7 +8,7 @@ import backtype.storm.topology.base.BaseBasicBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
-import com.cutoutsy.utils.MyLogger;
+import miner.spider.utils.MyLogger;
 
 import java.util.Map;
 
@@ -27,6 +27,7 @@ public class ParseBolt extends BaseBasicBolt{
 //			System.out.println(grobalInfo+"-------"+resource.substring(0, 20));
 //			_collector.emit(new Values(grobalInfo, resource));
 			collector.emit(new Values(grobalInfo, resource));
+
 
 		}catch (Exception ex){
 			logger.error("parse error!"+ex);

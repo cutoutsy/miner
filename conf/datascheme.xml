@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scheme>
+
+    <wid>1</wid>
+
+    <pid>1</pid>
+
+    <tid>1</tid>
+
+    <!--search-->
+    <id>1</id>
+
+    <dataid>001</dataid>
+
+    <description>city</description>
+
+    <property>
+        <!--propertyname: tagname-->
+        <cityname>cityname</cityname>
+        <cityurl>url</cityurl>
+        <!--
+        none: random generator
+        filed: the property
+        tag: the tagname
+        -->
+        <rowkey>cityname/none</rowkey>
+        <!--
+        foreignkey:
+        none: rowkey=foreignkey
+        dataif.field=another table filed
+        -->
+        <foreignkey>dataid.field</foreignkey>
+        <!--
+        none: not need foreignkey
+        value
+        -->
+        <foreignvalue>cityname</foreignvalue>
+        <!--
+        alone: independent
+        dataid.field
+        -->
+        <link>alone</link>
+
+    </property>
+
+    <!--
+    e: emit
+    s: save-->
+    <processway>e/s</processway>
+
+</scheme>

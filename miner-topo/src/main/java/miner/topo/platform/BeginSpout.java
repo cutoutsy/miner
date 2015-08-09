@@ -30,20 +30,21 @@ public class BeginSpout extends BaseRichSpout{
 	
 	//消息成功处理
 	public void ack(Object msgId){
-//		System.out.println(TaskParas.taskList.get(Integer.valueOf(msgId.toString())).getUrl()+":成功处理");
-//		redis.sadd("visited_urls", TaskParas.taskList.get(Integer.valueOf(msgId.toString())).getUrl());
+		logger.info("message:"+ msgId +"processd sucess!");
 	}
 	
-	//消息失败处理
+	//消息失败处理, ensure the message processed
 	public void fail(Object msgId){
-		
+		logger.info("消息处理失败:"+msgId+";正在重新发送......");
+		String message = redis.hget("message", msgId.toString());
+		_collector.emit(new Values(msgId, message),msgId);
 	}
 
 	public void nextTuple() {
 
 		try{
 			Thread.sleep(1000);
-		//monitor the project, return the undo project
+			//monitor the project, return the undo project
 			PlatformUtils.registerProject(_qManager);
 
 //			String reUndoProject = PlatformUtils.monitorProject();
@@ -51,10 +52,6 @@ public class BeginSpout extends BaseRichSpout{
 		if(!reUndoProject.isEmpty()){
 
 			Project pj = new Project(reUndoProject);
-
-//			String projectValue = redis.hget("projectInfo", reUndoProject);
-//			String taskValue = redis.hget("taskInfo", reUndoProject);
-//			String dataSource = projectValue.split(":")[2];
 
 			String dataSource = pj.getDatasource();
 			Set urls = redis.smembers(dataSource);
@@ -67,10 +64,16 @@ public class BeginSpout extends BaseRichSpout{
 //				String taskId = redis.hget("taskInfo", reUndoProject).split(":")[0];
 				String taskId = "001";
 				UUID uuid = UUID.randomUUID();
+
 				String globalInfo = reUndoProject+"-"+taskId+"-"+uuid;
-				_collector.emit(new Values(globalInfo, message));
+
+				_collector.emit(new Values(globalInfo, message), globalInfo);
+
+				redis.hset("message", globalInfo , message);
+
 				logger.info(message + "  sending...");
 			}
+
 			pj.setState("die");
 			pj.writeProjectToRedis(pj);
 

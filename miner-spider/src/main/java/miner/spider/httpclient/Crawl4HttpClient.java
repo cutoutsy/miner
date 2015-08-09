@@ -104,6 +104,7 @@ public class Crawl4HttpClient {
     }
 
     public static String downLoadPage(String url){
+
         HttpRequestPojo requestPojo = new HttpRequestPojo();
         requestPojo.setRequestMethod(HttpRequestMethod.GET);
 

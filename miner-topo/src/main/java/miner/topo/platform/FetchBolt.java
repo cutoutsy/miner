@@ -29,13 +29,15 @@ public class FetchBolt extends BaseRichBolt {
         try{
             String globalInfo = input.getString(0);
             downloadUrl = input.getString(1);
-            System.out.println("downloadurl:"+downloadUrl);
+            logger.info("downloadurl:"+downloadUrl);
+
             String resource = Crawl4HttpClient.downLoadPage(downloadUrl);
 //            System.out.println("resource:"+resource);
             _collector.emit(new Values(globalInfo, resource));
             _collector.ack(input);
         } catch (Exception ex) {
             logger.error("Download page:" +downloadUrl+" error!"+ex);
+            _collector.fail(input);
         }
 
     }

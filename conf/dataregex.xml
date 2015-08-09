@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<regex>
+    <wid></wid>
+    <pid></pid>
+    <tid></tid>
+    <id>1</id>
+    <dataid>001</dataid>
+
+    <rules>
+        <!--tagname:path-->
+        <cityname>html.body.div1.cityname</cityname>
+
+        <cityurl>htmmp.body.div1.cityurl</cityurl>
+
+    </rules>
+
+</regex>
+
+
+
