@@ -4,7 +4,7 @@
     <wid></wid>
     <pid></pid>
     <tid></tid>
-    <id>1</id>
+    <id>1</id><!--regex@json-->
     <dataid>001</dataid>
 
     <rules>
