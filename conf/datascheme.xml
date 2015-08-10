@@ -1,53 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <scheme>
-
     <wid>1</wid>
-
     <pid>1</pid>
-
     <tid>1</tid>
-
     <!--search-->
     <id>1</id>
-    <uuid></uuid>
-
+    <uuid>1</uuid>
     <dataid>001</dataid>
-
     <description>city</description>
-
     <property>
         <!--propertyname: tagname-->
         <cityname>cityname</cityname>
         <cityurl>url</cityurl>
-        
-
     </property>
-<!--
+    <!--
         none: random generator
         filed: the property
         tag: the tagname
-        -->
-        <rowkey>cityname/none</rowkey>
-        <!--
+    -->
+    <rowkey>cityname/none</rowkey>
+    <!--
         foreignkey:
         none: rowkey=foreignkey
         dataif.field=another table filed
-        -->
-        <foreignkey>dataid.field</foreignkey>
-        <!--
+    -->
+    <foreignkey>dataid.field</foreignkey>
+    <!--
         none: not need foreignkey
         value
-        -->
-        <foreignvalue>cityname</foreignvalue>
-        <!--
+    -->
+    <foreignvalue>cityname</foreignvalue>
+    <!--
         alone: independent
         dataid.field
-        -->
-        <link>alone</link>
+    -->
+    <link>alone</link>
     <!--
-    e: emit
-    s: save-->
+        e: emit
+        s: save
+    -->
     <processway>e/s</processway>
-
 </scheme>
