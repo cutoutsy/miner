@@ -5,13 +5,13 @@
     <tid>1</tid>
     <!--search-->
     <id>1</id>
-    <uuid>1</uuid>
+    <uuid>1</uuid><!--in tuple-->
     <dataid>001</dataid>
     <description>city</description>
     <property>
         <!--propertyname: tagname-->
-        <cityname>cityname</cityname>
-        <cityurl>url</cityurl>
+        <name>cityname</name>
+        <name>url</name>
     </property>
     <!--
         none: random generator
@@ -23,6 +23,7 @@
         foreignkey:
         none: rowkey=foreignkey
         dataif.field=another table filed
+        dataid
     -->
     <foreignkey>dataid.field</foreignkey>
     <!--
