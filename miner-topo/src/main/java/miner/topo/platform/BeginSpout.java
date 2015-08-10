@@ -62,14 +62,16 @@ public class BeginSpout extends BaseRichSpout{
 				String message = it.next().toString();
 				//defalut one project has one task
 //				String taskId = redis.hget("taskInfo", reUndoProject).split(":")[0];
+
 				String taskId = "001";
+
 				UUID uuid = UUID.randomUUID();
 
 				String globalInfo = reUndoProject+"-"+taskId+"-"+uuid;
 
 				_collector.emit(new Values(globalInfo, message), globalInfo);
 
-				redis.hset("message", globalInfo , message);
+				redis.hset("message", globalInfo, message);
 
 				logger.info(message + "  sending...");
 			}
