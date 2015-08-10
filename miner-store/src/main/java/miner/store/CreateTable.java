@@ -74,10 +74,7 @@ public class CreatTable {
 		    System.err.print(tableName+"is exist and please check it");
 		   }else{
 		   HTableDescriptor tableDescriptor=new HTableDescriptor(TableName.valueOf(tableName));
-		   tableDescriptor.addFamily(new HColumnDescriptor("wid"));
-		   tableDescriptor.addFamily(new HColumnDescriptor("pid"));
-		   tableDescriptor.addFamily(new HColumnDescriptor("tid"));
-		   tableDescriptor.addFamily(new HColumnDescriptor("dataid"));
+		   tableDescriptor.addFamily(new HColumnDescriptior("info"));
 		   tableDescriptor.addFamily(new HColumnDescriptor("description"));
 		   tableDescriptor.addFamily(new HColumnDescriptor("property"));
 		   tableDescriptor.addFamily(new HColumnDescriptor("link"));
