@@ -10,6 +10,7 @@
 
     <!--search-->
     <id>1</id>
+    <uuid></uuid>
 
     <dataid>001</dataid>
 
@@ -19,7 +20,10 @@
         <!--propertyname: tagname-->
         <cityname>cityname</cityname>
         <cityurl>url</cityurl>
-        <!--
+        
+
+    </property>
+<!--
         none: random generator
         filed: the property
         tag: the tagname
@@ -41,9 +45,6 @@
         dataid.field
         -->
         <link>alone</link>
-
-    </property>
-
     <!--
     e: emit
     s: save-->
