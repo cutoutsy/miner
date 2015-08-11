@@ -1,10 +1,13 @@
 package miner.topo.platform;
 
-import com.cutoutsy.utils.MyLogger;
-import com.cutoutsy.utils.RedisUtil;
+import miner.spider.utils.MyLogger;
+import miner.spider.utils.MysqlUtil;
+import miner.spider.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -134,13 +137,44 @@ public class PlatformUtils {
         }
     }
 
+    //get all task of a project
+    public static List getTaskByProject(Project pj){
+        List<String> reList = new ArrayList<String>();
+        reList = MysqlUtil.getTaskByProject(pj.getWid(), pj.getPid());
+        return reList;
+    }
+
+    //return emit url in the GenerateUrlBolt
+    public static String getEmitUrl(String globalInfo, String message){
+        String emitUrl = "";
+        String taskName = globalInfo;
+        Task ta = new Task(taskName);
+
+        Boolean isGenerate = Boolean.valueOf(ta.getUrlgenerate()).booleanValue();
+        if (isGenerate) {
+            //isGenerate=true, need to generate url
+            emitUrl = PlatformUtils.GenerateUrl(message, ta.getUrlpattern());
+        } else {
+            //isgenerate=flase, do not generate url;
+            emitUrl = message;
+        }
+
+        return emitUrl;
+    }
+
     public static void main(String[] args){
 //        String reProject = monitorProject();
 //        System.out.println(reProject);
 
 //        String url = GenerateUrl("cq","http://[replace].meituan.com/");
-        String url = GenerateUrl("40801255", "http://hotel.elong.com/dalian/[replace]/");
-        System.out.println(url);
+//        String url = GenerateUrl("40801255", "http://hotel.elong.com/dalian/[replace]/");
+//        System.out.println(url);
+
+        List reList = MysqlUtil.getTaskByProject("1", "1");
+
+        for(int i = 0 ; i < reList.size(); i++){
+            System.out.println(reList.get(i));
+        }
 
 //        String kk = "";
 //        if(kk.isEmpty()){
