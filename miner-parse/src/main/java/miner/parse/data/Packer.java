@@ -1,0 +1,61 @@
+package miner.parse.data;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import miner.parse.DataType;
+import miner.parse.RuleItem;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
+public class Packer {
+	private DataItem data_item;
+	private Map<String,RuleItem> rule_item;
+	private Map<String, Object> data_object;
+
+	public Packer(DataItem data_item, Map<String,RuleItem> rule_item,
+			Map<String, Object> data_object) {
+		this.data_item = data_item;
+		this.rule_item = rule_item;
+		this.data_object = data_object;
+	}
+
+	public String pack() {
+		JSONObject return_obj = new JSONObject();
+		try {
+			/* 四元组 */
+			return_obj.put("data_id", data_item.get_data_id());
+			return_obj.put("project_id", data_item.get_project_id());
+			return_obj.put("task_id", data_item.get_task_id());
+			return_obj.put("workstation_id", data_item.get_workstation_id());
+			/* key */
+			return_obj.put("row_key", data_item.get_row_key());
+			return_obj.put("foreign_key", data_item.get_foreign_key());
+			return_obj.put("foreign_value", data_item.get_foreign_value());
+			return_obj.put("link", data_item.get_link());
+			
+			for(Map.Entry<String,RuleItem> entry:rule_item.entrySet()){
+				RuleItem ri = entry.getValue();
+				String tag = ri.get_name();
+				DataType type = ri.get_type();
+				if (type.equals(DataType.STR)) {
+					String value = (String) data_object.get(tag);
+					return_obj.put(tag, value);
+				} else if (type.equals(DataType.ARRAY)) {
+					String[] values = (String[]) data_object.get(tag);
+					JSONArray tmp_json_array = new JSONArray();
+					for (int i = 0; i < values.length; i++) {
+						tmp_json_array.put(values[i]);
+					}
+					return_obj.put(tag, tmp_json_array);
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return return_obj.toString();
+	}
+}

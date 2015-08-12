@@ -39,8 +39,17 @@
       <artifactId>zookeeper</artifactId>
       <version>3.4.5</version>
     </dependency>
-
-  </dependencies>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20141113</version>
+    </dependency>
+    <dependency>
+      <!-- jsoup HTML parser library @ http://jsoup.org/ -->
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
+      <version>1.8.2</version>
+    </dependency></dependencies>
   
   <modules>
     <module>miner-store</module>
