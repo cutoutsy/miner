@@ -13,10 +13,7 @@ import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
 import redis.clients.jedis.Jedis;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class BeginSpout extends BaseRichSpout{
 
@@ -30,7 +27,7 @@ public class BeginSpout extends BaseRichSpout{
 	
 	//消息成功处理
 	public void ack(Object msgId){
-		logger.info("message:"+ msgId +"processd sucess!");
+		logger.info("message:" + msgId + "processd sucess!");
 	}
 	
 	//消息失败处理, ensure the message processed
@@ -53,28 +50,39 @@ public class BeginSpout extends BaseRichSpout{
 
 			Project pj = new Project(reUndoProject);
 
-			String dataSource = pj.getDatasource();
-			Set urls = redis.smembers(dataSource);
-			Iterator it = urls.iterator();
-			while(it.hasNext()){
-				//sleep 3s for test
+			List taskList = PlatformUtils.getTaskByProject(pj);
+			for(int i = 0 ; i < taskList.size(); i++) {
+				String dataSource = pj.getDatasource();
+				Set urls = redis.smembers(dataSource);
+				Task task = new Task(pj.getWid() + "-" + pj.getPid() + "-"+taskList.get(i));
+				//isloop=false, emit from the datasource
+				if(task.getIsloop().equals("false")){
+					Iterator it = urls.iterator();
+					while(it.hasNext()){
+						//sleep 3s for test
 //				Thread.sleep(3000);
-				String message = it.next().toString();
-				//defalut one project has one task
+						String message = it.next().toString();
+						//defalut one project has one task
 //				String taskId = redis.hget("taskInfo", reUndoProject).split(":")[0];
 
-				String taskId = "001";
+						String taskId = task.getTid();
 
-				UUID uuid = UUID.randomUUID();
+						//UUID uuid = UUID.randomUUID();
 
-				String globalInfo = reUndoProject+"-"+taskId+"-"+uuid;
+						String globalInfo = reUndoProject+"-"+taskId;
 
-				_collector.emit(new Values(globalInfo, message), globalInfo);
+						_collector.emit(new Values(globalInfo, message), globalInfo);
 
-				redis.hset("message", globalInfo, message);
+						redis.hset("message", globalInfo, message);
 
-				logger.info(message + "  sending...");
+						logger.info(message + "  sending...");
+					}
+				}
 			}
+
+//			Iterator it = urls.iterator();
+
+
 
 			pj.setState("die");
 			pj.writeProjectToRedis(pj);

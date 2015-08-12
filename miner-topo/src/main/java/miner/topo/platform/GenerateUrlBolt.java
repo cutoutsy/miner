@@ -8,11 +8,14 @@ import backtype.storm.topology.base.BaseBasicBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
-import com.cutoutsy.utils.MyLogger;
-import com.cutoutsy.utils.RedisUtil;
+import miner.spider.utils.MyLogger;
+import miner.spider.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * The Bolt is Url Generator
@@ -29,29 +32,33 @@ public class GenerateUrlBolt extends BaseBasicBolt {
     public void execute(Tuple input, BasicOutputCollector collector) {
 
         String emitUrl = "";
+        String emitUrlLoop = "";
         try {
             String globalInfo = input.getString(0);
             String message = input.getString(1);
-
-            String taskName = globalInfo.split("-")[0] + "-" + globalInfo.split("-")[1]+"-"+globalInfo.split("-")[2];
-            System.out.println("taskName----"+taskName);
-            Task ta = new Task(taskName);
-
-//            System.out.println("ta.isgenerate:"+ta.getUrlgenerate());
-
-            Boolean isGenerate = Boolean.valueOf(ta.getUrlgenerate()).booleanValue();
-//            System.out.println("isgenerate:" + isGenerate);
-            if (isGenerate) {
-                //isGenerate=true, need to generate url
-                emitUrl = PlatformUtils.GenerateUrl(message, ta.getUrlpattern());
-            } else {
-                //isgenerate=flase, do not generate url;
-                emitUrl = message;
-            }
-
+            emitUrl = PlatformUtils.getEmitUrl(globalInfo, message);
+            UUID uuid = UUID.randomUUID();
+            globalInfo = globalInfo+"-"+uuid;
             if (!emitUrl.isEmpty()) {
                 collector.emit(new Values(globalInfo, emitUrl));
             }
+
+            if(redis.hlen("loopMessage") > 0){
+                Set keys = redis.hkeys("loopMessage");
+                Iterator it = keys.iterator();
+                it.hasNext();
+                String globalInfoLoop = it.next().toString();
+                String messageLoop = redis.hget("loopMessage", globalInfoLoop);
+                emitUrlLoop = PlatformUtils.getEmitUrl(globalInfoLoop, messageLoop);
+
+                UUID uuidLoop = UUID.randomUUID();
+                globalInfoLoop = globalInfoLoop+"-"+uuidLoop;
+
+                if (!emitUrlLoop.isEmpty()) {
+                    collector.emit(new Values(globalInfoLoop, emitUrlLoop));
+                }
+            }
+
         }catch (Exception ex){
             logger.error("Generate Url error:"+ex);
             ex.printStackTrace();

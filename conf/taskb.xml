@@ -3,10 +3,12 @@
 
 <task>
     <wid>1</wid>
-    <pid>2</pid>
-    <taskid>1</taskid>
+    <pid>1</pid>
+    <taskid>2</taskid>
     <name>mt_hotel</name>
     <description>this project for getting the cities hotel url of meituan</description>
     <urlpattern></urlpattern>
     <urlgenerate>false</urlgenerate>
+
+    <isloop>false</isloop>
 </task>

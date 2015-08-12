@@ -7,9 +7,9 @@ import redis.clients.jedis.Jedis;
 import java.util.List;
 
 /**
+ *
  * Task class
  *
- * Created by cutoutsy on 8/5/15.
  */
 public class Task {
     private static Jedis redis;
@@ -21,6 +21,16 @@ public class Task {
     private String description;
     private String urlpattern;
     private String urlgenerate;
+
+    public String getIsloop() {
+        return isloop;
+    }
+
+    public void setIsloop(String isloop) {
+        this.isloop = isloop;
+    }
+
+    private String isloop;
 
     public String getState() {
         return state;
@@ -44,6 +54,7 @@ public class Task {
         this.description = taskList.get(4);;
         this.urlpattern = taskList.get(5);;
         this.urlgenerate = taskList.get(6);
+        this.isloop = taskList.get(7);
     }
 
     public String getWid() {

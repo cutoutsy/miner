@@ -175,13 +175,14 @@ public class XmlUtil {
         String description = datainfo[4];
         String urlpattern = datainfo[5];
         String urlgenerate = datainfo[6];
+        String isloop = datainfo[7];
 
         Connection con = MysqlUtil.getConnection();
         Statement stmt = con.createStatement();
         // 插入最新测量的数据
         boolean rs = stmt
-                .execute("insert into task (wid, pid, tid, name, description, urlpattern, urlgenerate) values ('"
-                        + wid + "','" + pid + "','" + tid + "','"+ name + "','"+ description + "','"+ urlpattern + "','"+ urlgenerate + "')");
+                .execute("insert into task (wid, pid, tid, name, description, urlpattern, urlgenerate, isloop) values ('"
+                        + wid + "','" + pid + "','" + tid + "','"+ name + "','"+ description + "','"+ urlpattern + "','"+ urlgenerate + "','"+ isloop + "')");
 
         System.out.println("sucess!!");
     }
@@ -202,16 +203,18 @@ public class XmlUtil {
 //            readProjectToRedis("./conf/projectc.xml", "projectInfo");
 //            readTaskToRedis("./conf/taskc.xml", "taskInfo");
 //            readWorkspaceToMysql("./conf/workspace.xml");
+
 //            readProjectToMysql("./conf/project.xml");
-//            readTaskToMysql("./conf/task.xml");
+            readTaskToMysql("./conf/task.xml");
+
 //            readProjectToMysql("./conf/projectb.xml");
-//            readTaskToMysql("./conf/taskb.xml");
+            readTaskToMysql("./conf/taskb.xml");
 
 //            readProjectToMysql("./conf/projectc.xml");
 //            readTaskToMysql("./conf/taskc.xml");
 
-            readProjectToMysql("./conf/projectd.xml");
-            readTaskToMysql("./conf/taskd.xml");
+//            readProjectToMysql("./conf/projectd.xml");
+//            readTaskToMysql("./conf/taskd.xml");
 
         }catch (Exception ex){
             ex.printStackTrace();

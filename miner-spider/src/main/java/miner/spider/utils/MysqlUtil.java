@@ -43,7 +43,6 @@ public class MysqlUtil {
 
             Connection con = getConnection();
             Statement stmt = con.createStatement();
-            // 获取最大id，即最新一次的数据记录
             ResultSet rs = stmt
                     .executeQuery("select * from project where wid="
                             + wid+" AND pid=" + pid);
@@ -72,16 +71,38 @@ public class MysqlUtil {
 
             Connection con = getConnection();
             Statement stmt = con.createStatement();
-            // 获取最大id，即最新一次的数据记录
             ResultSet rs = stmt
                     .executeQuery("select * from task where wid="
                             + wid+" AND pid=" + pid+" AND tid=" + tid);
             rs.next();// 指向有效的一行
 //            String re = rs.getString(5);
-            for(int i = 2; i < 9; i++){
+            for(int i = 2; i < 10; i++){
                 String re = rs.getString(i);
 //                System.out.println(re);
                 reList.add(re);
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+        return reList;
+    }
+
+
+    public static List getTaskByProject(String wid, String pid){
+        List reList = new ArrayList();
+        try {
+            String twid = wid;
+            String tpid = pid;
+
+            Connection con = getConnection();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt
+                    .executeQuery("select * from task where wid="
+                            + wid+" AND pid=" + pid);
+            while(rs.next()){
+                String tid = rs.getString(4);
+                reList.add(tid);
             }
         }catch(Exception ex){
             ex.printStackTrace();

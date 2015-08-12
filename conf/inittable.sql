@@ -27,5 +27,6 @@ CREATE TABLE task(
   		description VARCHAR(100) NOT NULL DEFAULT '',
   		urlpattern VARCHAR(100) NOT NULL DEFAULT '',
   		urlgenerate VARCHAR(11) NOT NULL DEFAULT '',
+  		isloop VARCHAR(11) NOT NULL DEFAULT '',
   		PRIMARY KEY  (id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
