@@ -3,22 +3,19 @@ package miner.parse;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import miner.parse.data.DataItem;
-import miner.parse.data.Packer;
+import miner.parse.DocType;
 import miner.parse.util.HtmlUtil;
 import miner.parse.util.JsonUtil;
 import org.jsoup.nodes.Element;
-
+import miner.parse.data.Packer;
+import miner.parse.data.DataItem;
 
 public class DocObject {
 	private String document;
@@ -141,12 +138,28 @@ public class DocObject {
 	}
 
 	public static void main(String[] args) {
+		/*
+		 * Document:
+		 * 	doc,charset
+		 * Data Parse:
+		 * 	Item:
+		 * 		id->name,path,tag,type
+		 * Data Pack:
+		 *  Item:
+		 *  	data_id,project_id,task_id,workstation_id,row_key,foreign_key,foreign_value,link,id0,id1,id2...
+		 * */
 		/* 抽取单个doc数据的规则库，多个set组成map */
 		Map<String, RuleItem> data_rule_map = new HashMap<String, RuleItem>();
 		data_rule_map.put("id0", new RuleItem("item_test_name_0",
 				"rateDetail.paginator.items", "text", DataType.STR));
 		data_rule_map.put("id1", new RuleItem("item_test_name_1",
 				"rateList_array.test_list_array.real", "text", DataType.ARRAY));
+		/* 封装数据的规则库map */
+		Set<DataItem> data_item_set = new HashSet<DataItem>();
+		data_item_set.add(new DataItem(1, 1, 1, 1, "item_test_name_0", "none",
+				"alone", "alone", "id0", "id1"));
+		data_item_set.add(new DataItem(1, 1, 1, 1, "item_test_name_0", "none",
+				"alone", "alone", "id0"));
 		/* 数据生成器 */
 		Generator g = new Generator();
 		g.create_obj("/Users/white/Desktop/workspace/test_json_storage.js",
@@ -155,13 +168,12 @@ public class DocObject {
 			g.set_rule(entry.getValue());
 		}
 		g.generate_data();
-		Map<String, Object> m = g.get_result();//m里封装了所有抽取的数据
-		/* 封装数据的规则库map */
-		// Map<String, DataItem> data_items = new HashMap<String, DataItem>();
-
-		Packer packer = new Packer(new DataItem(1, 1, 1, 1, "item_test_name_0",
-				"none", "alone", "alone"), data_rule_map, m);
-		System.out.println("pack_result:" + packer.pack());
+		Map<String, Object> m = g.get_result();// m里封装了所有抽取的数据
+		Iterator<DataItem> data_item_it = data_item_set.iterator();
+		while (data_item_it.hasNext()) {
+			Packer packer = new Packer(data_item_it.next(), m, data_rule_map);
+			System.out.println("pack_result:" + packer.pack());
+		}
 
 		// "/Users/white/Desktop/workspace/test.html"
 	}

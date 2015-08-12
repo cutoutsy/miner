@@ -133,6 +133,7 @@ public class JsonUtil {
 	 */
 	public String get_Json_Str(JSONObject obj, String str) {
 		try {
+			//System.out.println(str);
 			return obj.getString(str);
 		} catch (JSONException e) {
 			e.printStackTrace();
