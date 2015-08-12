@@ -1,6 +1,7 @@
 package miner.spider.utils;
 
-import com.cutoutsy.pojo.ProxyPojo;
+
+import miner.spider.pojo.ProxyPojo;
 
 import java.util.LinkedList;
 import java.util.List;

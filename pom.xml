@@ -39,17 +39,22 @@
       <artifactId>zookeeper</artifactId>
       <version>3.4.5</version>
     </dependency>
+
     <dependency>
-      <groupId>org.json</groupId>
-      <artifactId>json</artifactId>
-      <version>20141113</version>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase</artifactId>
+      <version>0.90.2</version>
     </dependency>
+
+
     <dependency>
-      <!-- jsoup HTML parser library @ http://jsoup.org/ -->
-      <groupId>org.jsoup</groupId>
-      <artifactId>jsoup</artifactId>
-      <version>1.8.2</version>
-    </dependency></dependencies>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.6</version>
+    </dependency>
+
+  </dependencies>
+>>>>>>> fcb962dfa5385a187cc01c81e9573f418b6fd030
   
   <modules>
     <module>miner-store</module>

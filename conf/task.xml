@@ -13,5 +13,6 @@
     true: the message source from loop
     false: the message source from redis database
     -->
-    <isloop>true/false</isloop>
+    <isloop>false</isloop>
+
 </task>
