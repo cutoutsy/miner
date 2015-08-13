@@ -127,6 +127,13 @@ public class Project {
         redis.hincrBy("project_executenum", projectKey, 1);
     }
 
+    public static void addProjectExecuteNum(Project pj){
+        String projectKey = pj.wid+"-"+pj.pid;
+        String projectValue = pj.state;
+        redis = RedisUtil.GetRedis();
+        redis.hincrBy("project_executenum", projectKey, 1);
+    }
+
     public static void main(String[] args){
         Project pj = new Project("1-1");
         System.out.println(pj.condition);

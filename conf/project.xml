@@ -13,9 +13,9 @@
     Month   每年的第几个月执行该任务
     DayOfWeek     每周的第几天执行该任务
     Command       指定要执行的程序-->
-    <schedule>* 8 * * * ?</schedule>
+    <schedule>0/30 * * * * ?</schedule>
     <!--undo, running, die, done-->
-    <state>undo</state>
+    <state>die</state>
     <!--the condition of project to execute
     alone: no condition
     01-002: means when project 01-002 done, the project can execute, can not noly one-->

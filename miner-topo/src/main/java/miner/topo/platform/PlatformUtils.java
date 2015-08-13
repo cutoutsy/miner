@@ -12,11 +12,8 @@ import java.util.Set;
 
 /**
  * some PlatformUtils for the platform
- *
- * Created by cutoutsy on 8/4/15.
  */
 public class PlatformUtils {
-
     private static MyLogger logger = new MyLogger(PlatformUtils.class);
 
     public static Jedis redis;
@@ -39,9 +36,7 @@ public class PlatformUtils {
                     boolean projectExecute = true;
                     String preCondition = pj.getCondition();
                     String[] preProjectName = preCondition.split(",");
-
                     for(int i = 0; i < preProjectName.length ; i++){
-
                         if(redis.hexists("project_state", preProjectName[i])) {
                             String tempProjectState = redis.hget("project_state", preProjectName[i]);
                             if (tempProjectState.equals("undo")) {
@@ -55,7 +50,6 @@ public class PlatformUtils {
                         reProject = oneProjectKey;
                         break;
                     }
-
                 }
             }
         }
@@ -97,6 +91,54 @@ public class PlatformUtils {
         }
 
         return reProject;
+    }
+
+    //return execute task list
+    public static List getProjectList(){
+//        String reProject = "";
+        List<String> reList = new ArrayList<String>();
+
+        redis = RedisUtil.GetRedis();
+        List<String> projectList = redis.lrange("project_execute", 0, -1);
+
+        if(projectList.size() > 0) {
+
+            for(int i = 0; i < projectList.size(); i++ ){
+                String projectName = projectList.get(i);
+                int ProjectExecuteNum = Integer.valueOf(redis.hget("project_executenum", projectName));
+                Project pj = new Project(projectName);
+
+                if (pj.getCondition().equals("alone")) {
+                    if(redis.hget("project_state", projectName).equals("die")) {
+                        reList.add(projectName);
+                    }
+                } else {
+                    boolean projectExecute = true;
+                    String preCondition = pj.getCondition();
+                    String[] preProjectName = preCondition.split(",");
+
+                    for (int j = 0; j < preProjectName.length; j++) {
+
+                        if (redis.hexists("project_executenum", preProjectName[j])) {
+                            int tempProjectExecuteNum = Integer.valueOf(redis.hget("project_executenum", preProjectName[j]));
+                            if (tempProjectExecuteNum <= ProjectExecuteNum) {
+                                projectExecute = false;
+                            }
+                            break;
+                        } else {
+                            projectExecute = true;
+                        }
+                    }
+                    if (projectExecute) {
+                        if(redis.hget("project_state", projectName).equals("die")) {
+                            reList.add(projectName);
+                        }
+                    }
+
+                }
+            }
+        }
+        return reList;
     }
 
 
@@ -144,6 +186,17 @@ public class PlatformUtils {
         return reList;
     }
 
+    public static List getTaskByProject(String wid, String pid){
+        List<String> reList = new ArrayList<String>();
+        reList = MysqlUtil.getTaskByProject(wid, pid);
+        return reList;
+    }
+
+    public static List getTaskByProject(String projectName){
+        List<String> reList = new ArrayList<String>();
+        reList = MysqlUtil.getTaskByProject(projectName.split("-")[0], projectName.split("-")[1]);
+        return reList;
+    }
     //return emit url in the GenerateUrlBolt
     public static String getEmitUrl(String globalInfo, String message){
         String emitUrl = "";

@@ -204,11 +204,11 @@ public class XmlUtil {
 //            readTaskToRedis("./conf/taskc.xml", "taskInfo");
 //            readWorkspaceToMysql("./conf/workspace.xml");
 
-//            readProjectToMysql("./conf/project.xml");
-            readTaskToMysql("./conf/task.xml");
+            readProjectToMysql("./conf/project.xml");
+//            readTaskToMysql("./conf/task.xml");
 
 //            readProjectToMysql("./conf/projectb.xml");
-            readTaskToMysql("./conf/taskb.xml");
+//            readTaskToMysql("./conf/taskb.xml");
 
 //            readProjectToMysql("./conf/projectc.xml");
 //            readTaskToMysql("./conf/taskc.xml");
