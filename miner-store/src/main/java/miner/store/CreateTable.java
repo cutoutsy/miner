@@ -52,19 +52,10 @@ public class CreatTable {
 			if(foreignkey.equals("none")){
 				flag = false;
 			}
-			String date = getDate();
-			String tablename = date+"_"+wid+pid+tid+dataid;
+			String tablename = wid+pid+tid+dataid;
 			createTable(conf, tablename, flag);
 	}
 	
-	public String getDate(){
-		int y,m,d;    
-		Calendar cal=Calendar.getInstance();    
-		y=cal.get(Calendar.YEAR);    
-		m=cal.get(Calendar.MONTH)+1;    
-		d=cal.get(Calendar.DATE); 
-		return Integer.toString(y)+Integer.toString(m)+Integer.toString(d);
-	}
 	
 	public void createTable(Configuration conf,String tableName,boolean flag){
 		HBaseAdmin admin;
