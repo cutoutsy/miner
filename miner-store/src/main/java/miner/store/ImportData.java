@@ -82,6 +82,8 @@ public class ImportData {
                 for (int i = 0; i < jsonArray.length();i++) {
                     addData(null, tableName, rowKey, "property", key, jsonArray.getString(i));
                 }
+                }else{
+                    addData(null, tableName, rowKey, "property", key, propertyValue);
                 }
             }
 
