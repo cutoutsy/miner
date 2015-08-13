@@ -79,9 +79,11 @@ public class ImportData {
                 Matcher matcher = pattern.matcher(propertyValue);
                 if(matcher.find()){
                 JSONArray jsonArray = new JSONArray(propertyValue);
+                    String propertyData = null;
                 for (int i = 0; i < jsonArray.length();i++) {
-                    addData(null, tableName, rowKey, "property", key, jsonArray.getString(i));
+                    propertyData = propertyData + "[!==!]"+jsonArray.getString(i);
                 }
+                    addData(null, tableName, rowKey, "property", key, propertyData);
                 }else{
                     addData(null, tableName, rowKey, "property", key, propertyValue);
                 }
