@@ -30,3 +30,20 @@ CREATE TABLE task(
   		isloop VARCHAR(11) NOT NULL DEFAULT '',
   		PRIMARY KEY  (id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+create table data(
+    id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT,
+    workStationID CHAR(20) NOT NULL DEFAULT '',
+    projectID CHAR(20) NOT NULL DEFAULT '',
+    taskID CHAR(20) NOT NULL DEFAULT '',
+    dataID CHAR(20) NOT NULL DEFAULT '',
+    description CHAR(255) NOT NULL DEFAULT '',
+    property CHAR(255) NOT NULL DEFAULT '',
+    rowKey  CHAR(100)  NOT NULL DEFAULT '',
+    foreignKey  CHAR(100) NOT NULL DEFAULT '',
+    foreignValue CHAR (100) NOT NULL DEFAULT '',
+    link CHAR(100) NOT NULL DEFAULT '',
+    processWay  CHAR(100) NOT NULL DEFAULT '',
+    PRIMARY KEY (id)
+) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;

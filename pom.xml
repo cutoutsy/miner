@@ -42,21 +42,40 @@
 
     <dependency>
       <groupId>org.apache.hbase</groupId>
-      <artifactId>hbase</artifactId>
-      <version>0.90.2</version>
+      <artifactId>hbase-client</artifactId>
+      <version>0.96.1-hadoop2</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-common</artifactId>
+      <version>0.96.1-hadoop2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-protocol</artifactId>
+      <version>0.96.1-hadoop2</version>
+    </dependency>
 
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>5.1.6</version>
     </dependency>
+
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20090211</version>
     </dependency>
+
+    <dependency>
+      <groupId>net.sf.json-lib</groupId>
+      <artifactId>json-lib</artifactId>
+      <version>2.4</version>
+    </dependency>
+
     <dependency>
       <!-- jsoup HTML parser library @ http://jsoup.org/ -->
       <groupId>org.jsoup</groupId>

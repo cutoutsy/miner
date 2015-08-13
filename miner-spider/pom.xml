@@ -42,13 +42,6 @@
       <version>1.0</version>
     </dependency>
 
-   
-
-    <dependency>
-      <groupId>org.apache.hbase</groupId>
-      <artifactId>hbase</artifactId>
-      <version>0.90.2</version>
-    </dependency>
 
     <dependency>
       <groupId>javax.mail</groupId>
@@ -60,12 +53,6 @@
       <groupId>dom4j</groupId>
       <artifactId>dom4j</artifactId>
       <version>1.6.1</version>
-    </dependency>
-
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>5.1.6</version>
     </dependency>
 
   </dependencies>
