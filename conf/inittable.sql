@@ -32,7 +32,7 @@ CREATE TABLE task(
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-create table dataID(
+create table data(
     id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT,
     workStationID CHAR(20) NOT NULL DEFAULT '',
     projectID CHAR(20) NOT NULL DEFAULT '',
