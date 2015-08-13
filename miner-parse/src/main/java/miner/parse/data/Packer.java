@@ -9,7 +9,6 @@ import org.json.JSONObject;
 import miner.parse.DataType;
 
 
-
 public class Packer {
 	private DataItem data_item;
 	private Map<String, Object> data_object;
@@ -35,23 +34,28 @@ public class Packer {
 			return_obj.put("foreign_value", data_item.get_foreign_value());
 			return_obj.put("link", data_item.get_link());
 
+			JSONArray property_array=new JSONArray();
+
 			for(int i=0;i<data_item.get_data_items().length;i++){
 				String tag_id =data_item.get_data_items()[i];
 				RuleItem ri=rule_items.get(tag_id);
 				DataType type=ri.get_type();
 				String tag=ri.get_name();
+				JSONObject tmp_obj=new JSONObject();
 				if (type.equals(DataType.STR)) {
 					String value = (String) data_object.get(tag);
-					return_obj.put(tag, value);
+					tmp_obj.put(tag, value);
 				} else if (type.equals(DataType.ARRAY)) {
 					String[] values = (String[]) data_object.get(tag);
 					JSONArray tmp_json_array = new JSONArray();
 					for (int j = 0; j < values.length; j++) {
 						tmp_json_array.put(values[j]);
 					}
-					return_obj.put(tag, tmp_json_array);
+					tmp_obj.put(tag, tmp_json_array);
 				}
+				property_array.put(tmp_obj.toString());
 			}
+			return_obj.put("property",property_array);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
