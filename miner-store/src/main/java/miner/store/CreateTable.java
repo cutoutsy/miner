@@ -23,10 +23,10 @@ public class CreateTable {
     }
     public static void main(String args[]) throws SQLException{
 
-        new CreateTable().mysqlCheck(configuration);
+        new CreateTable().mysqlCheck(configuration,"3","1");
     }
 
-    public void mysqlCheck(Configuration conf) throws SQLException{
+    public void mysqlCheck(Configuration conf,String tableWid,String tablePid) throws SQLException{
         boolean flag = true;
         String url = "jdbc:mysql://localhost/test?useUnicode=true&characterEncoding=utf8";
         Properties property = new Properties();
@@ -35,19 +35,24 @@ public class CreateTable {
         Driver driver = new Driver();
         Connection con = driver.connect(url, property);
         Statement sta = con.createStatement();
-        String sql = "select * from dataid";
+        String sql = "select * from dataid  order by id desc";
         ResultSet rs = sta.executeQuery(sql);
-        rs.last();
+        while(rs.next()){
         String wid = rs.getString("wid");
         String pid = rs.getString("pid");
-        String tid = rs.getString("tid");
-        String dataid = rs.getString("dataid");
-        String foreignkey = rs.getString("foreignkey");
-        if(foreignkey.equals("none")){
-            flag = false;
-        }
-        String tablename = wid+pid+tid+dataid;
-        createTable(conf, tablename, flag);
+            if(wid.equals(tableWid)&&pid.equals(tablePid)){
+                String tid = rs.getString("tid");
+                String dataid = rs.getString("dataid");
+                String foreignkey = rs.getString("foreignkey");
+                 if(foreignkey.equals("none")){
+                     flag = false;
+                    }
+                 String tablename = wid+pid+tid+dataid;
+                 createTable(conf, tablename, flag);
+            }else{
+                break;
+            }
+    }
     }
 
 
