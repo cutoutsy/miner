@@ -45,6 +45,7 @@ public class BeginSpout extends BaseRichSpout{
 			PlatformUtils.registerProject(_qManager);
 
 			List<String> newAddProject = PlatformUtils.getProjectList();
+			//wid+pid
 
 			if (newAddProject.size() > 0) {
 				for (int i = 0; i < newAddProject.size(); i++) {

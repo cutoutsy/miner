@@ -3,6 +3,7 @@ package miner.store;
 
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.MasterNotRunningException;
 import org.apache.hadoop.hbase.ZooKeeperConnectionException;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
@@ -23,6 +24,14 @@ import java.util.regex.Pattern;
  */
 public class ImportData {
 
+    private static Configuration configuration = null;
+    static{
+        configuration = HBaseConfiguration.create();
+        configuration.set("hbase.zookeeper.quorum", "127.0.0.1");
+        configuration.set("hbase.rootdir","hdfs://master:8020/hbase");
+        configuration.set("hbase.master", "hdfs://master:60000");
+    }
+
     public static  void main(String[] args){
        String data = "{\n" +
                 "\"workstation_id\":\"1\",\n" +
@@ -42,7 +51,7 @@ public class ImportData {
         new ImportData().importData(data);
     }
 
-    public void importData(String data){
+    public static void importData(String data){
 
         try {
             String rowKey = null;
@@ -59,7 +68,6 @@ public class ImportData {
             String foreignValue = jsonObject.getString("foreign_value");
             String link = jsonObject.getString("link");
             String rowKeyBak = jsonObject.getString("row_key");
-            String description = jsonObject.getString("description");
 
             //构造出行键，当rowkey不为none的时候，使用时间戳与行键，否则使用UUID
             if(!rowKeyBak.equals("none")) {
@@ -83,21 +91,20 @@ public class ImportData {
                 for (int i = 0; i < jsonArray.length();i++) {
                     propertyData = propertyData + "[!==!]"+jsonArray.getString(i);
                 }
-                    addData(null, tableName, rowKey, "property", key, propertyData);
+                    addData(configuration, tableName, rowKey, "property", key, propertyData);
                 }else{
-                    addData(null, tableName, rowKey, "property", key, propertyValue);
+                    addData(configuration, tableName, rowKey, "property", key, propertyValue);
                 }
             }
 
-            addData(null,tableName,rowKey,"info","workStationID",workStationID);
-            addData(null,tableName,rowKey,"info","projectID",projectID);
-            addData(null,tableName,rowKey,"info","taskID",taskID);
-            addData(null,tableName,rowKey,"info","dataID",dataID);
-            addData(null,tableName,rowKey,"link","link",link);
-            addData(null,tableName,rowKey,"description","description",description);
+            addData(configuration,tableName,rowKey,"info","workStationID",workStationID);
+            addData(configuration,tableName,rowKey,"info","projectID",projectID);
+            addData(configuration,tableName,rowKey,"info","taskID",taskID);
+            addData(configuration,tableName,rowKey,"info","dataID",dataID);
+            addData(configuration,tableName,rowKey,"link","link",link);
             if(!foreignKey.equals("alone")){
-                addData(null,tableName,rowKey,"foreignKey","foreignKey",foreignKey);
-                addData(null,tableName,rowKey,"foreignValue","foreignValue",foreignValue);
+                addData(configuration,tableName,rowKey,"foreignKey","foreignKey",foreignKey);
+                addData(configuration,tableName,rowKey,"foreignValue","foreignValue",foreignValue);
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -105,7 +112,7 @@ public class ImportData {
 
     }
 
-    public void addData(Configuration configuration,String tableName,String Rowkey,String family,String column,
+    public static void addData(Configuration configuration,String tableName,String Rowkey,String family,String column,
                         String value){
         HBaseAdmin admin;
         try {

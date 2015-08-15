@@ -118,6 +118,7 @@ public class Project {
     public void setCondition(String condition) {
         this.condition = condition;
     }
+
     //write Project info to redis
     public static void writeProjectToRedis(Project pj){
         String projectKey = pj.wid+"-"+pj.pid;

@@ -1,5 +1,6 @@
 package miner.spider.utils;
 
+import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -9,6 +10,7 @@ import redis.clients.jedis.Jedis;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * XML Read util
@@ -179,14 +181,87 @@ public class XmlUtil {
 
         Connection con = MysqlUtil.getConnection();
         Statement stmt = con.createStatement();
-        // 插入最新测量的数据
         boolean rs = stmt
                 .execute("insert into task (wid, pid, tid, name, description, urlpattern, urlgenerate, isloop) values ('"
-                        + wid + "','" + pid + "','" + tid + "','"+ name + "','"+ description + "','"+ urlpattern + "','"+ urlgenerate + "','"+ isloop + "')");
+                        + wid + "','" + pid + "','" + tid + "','" + name + "','" + description + "','" + urlpattern + "','" + urlgenerate + "','" + isloop + "')");
 
         System.out.println("sucess!!");
     }
 
+
+    public static void readDataToMysql(String file) throws Exception {
+        SAXReader reader = new SAXReader();
+        Document document = reader.read(file);
+        Element root = document.getRootElement();
+        String oneProject = "";
+        for (Iterator<?> i = root.elementIterator(); i.hasNext();){
+            Element element = (Element)i.next();
+            oneProject += element.getText()+"$";
+        }
+        String property = "";
+        Element memberElm=root.element("property");
+        List nodes = memberElm.elements("name");
+        for (Iterator it = nodes.iterator(); it.hasNext();) {
+            Element elm = (Element) it.next();
+            property += elm.getText()+"$";
+        }
+        property = property.substring(0, property.length()-1);
+
+        String[] datainfo = oneProject.split("\\$");
+        String wid = datainfo[0];
+        String pid = datainfo[1];
+        String tid = datainfo[2];
+        String did = datainfo[3];
+        String description = datainfo[4];
+        String rowKey = datainfo[6];
+        String foreignkey = datainfo[7];
+        String foreignvalue = datainfo[8];
+        String link = datainfo[9];
+        String processWay = datainfo[10];
+        String docType = datainfo[11];
+        Connection con = MysqlUtil.getConnection();
+        Statement stmt = con.createStatement();
+        boolean rs = stmt
+                .execute("insert into data (wid, pid, tid, dataid , description, property, rowKey, foreignKey, foreignValue, link, processWay, docType) values ('"
+                        + wid + "','" + pid + "','"+ tid + "','"+ did + "','"+ description + "','"+ property + "','"+ rowKey + "','"+ foreignkey + "','"+ foreignvalue + "','"+ link + "','"+ processWay + "','"+ docType + "')");
+        System.out.println("sucess!!");
+    }
+
+
+    public static void readRegexToMysql(String file) throws Exception {
+        SAXReader reader = new SAXReader();
+        Document document = reader.read(file);
+        Element root = document.getRootElement();
+        String oneProject = "";
+        for (Iterator<?> i = root.elementIterator(); i.hasNext();){
+            Element element = (Element)i.next();
+            oneProject += element.getText()+"$";
+        }
+        String[] datainfo = oneProject.split("\\$");
+
+        String wid = datainfo[0];
+        String pid = datainfo[1];
+        String tid = datainfo[2];
+        String did = datainfo[3];
+
+        Element memberElm=root.element("rules");
+
+        List nodes = memberElm.elements("item");
+        for (Iterator it = nodes.iterator(); it.hasNext();) {
+            Element elm = (Element) it.next();
+            Attribute attribute = elm.attribute("tagname");
+//            System.out.println(attribute.getText() + ":" + elm.getText());
+            String tagname = attribute.getText();
+            String path = elm.getText();
+
+            Connection con = MysqlUtil.getConnection();
+            Statement stmt = con.createStatement();
+            boolean rs = stmt
+                .execute("insert into regex (wid, pid, tid, tagname, path) values ('"
+                        + wid + "','" + pid + "','" + tid + "','"+ tagname + "','"+ path + "')");
+        }
+        System.out.println("sucess!!");
+    }
 
     public static void main(String[] args){
         try {
@@ -204,7 +279,7 @@ public class XmlUtil {
 //            readTaskToRedis("./conf/taskc.xml", "taskInfo");
 //            readWorkspaceToMysql("./conf/workspace.xml");
 
-            readProjectToMysql("./conf/project.xml");
+//            readProjectToMysql("./conf/project.xml");
 //            readTaskToMysql("./conf/task.xml");
 
 //            readProjectToMysql("./conf/projectb.xml");
@@ -216,6 +291,8 @@ public class XmlUtil {
 //            readProjectToMysql("./conf/projectd.xml");
 //            readTaskToMysql("./conf/taskd.xml");
 
+            readDataToMysql("./conf/data.xml");
+//            readRegexToMysql("./conf/dataregex.xml");
         }catch (Exception ex){
             ex.printStackTrace();
         }

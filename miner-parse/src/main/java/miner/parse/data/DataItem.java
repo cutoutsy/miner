@@ -4,10 +4,10 @@ package miner.parse.data;
 
 public class DataItem {
 	/* 四元组 */
-	final private int data_id;
-	final private int project_id;
-	final private int task_id;
-	final private int workstation_id;
+	final private String data_id;
+	final private String project_id;
+	final private String task_id;
+	final private String workstation_id;
 	/* connection */
 	final private String row_key;
 	final private String foreign_key;
@@ -18,8 +18,8 @@ public class DataItem {
 
 	/* 实际存放的数据 */
 
-	public DataItem(int data_id, int project_id, int task_id,
-					int workstation_id, String row_key, String foreign_key,
+	public DataItem(String workstation_id, String project_id, String task_id,
+					String data_id, String row_key, String foreign_key,
 					String foreign_value, String link,String... data_items) {
 		this.data_id = data_id;
 		this.project_id = project_id;
@@ -32,19 +32,19 @@ public class DataItem {
 		this.data_items=data_items;
 	}
 
-	public int get_data_id() {
+	public String get_data_id() {
 		return this.data_id;
 	}
 
-	public int get_project_id() {
+	public String get_project_id() {
 		return this.project_id;
 	}
 
-	public int get_task_id() {
+	public String get_task_id() {
 		return this.task_id;
 	}
 
-	public int get_workstation_id() {
+	public String get_workstation_id() {
 		return this.workstation_id;
 	}
 

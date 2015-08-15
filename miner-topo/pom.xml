@@ -30,6 +30,13 @@
 
     <dependency>
       <groupId>xd</groupId>
+      <artifactId>miner-store</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>xd</groupId>
       <artifactId>miner-parse</artifactId>
       <version>${project.version}</version>
     </dependency>

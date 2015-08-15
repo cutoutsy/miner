@@ -28,8 +28,6 @@
       <version>4.4.1</version>
     </dependency>
 
-
-
     <dependency>
       <groupId>antlr</groupId>
       <artifactId>antlrall</artifactId>
@@ -41,7 +39,6 @@
       <artifactId>jchardet</artifactId>
       <version>1.0</version>
     </dependency>
-
 
     <dependency>
       <groupId>javax.mail</groupId>

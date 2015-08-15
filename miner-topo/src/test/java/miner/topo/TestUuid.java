@@ -1,5 +1,7 @@
 package miner.topo;
 
+import miner.parse.DocType;
+
 import java.util.UUID;
 
 /**
@@ -7,6 +9,7 @@ import java.util.UUID;
  */
 public class TestUuid {
     public static void main(String[] args){
-        System.out.println(UUID.randomUUID());
+        String data = "JSON$pp";
+        System.out.println(data.split("$")[0]);
     }
 }

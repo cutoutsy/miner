@@ -23,7 +23,8 @@ public class CreateTable {
     }
     public static void main(String args[]) throws SQLException{
 
-        new CreateTable().mysqlCheck(configuration,"3","1");
+//        new CreateTable().mysqlCheck(configuration,"3","1");
+        new CreateTable().createTable(configuration, "1111", true);
     }
 
     public void mysqlCheck(Configuration conf,String tableWid,String tablePid) throws SQLException{
@@ -55,7 +56,6 @@ public class CreateTable {
     }
     }
 
-
     public void createTable(Configuration conf,String tableName,boolean flag){
         HBaseAdmin admin;
         try {
@@ -65,12 +65,11 @@ public class CreateTable {
             }else{
                 HTableDescriptor tableDescriptor=new HTableDescriptor(TableName.valueOf(tableName));
                 tableDescriptor.addFamily(new HColumnDescriptor("info"));
-                tableDescriptor.addFamily(new HColumnDescriptor("description"));
                 tableDescriptor.addFamily(new HColumnDescriptor("property"));
                 tableDescriptor.addFamily(new HColumnDescriptor("link"));
                 if(flag){
-                    tableDescriptor.addFamily(new HColumnDescriptor("forgeignkey"));
-                    tableDescriptor.addFamily(new HColumnDescriptor("foreignvalue"));
+                    tableDescriptor.addFamily(new HColumnDescriptor("foreignKey"));
+                    tableDescriptor.addFamily(new HColumnDescriptor("foreignValue"));
                 }
                 admin.createTable(tableDescriptor);
                 System.out.println("end create table");

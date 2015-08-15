@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<task>
+    <wid>1</wid>
+    <pid>1</pid>
+    <taskid>1</taskid>
+    <dataid>1</dataid>
+    <description>wdj info</description>
+
+    <property>
+        <name>error</name>
+        <name>nick</name>
+    </property>
+
+    <rowkey>uid</rowkey>
+    <foreignkey>none</foreignkey>
+    <foreignvalue>none</foreignvalue>
+    <link>none</link>
+
+    <processway>s</processway>
+    <doctype>json</doctype>
+
+    <isloop>false</isloop>
+</task>
