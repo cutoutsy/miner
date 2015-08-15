@@ -9,6 +9,7 @@ import java.sql.Connection;
 
 
 import com.mysql.jdbc.Driver;
+import miner.spider.utils.MysqlUtil;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
@@ -23,20 +24,21 @@ public class CreateTable {
     }
     public static void main(String args[]) throws SQLException{
 
-//        new CreateTable().mysqlCheck(configuration,"3","1");
-        new CreateTable().createTable(configuration, "1111", true);
+        new CreateTable().mysqlCheck("1","1");
+//        new CreateTable().createTable(configuration, "1", true);
     }
 
-    public void mysqlCheck(Configuration conf,String tableWid,String tablePid) throws SQLException{
+    public static void mysqlCheck(String tableWid,String tablePid) throws SQLException{
         boolean flag = true;
-        String url = "jdbc:mysql://localhost/test?useUnicode=true&characterEncoding=utf8";
-        Properties property = new Properties();
-        property.put("user", "root");
-        property.put("password", "root");
-        Driver driver = new Driver();
-        Connection con = driver.connect(url, property);
+//        String url = "jdbc:mysql://localhost/test?useUnicode=true&characterEncoding=utf8";
+//        Properties property = new Properties();
+//        property.put("user", "root");
+//        property.put("password", "root");
+//        Driver driver = new Driver();
+//        Connection con = driver.connect(url, property);
+        Connection con = MysqlUtil.getConnection();
         Statement sta = con.createStatement();
-        String sql = "select * from dataid  order by id desc";
+        String sql = "select * from data order by id desc";
         ResultSet rs = sta.executeQuery(sql);
         while(rs.next()){
         String wid = rs.getString("wid");
@@ -49,14 +51,14 @@ public class CreateTable {
                      flag = false;
                     }
                  String tablename = wid+pid+tid+dataid;
-                 createTable(conf, tablename, flag);
+                 createTable(configuration, tablename, flag);
             }else{
                 break;
             }
     }
     }
 
-    public void createTable(Configuration conf,String tableName,boolean flag){
+    public static void createTable(Configuration conf,String tableName,boolean flag){
         HBaseAdmin admin;
         try {
             admin = new HBaseAdmin(conf);
@@ -68,8 +70,7 @@ public class CreateTable {
                 tableDescriptor.addFamily(new HColumnDescriptor("property"));
                 tableDescriptor.addFamily(new HColumnDescriptor("link"));
                 if(flag){
-                    tableDescriptor.addFamily(new HColumnDescriptor("foreignKey"));
-                    tableDescriptor.addFamily(new HColumnDescriptor("foreignValue"));
+                    tableDescriptor.addFamily(new HColumnDescriptor("foreign"));
                 }
                 admin.createTable(tableDescriptor);
                 System.out.println("end create table");

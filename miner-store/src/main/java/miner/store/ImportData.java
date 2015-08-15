@@ -102,9 +102,9 @@ public class ImportData {
             addData(configuration,tableName,rowKey,"info","taskID",taskID);
             addData(configuration,tableName,rowKey,"info","dataID",dataID);
             addData(configuration,tableName,rowKey,"link","link",link);
-            if(!foreignKey.equals("alone")){
-                addData(configuration,tableName,rowKey,"foreignKey","foreignKey",foreignKey);
-                addData(configuration,tableName,rowKey,"foreignValue","foreignValue",foreignValue);
+            if(!foreignKey.equals("none")){
+                addData(configuration,tableName,rowKey,"foreign", "foreignKey", foreignKey);
+                addData(configuration,tableName,rowKey,"foreign","foreignValue",foreignValue);
             }
         }catch(Exception e){
             e.printStackTrace();

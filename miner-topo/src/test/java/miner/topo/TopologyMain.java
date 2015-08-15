@@ -11,8 +11,8 @@ public class TopologyMain {
 		try{
 			TopologyBuilder topologyBuilder = new TopologyBuilder();
 			topologyBuilder.setSpout("Spout", new EmitMessageSpout(), 1);
-			topologyBuilder.setBolt("Parse", new ParseBolt(), 1).shuffleGrouping("Spout");
-			topologyBuilder.setBolt("Store", new StoreBolt(), 1).shuffleGrouping("Parse");
+			topologyBuilder.setBolt("Parse", new ParseTestBolt(), 1).shuffleGrouping("Spout");
+			topologyBuilder.setBolt("Store", new StoreTestBolt(), 1).shuffleGrouping("Parse");
 			
 			Config config = new Config();
 			config.setDebug(false);

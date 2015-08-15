@@ -17,9 +17,9 @@ import miner.spider.utils.MysqlUtil;
 
 import java.util.*;
 
-public class ParseBolt extends BaseBasicBolt{
+public class ParseTestBolt extends BaseBasicBolt{
 
-	private static MyLogger logger = new MyLogger(ParseBolt.class);
+	private static MyLogger logger = new MyLogger(ParseTestBolt.class);
 
 	private OutputCollector _collector;
 	private HashMap<String, Data> _dataScheme;

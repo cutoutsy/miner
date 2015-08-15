@@ -13,8 +13,6 @@ import java.util.Properties;
 
 /**
  * Mysql utils
- *
- * Created by cutoutsy on 8/6/15.
  */
 public class MysqlUtil {
 
@@ -38,8 +36,6 @@ public class MysqlUtil {
     public static List getProject(String projectName){
         List reList = new ArrayList();
         try {
-//            int wid = Integer.valueOf(projectName.split("-")[0]);
-//            int pid = Integer.valueOf(projectName.split("-")[1]);
             String wid = projectName.split("-")[0];
             String pid = projectName.split("-")[1];
 
@@ -49,10 +45,8 @@ public class MysqlUtil {
                     .executeQuery("select * from project where wid="
                             + wid+" AND pid=" + pid);
             rs.next();// 指向有效的一行
-//            String re = rs.getString(5);
             for(int i = 2; i < 9; i++){
                 String re = rs.getString(i);
-                //System.out.println(re);
                 reList.add(re);
             }
         }catch(Exception ex){
@@ -65,8 +59,6 @@ public class MysqlUtil {
     public static List getTask(String taskName){
         List reList = new ArrayList();
         try {
-//            int wid = Integer.valueOf(projectName.split("-")[0]);
-//            int pid = Integer.valueOf(projectName.split("-")[1]);
             String wid = taskName.split("-")[0];
             String pid = taskName.split("-")[1];
             String tid = taskName.split("-")[2];
@@ -77,10 +69,8 @@ public class MysqlUtil {
                     .executeQuery("select * from task where wid="
                             + wid+" AND pid=" + pid+" AND tid=" + tid);
             rs.next();// 指向有效的一行
-//            String re = rs.getString(5);
             for(int i = 2; i < 10; i++){
                 String re = rs.getString(i);
-//                System.out.println(re);
                 reList.add(re);
             }
         }catch(Exception ex){

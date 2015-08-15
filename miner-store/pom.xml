@@ -21,6 +21,11 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>xd</groupId>
+      <artifactId>miner-spider</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
   </dependencies>
 </project>

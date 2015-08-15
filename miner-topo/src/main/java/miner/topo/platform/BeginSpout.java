@@ -8,6 +8,7 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
 import miner.spider.utils.MyLogger;
 import miner.spider.utils.RedisUtil;
+import miner.store.CreateTable;
 import miner.topo.enumeration.ProjectState;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerFactory;
@@ -45,12 +46,13 @@ public class BeginSpout extends BaseRichSpout{
 			PlatformUtils.registerProject(_qManager);
 
 			List<String> newAddProject = PlatformUtils.getProjectList();
-			//wid+pid
 
 			if (newAddProject.size() > 0) {
 				for (int i = 0; i < newAddProject.size(); i++) {
 					String tempProjectName = newAddProject.get(i);
 					Project pj = new Project(tempProjectName);
+					//create table in hbase
+					CreateTable.mysqlCheck(pj.getWid(), pj.getPid());
 					String tempDatasource = pj.getDatasource();
 					if (redis.llen(tempDatasource + "1") == redis.smembers(tempDatasource).size()) {
 						_runningProject.put(newAddProject.get(i), tempDatasource + "1");
@@ -116,11 +118,10 @@ public class BeginSpout extends BaseRichSpout{
 			Scheduler scheduler = schedulerFactory.getScheduler();
 			_qManager = new QuartzManager();
 			_qManager.setScheduler(scheduler);
-
 			PlatformUtils.initRegisterProject(_qManager);
 
 			scheduler.start();
-
+			
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}

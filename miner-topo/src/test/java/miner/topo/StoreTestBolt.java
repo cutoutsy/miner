@@ -15,9 +15,9 @@ import miner.store.ImportData;
 
 import java.util.Map;
 
-public class StoreBolt extends BaseBasicBolt {
+public class StoreTestBolt extends BaseBasicBolt {
 
-	private static MyLogger logger = new MyLogger(StoreBolt.class);
+	private static MyLogger logger = new MyLogger(StoreTestBolt.class);
 	private OutputCollector _collector;
 
 	public void execute(Tuple input, BasicOutputCollector collector) {
