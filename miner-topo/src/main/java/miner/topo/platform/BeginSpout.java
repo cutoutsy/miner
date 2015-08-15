@@ -119,9 +119,10 @@ public class BeginSpout extends BaseRichSpout{
 			_qManager = new QuartzManager();
 			_qManager.setScheduler(scheduler);
 			PlatformUtils.initRegisterProject(_qManager);
-
 			scheduler.start();
-			
+
+			//init Hbase tables
+			CreateTable.initHbaseTable();
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}

@@ -106,6 +106,8 @@ public class ImportData {
                 addData(configuration,tableName,rowKey,"foreign", "foreignKey", foreignKey);
                 addData(configuration,tableName,rowKey,"foreign","foreignValue",foreignValue);
             }
+
+            System.out.println("data save succeed.");
         }catch(Exception e){
             e.printStackTrace();
         }

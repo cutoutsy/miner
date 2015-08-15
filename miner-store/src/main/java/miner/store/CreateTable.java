@@ -86,5 +86,26 @@ public class CreateTable {
             e.printStackTrace();
         }
     }
+
+    public static void initHbaseTable() throws SQLException{
+        boolean flag = true;
+        Connection con = MysqlUtil.getConnection();
+        Statement sta = con.createStatement();
+        String sql = "select * from data";
+        ResultSet rs = sta.executeQuery(sql);
+        while(rs.next()){
+            String wid = rs.getString("wid");
+            String pid = rs.getString("pid");
+            String tid = rs.getString("tid");
+            String dataid = rs.getString("dataid");
+            String foreignkey = rs.getString("foreignkey");
+            if(foreignkey.equals("none")){
+                flag = false;
+            }
+            String tablename = wid+pid+tid+dataid;
+            createTable(configuration, tablename, flag);
+        }
+    }
+
 }
 

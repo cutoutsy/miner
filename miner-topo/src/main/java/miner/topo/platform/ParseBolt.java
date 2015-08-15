@@ -14,6 +14,8 @@ import miner.parse.data.Packer;
 import miner.spider.pojo.Data;
 import miner.spider.utils.MyLogger;
 import miner.spider.utils.MysqlUtil;
+import miner.spider.utils.RedisUtil;
+import redis.clients.jedis.Jedis;
 
 import java.util.*;
 
@@ -24,11 +26,12 @@ public class ParseBolt extends BaseBasicBolt{
 	private OutputCollector _collector;
 	private HashMap<String, Data> _dataScheme;
 	private HashMap<String, String> _regex;
+	private Jedis _redis;
 
 	public void execute(Tuple input, BasicOutputCollector collector) {
 		try {
-			String globalInfo = "1-1-1-uuid";
-			String resource = input.getString(0);
+			String globalInfo = input.getString(0);
+			String resource = input.getString(1);
 			String projectInfo = globalInfo.split("-")[0]+globalInfo.split("-")[1]+globalInfo.split("-")[2];
 			HashMap<String, Data> parseData = new HashMap<String, Data>();
 			for (Map.Entry<String, Data> entry : _dataScheme.entrySet()) {
@@ -41,13 +44,13 @@ public class ParseBolt extends BaseBasicBolt{
 
 			for (Map.Entry<String, Data> entry : parseData.entrySet()) {
 				String dataInfo = entry.getKey();
-				String taskRegex = dataInfo.split("-")[0]+"-"+dataInfo.split("-")[1]+"-"+dataInfo.split("-")[2];
+				String taskInfo = dataInfo.split("-")[0]+"-"+dataInfo.split("-")[1]+"-"+dataInfo.split("-")[2];
 				Data data = entry.getValue();
 				String[] properties = data.getProperty().split("\\$");
 				Map<String, RuleItem> data_rule_map = new HashMap<String, RuleItem>();
 				for(int i = 0; i < properties.length; i++){
 					String tagName = properties[i];
-					String path = _regex.get(taskRegex+"-"+tagName);
+					String path = _regex.get(taskInfo+"-"+tagName);
 					data_rule_map.put(tagName, new RuleItem(tagName,
 							path, "text", DataType.STR));
 				}
@@ -63,9 +66,18 @@ public class ParseBolt extends BaseBasicBolt{
 				g.generate_data();
 				Map<String, Object> m = g.get_result();// m里封装了所有抽取的数据
 				Iterator<DataItem> data_item_it = data_item_set.iterator();
-				while (data_item_it.hasNext()) {
-					Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
-					collector.emit(new Values(globalInfo, packerData.pack()));
+				if(data.getProcessWay().equals("s")) {
+					while (data_item_it.hasNext()) {
+						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
+						collector.emit(new Values(globalInfo, packerData.pack()));
+					}
+				}else if(data.getProcessWay().equals("e")){
+					while (data_item_it.hasNext()) {
+						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
+						_redis.hset("messageloop", taskInfo, packerData.pack());
+					}
+				}else{
+					logger.error("there is no valid way to process "+taskInfo+" data");
 				}
 			}
 		}catch (Exception ex){
@@ -77,6 +89,7 @@ public class ParseBolt extends BaseBasicBolt{
 	public void prepare(Map stormConf, TopologyContext context){
 		_dataScheme = MysqlUtil.getData();
 		_regex = MysqlUtil.getRegex();
+		_redis = RedisUtil.GetRedis();
 	}
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
