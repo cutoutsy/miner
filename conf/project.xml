@@ -6,15 +6,8 @@
     <name>meituancity</name>
     <description>this project for getting the cities of meituan</description>
     <datasource>meituanurl</datasource>
-    <!--minitues hour day month week
-    Minute  每个小时的第几分钟执行该任务
-    Hour    每天的第几个小时执行该任务
-    Day     每月的第几天执行该任务
-    Month   每年的第几个月执行该任务
-    DayOfWeek     每周的第几天执行该任务
-    Command       指定要执行的程序-->
     <schedule>0/30 * * * * ?</schedule>
-    <!--undo, running, die, done-->
+    <!--running, die-->
     <state>die</state>
     <!--the condition of project to execute
     alone: no condition
