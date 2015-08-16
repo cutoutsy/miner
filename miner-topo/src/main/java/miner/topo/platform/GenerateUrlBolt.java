@@ -10,17 +10,19 @@ import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import miner.spider.utils.MyLogger;
 import miner.spider.utils.RedisUtil;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import redis.clients.jedis.Jedis;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The Bolt is Url Generator
- *
- * Created by cutoutsy on 8/5/15.
  */
 public class GenerateUrlBolt extends BaseBasicBolt {
 
@@ -49,16 +51,39 @@ public class GenerateUrlBolt extends BaseBasicBolt {
                 it.hasNext();
                 String globalInfoLoop = it.next().toString();
                 String messageLoop = redis.hget("loopMessage", globalInfoLoop);
-                emitUrlLoop = PlatformUtils.getEmitUrl(globalInfoLoop, messageLoop);
 
-                UUID uuidLoop = UUID.randomUUID();
-                globalInfoLoop = globalInfoLoop+"-"+uuidLoop;
-
-                if (!emitUrlLoop.isEmpty()) {
-                    collector.emit(new Values(globalInfoLoop, emitUrlLoop));
+                JSONObject jsonObject = new JSONObject(messageLoop);
+                //对property进行处理
+                String property = jsonObject.getString("property");
+                JSONObject propertyjson = new JSONObject(property);
+                Iterator propertyKeys = propertyjson.keys();
+                while (propertyKeys.hasNext()){
+                    String key = propertyKeys.next().toString();
+                    String propertyValue = propertyjson.getString(key);
+                    Pattern pattern = Pattern.compile("\\[");
+                    Matcher matcher = pattern.matcher(propertyValue);
+                    if(matcher.find()){
+                        JSONArray jsonArray = new JSONArray(propertyValue);
+                        String propertyData = null;
+                        for (int i = 0; i < jsonArray.length();i++) {
+                            emitUrlLoop = PlatformUtils.getEmitUrl(globalInfoLoop, jsonArray.getString(i));
+                            UUID uuidLoop = UUID.randomUUID();
+                            globalInfoLoop = globalInfoLoop+"-"+uuidLoop;
+                            if (!emitUrlLoop.isEmpty()) {
+                                collector.emit(new Values(globalInfoLoop, emitUrlLoop));
+                            }
+                        }
+                    }else{
+                        emitUrlLoop = PlatformUtils.getEmitUrl(globalInfoLoop, propertyValue);
+                        UUID uuidLoop = UUID.randomUUID();
+                        globalInfoLoop = globalInfoLoop+"-"+uuidLoop;
+                        if (!emitUrlLoop.isEmpty()) {
+                            collector.emit(new Values(globalInfoLoop, emitUrlLoop));
+                        }
+                    }
                 }
+                redis.hdel("loopMessage", globalInfoLoop);
             }
-
         }catch (Exception ex){
             logger.error("Generate Url error:"+ex);
             ex.printStackTrace();
@@ -74,6 +99,5 @@ public class GenerateUrlBolt extends BaseBasicBolt {
     }
 
     public void cleanup() {
-
     }
 }
