@@ -63,7 +63,7 @@ public class CreateTable {
         try {
             admin = new HBaseAdmin(conf);
             if(admin.tableExists(tableName)){
-                System.err.print(tableName+"is exist and please check it");
+                System.err.println(tableName+"is exist and please check it");
             }else{
                 HTableDescriptor tableDescriptor=new HTableDescriptor(TableName.valueOf(tableName));
                 tableDescriptor.addFamily(new HColumnDescriptor("info"));

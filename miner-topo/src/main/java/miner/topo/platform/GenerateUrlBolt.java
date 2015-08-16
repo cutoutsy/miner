@@ -43,6 +43,7 @@ public class GenerateUrlBolt extends BaseBasicBolt {
             globalInfo = globalInfo+"-"+uuid;
             if (!emitUrl.isEmpty()) {
                 collector.emit(new Values(globalInfo, emitUrl));
+                System.out.println(globalInfo+"---"+emitUrl);
             }
 
             if(redis.hlen("loopMessage") > 0){

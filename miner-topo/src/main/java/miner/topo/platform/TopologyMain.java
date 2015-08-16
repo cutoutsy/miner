@@ -27,7 +27,6 @@ public class TopologyMain {
 				LocalCluster cluster = new LocalCluster();
 				cluster.submitTopology("test", config, topologyBuilder.createTopology());
 			}
-			
 		}catch(Exception e){
 			e.printStackTrace();
 		}

@@ -69,7 +69,6 @@ public class BeginSpout extends BaseRichSpout{
 				String emitMessage = "";
 				String oneProjectName = entry.getKey();
 				String oneProjectDatasource = entry.getValue();
-				//cause too many conennctions to mysql
 				Project pj = new Project(oneProjectName);
 				if (redis.llen(oneProjectDatasource) <= 0) {
 					redis.hset("project_state", oneProjectName, ProjectState.die.toString());
@@ -88,7 +87,7 @@ public class BeginSpout extends BaseRichSpout{
 							String globalInfo = oneProjectName + "-" + taskId;
 							_collector.emit(new Values(globalInfo, emitMessage), globalInfo);
 							redis.hset("message", globalInfo, emitMessage);
-							logger.info(emitMessage + "  sending...");
+							System.out.println(globalInfo+"--"+emitMessage + "  sending...");
 						}
 					}
 				}
@@ -120,7 +119,6 @@ public class BeginSpout extends BaseRichSpout{
 			_qManager.setScheduler(scheduler);
 			PlatformUtils.initRegisterProject(_qManager);
 			scheduler.start();
-
 			//init Hbase tables
 			CreateTable.initHbaseTable();
 		}catch(Exception ex){
