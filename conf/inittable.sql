@@ -49,23 +49,6 @@ create table data(
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-create table data(
-    id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT,
-    workStationID VARCHAR(20) NOT NULL DEFAULT '',
-    projectID VARCHAR(20) NOT NULL DEFAULT '',
-    taskID VARCHAR(20) NOT NULL DEFAULT '',
-    dataID VARCHAR(20) NOT NULL DEFAULT '',
-    description VARCHAR(255) NOT NULL DEFAULT '',
-    property VARCHAR(255) NOT NULL DEFAULT '',
-    rowKey  VARCHAR(100)  NOT NULL DEFAULT '',
-    foreignKey  VARCHAR(100) NOT NULL DEFAULT '',
-    foreignValue VARCHAR(100) NOT NULL DEFAULT '',
-    link VARCHAR(100) NOT NULL DEFAULT '',
-    processWay  VARCHAR(100) NOT NULL DEFAULT '',
-    docType VARCHAR(10) NOT NULL DEFAULT '',
-    PRIMARY KEY (id)
-) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-
 create table regex(
     id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     wid VARCHAR(20) NOT NULL DEFAULT '',

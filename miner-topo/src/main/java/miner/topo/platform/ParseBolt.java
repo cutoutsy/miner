@@ -71,7 +71,7 @@ public class ParseBolt extends BaseBasicBolt{
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
 						collector.emit(new Values(globalInfo, packerData.pack()));
 					}
-				}else if(data.getProcessWay().equals("e")){
+				}else if(data.getProcessWay().equals("e") || data.getProcessWay().equals("E")){
 					while (data_item_it.hasNext()) {
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
 						_redis.hset("messageloop", taskInfo, packerData.pack());
