@@ -43,8 +43,8 @@ public class Packer {
             }else{
 			    return_obj.put("foreign_key", data_object.get(f_key_str));
             }
-            if(f_value_str.equals("alone")){
-                return_obj.put("foreign_value","alone");
+            if(f_value_str.equals("none")){
+                return_obj.put("foreign_value","none");
             }else{
 			    return_obj.put("foreign_value", data_object.get(f_value_str));
             }

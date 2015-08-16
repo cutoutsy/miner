@@ -157,7 +157,7 @@ public class DocObject {
 		/* 封装数据的规则库map */
 		Set<DataItem> data_item_set = new HashSet<DataItem>();
 		data_item_set.add(new DataItem("1", "1", "1", "1", "name0", "name0",
-                "name0", "alone", "id0","id1"));
+                "none", "alone", "id0","id1"));
 //		data_item_set.add(new DataItem("1", "1", "1", "1", "name1", "none",
 //				"alone", "alone", "id0"));
 		/* 数据生成器 */
