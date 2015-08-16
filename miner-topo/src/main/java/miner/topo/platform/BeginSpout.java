@@ -42,7 +42,7 @@ public class BeginSpout extends BaseRichSpout{
 	public void nextTuple() {
 
 		try {
-			Thread.sleep(4000);
+			Thread.sleep(1000);
 			PlatformUtils.registerProject(_qManager);
 
 			List<String> newAddProject = PlatformUtils.getProjectList();
@@ -69,6 +69,7 @@ public class BeginSpout extends BaseRichSpout{
 				String emitMessage = "";
 				String oneProjectName = entry.getKey();
 				String oneProjectDatasource = entry.getValue();
+				//cause too many conennctions to mysql
 				Project pj = new Project(oneProjectName);
 				if (redis.llen(oneProjectDatasource) <= 0) {
 					redis.hset("project_state", oneProjectName, ProjectState.die.toString());
@@ -113,7 +114,6 @@ public class BeginSpout extends BaseRichSpout{
 		try {
 			_collector = collector;
 			redis = RedisUtil.GetRedis();
-
 			SchedulerFactory schedulerFactory = new StdSchedulerFactory();
 			Scheduler scheduler = schedulerFactory.getScheduler();
 			_qManager = new QuartzManager();

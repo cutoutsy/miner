@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <data>
-    <wid>1</wid>
+    <wid>2</wid>
     <pid>1</pid>
     <tid>1</tid>
     <dataid>1</dataid>
-    <description>wdj info</description>
+    <description>elong info</description>
     <property>
-        <name>error</name>
-        <name>avatar</name>
-        <name>nick</name>
-        <name>registerDays</name>
-        <name>uid</name>
+        <name>success</name>
+        <name>message</name>
+        <name>value</name>
     </property>
-    <rowkey>uid</rowkey>
+    <rowkey>none</rowkey>
     <foreignkey>none</foreignkey>
     <foreignvalue>none</foreignvalue>
     <link>none</link>

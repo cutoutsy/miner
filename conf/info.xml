@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<info>
+    <workstation>
+        <wid>1</wid>
+        <name>wdj</name>
+        <description>this workstation for wdj</description>
+    </workstation>
+
+    <project>
+        <pid>1</pid>
+        <name>wdj registerDays</name>
+        <description>this project for getting the registerDays of wdj users</description>
+        <datasource>wdj</datasource>
+        <schedule>0/30 * * * * ?</schedule>
+        <!--running, die-->
+        <state>die</state>
+        <!--the condition of project to execute
+        alone: no condition
+        01-002: means when project 01-002 done, the project can execute, can not noly one-->
+        <precondition>alone</precondition>
+        <executenum>0</executenum>
+    </project>
+
+    <task>
+        <taskid>1</taskid>
+        <name>wdj registerDays</name>
+        <description>this task for get registerDays of wdj user</description>
+        <urlpattern></urlpattern>
+        <urlgenerate>false</urlgenerate>
+        <!--
+        true: the message source from loop
+        false: the message source from redis database
+        -->
+        <isloop>false</isloop>
+    </task>
+
+    <scheme>
+        <dataid>1</dataid>
+        <description>wdj info</description>
+        <property>
+            <name>error</name>
+            <name>avatar</name>
+            <name>nick</name>
+            <registerDays>registerDays</registerDays>
+            <uid>uid</uid>
+        </property>
+        <rowkey>uid</rowkey>
+        <foreignkey>none</foreignkey>
+        <foreignvalue>none</foreignvalue>
+        <link>none</link>
+        <processway>s</processway>
+        <doctype>json</doctype>
+    </scheme>
+
+    <regex>
+        <rules>
+            <!--tagname:path-->
+            <item tagname="error">error</item>
+            <item tagname="avatar">member.avatar</item>
+            <item tagname="nick">member.nick</item>
+            <item tagname="registerDays">member.registerDays</item>
+            <item tagname="uid">member.uid</item>
+        </rules>
+    </regex>
+
+</info>

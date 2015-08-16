@@ -5,6 +5,7 @@ import miner.spider.pojo.Data;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,13 +34,29 @@ public class MysqlUtil {
         return con;
     }
 
+    //release mysql resource
+    public static void release(Statement sta,Connection conn){
+        if(sta!=null)
+            try {
+                sta.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }finally{
+                if(conn !=null)
+                    try {
+                        conn.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+            }
+    }
+
     public static List getProject(String projectName){
         List reList = new ArrayList();
+        Connection con = getConnection();
         try {
             String wid = projectName.split("-")[0];
             String pid = projectName.split("-")[1];
-
-            Connection con = getConnection();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt
                     .executeQuery("select * from project where wid="
@@ -51,19 +68,24 @@ public class MysqlUtil {
             }
         }catch(Exception ex){
             ex.printStackTrace();
+        }finally {
+            try{
+                con.close();
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
         }
-
         return reList;
     }
 
     public static List getTask(String taskName){
         List reList = new ArrayList();
+        Connection con = getConnection();
         try {
             String wid = taskName.split("-")[0];
             String pid = taskName.split("-")[1];
             String tid = taskName.split("-")[2];
 
-            Connection con = getConnection();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt
                     .executeQuery("select * from task where wid="
@@ -75,20 +97,24 @@ public class MysqlUtil {
             }
         }catch(Exception ex){
             ex.printStackTrace();
+        }finally {
+            try{
+                con.close();
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
         }
-
         return reList;
     }
 
-
     public static List getTaskByProject(String wid, String pid){
         List reList = new ArrayList();
+        Connection con = getConnection();
+        Statement stmt = null;
         try {
             String twid = wid;
             String tpid = pid;
-
-            Connection con = getConnection();
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             ResultSet rs = stmt
                     .executeQuery("select * from task where wid="
                             + wid+" AND pid=" + pid);
@@ -99,6 +125,8 @@ public class MysqlUtil {
         }catch(Exception ex){
             ex.printStackTrace();
 
+        }finally {
+            release(stmt, con);
         }
 
         return reList;
@@ -106,8 +134,8 @@ public class MysqlUtil {
 
     public static HashMap<String, Data> getData(){
         HashMap<String, Data> reData = new HashMap<String, Data>();
+        Connection con = getConnection();
         try {
-            Connection con = getConnection();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt
                     .executeQuery("select * from data");
@@ -132,6 +160,12 @@ public class MysqlUtil {
             }
         }catch(Exception ex){
             ex.printStackTrace();
+        }finally {
+            try{
+                con.close();
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
         }
 
         return reData;
@@ -143,42 +177,39 @@ public class MysqlUtil {
         String tid = dataName.split("-")[2];
         String did = dataName.split("-")[3];
         HashMap<String, String> reData = new HashMap<String, String>();
+        Connection con = getConnection();
+        Statement stmt = null;
         try {
-            Connection con = getConnection();
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             ResultSet rs = stmt
                     .executeQuery("select * from data where wid="+wid+" AND pid="+pid+" AND tid="+tid+" AND dataid="+did);
             rs.next();// 指向有效的一行
-
             reData.put("wid", wid);
             reData.put("pid", pid);
             reData.put("tid", tid);
             reData.put("did", did);
-
             reData.put("desc", rs.getString("description"));
             reData.put("property", rs.getString("property"));
-
             reData.put("rowKey", rs.getString("rowKey"));
             reData.put("foreignKey", rs.getString("foreignKey"));
             reData.put("foreignValue", rs.getString("foreignValue"));
             reData.put("link", rs.getString("link"));
-
             reData.put("processWay", rs.getString("processWay"));
             reData.put("docType", rs.getString("docType"));
-//            System.out.println("property:"+reData.get("docType"));
-
         }catch(Exception ex){
             ex.printStackTrace();
+        }finally {
+            release(stmt, con);
         }
-
         return reData;
     }
 
     public static HashMap<String, String> getRegex(){
         HashMap<String, String> reRegex = new HashMap<String, String>();
+        Connection con = getConnection();
+        Statement stmt = null;
         try {
-            Connection con = getConnection();
-            Statement stmt = con.createStatement();
+            stmt = con.createStatement();
             ResultSet rs = stmt
                     .executeQuery("select * from regex");
             while(rs.next()){
@@ -187,7 +218,6 @@ public class MysqlUtil {
                 String tid = rs.getString("tid");
                 String tagName = rs.getString("tagname");
                 String path = rs.getString("path");
-
                 String hashKey = wid+"-"+pid+"-"+tid+"-"+tagName;
                 System.out.println("hashKey:"+hashKey);
                 System.out.println("property:" + path);
@@ -195,6 +225,8 @@ public class MysqlUtil {
             }
         }catch(Exception ex){
             ex.printStackTrace();
+        }finally {
+            release(stmt, con);
         }
 
         return reRegex;

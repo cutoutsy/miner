@@ -263,6 +263,8 @@ public class XmlUtil {
         System.out.println("sucess!!");
     }
 
+
+
     public static void main(String[] args){
         try {
 
@@ -291,8 +293,21 @@ public class XmlUtil {
 //            readProjectToMysql("./conf/projectd.xml");
 //            readTaskToMysql("./conf/taskd.xml");
 
-            readDataToMysql("./conf/data.xml");
+//            readDataToMysql("./conf/data.xml");
 //            readRegexToMysql("./conf/dataregex.xml");
+
+
+//            readWorkspaceToMysql("./conf/workspace.xml");
+//            readProjectToMysql("./conf/project.xml");
+//            readTaskToMysql("./conf/task.xml");
+//            readDataToMysql("./conf/data.xml");
+//            readRegexToMysql("./conf/dataregex.xml");
+
+//            readWorkspaceToMysql("./conf/workspace_elong.xml");
+            readProjectToMysql("./conf/project_elong.xml");
+            readTaskToMysql("./conf/task_elong.xml");
+            readDataToMysql("./conf/data_elong.xml");
+//            readRegexToMysql("./conf/dataregex_elong.xml");
         }catch (Exception ex){
             ex.printStackTrace();
         }

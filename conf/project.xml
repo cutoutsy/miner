@@ -3,9 +3,9 @@
 <project>
     <wid>1</wid>
     <pid>1</pid>
-    <name>meituancity</name>
+    <name>wdj</name>
     <description>this project for getting the cities of meituan</description>
-    <datasource>meituanurl</datasource>
+    <datasource>wdj</datasource>
     <schedule>0/30 * * * * ?</schedule>
     <!--running, die-->
     <state>die</state>
