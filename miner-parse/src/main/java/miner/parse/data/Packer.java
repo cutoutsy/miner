@@ -29,9 +29,25 @@ public class Packer {
 			return_obj.put("task_id", data_item.get_task_id());
 			return_obj.put("workstation_id", data_item.get_workstation_id());
 			/* key */
-			return_obj.put("row_key", data_item.get_row_key());
-			return_obj.put("foreign_key", data_item.get_foreign_key());
-			return_obj.put("foreign_value", data_item.get_foreign_value());
+            String row_key_str=data_item.get_row_key();
+            String f_key_str=data_item.get_foreign_key();
+            String f_value_str=data_item.get_foreign_value();
+
+            if(row_key_str.equals("none")){
+                return_obj.put("row_key","none");
+            }else{
+			    return_obj.put("row_key", data_object.get(row_key_str));
+            }
+            if(f_key_str.equals("none")){
+                return_obj.put("foreign_key","none");
+            }else{
+			    return_obj.put("foreign_key", data_object.get(f_key_str));
+            }
+            if(f_value_str.equals("alone")){
+                return_obj.put("foreign_value","alone");
+            }else{
+			    return_obj.put("foreign_value", data_object.get(f_value_str));
+            }
 			return_obj.put("link", data_item.get_link());
 
 			JSONObject property_obj=new JSONObject();

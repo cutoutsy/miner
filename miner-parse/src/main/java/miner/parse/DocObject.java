@@ -150,19 +150,19 @@ public class DocObject {
 		 * */
 		/* 抽取单个doc数据的规则库，多个set组成map */
 		Map<String, RuleItem> data_rule_map = new HashMap<String, RuleItem>();
-		data_rule_map.put("id0", new RuleItem("error",
-				"error", "text", DataType.STR));
-		data_rule_map.put("id1", new RuleItem("nick",
-				"member.nick", "text", DataType.STR));
+		data_rule_map.put("id0", new RuleItem("name0",
+				"rateDetail.rateCount.picNum", "text", DataType.STR));
+		data_rule_map.put("id1", new RuleItem("name1",
+				"rateList_array.name", "text", DataType.ARRAY));
 		/* 封装数据的规则库map */
 		Set<DataItem> data_item_set = new HashSet<DataItem>();
-		data_item_set.add(new DataItem("1", "1", "1", "1", "error", "none",
-				"alone", "alone", "id0", "id1"));
-//		data_item_set.add(new DataItem(1, 1, 1, 1, "item_test_name_0", "none",
+		data_item_set.add(new DataItem("1", "1", "1", "1", "name0", "name0",
+                "name0", "alone", "id0","id1"));
+//		data_item_set.add(new DataItem("1", "1", "1", "1", "name1", "none",
 //				"alone", "alone", "id0"));
 		/* 数据生成器 */
 		Generator g = new Generator();
-		g.create_obj("/home/cutoutsy/test.js",
+		g.create_obj("/Users/white/Desktop/workspace/test_json_storage.js",
 				CharSet.UTF8);
 		for (Map.Entry<String, RuleItem> entry : data_rule_map.entrySet()) {
 			g.set_rule(entry.getValue());
