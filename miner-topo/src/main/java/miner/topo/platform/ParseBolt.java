@@ -33,12 +33,24 @@ public class ParseBolt extends BaseBasicBolt{
 			String globalInfo = input.getString(0);
 			String resource = input.getString(1);
 			String projectInfo = globalInfo.split("-")[0]+globalInfo.split("-")[1]+globalInfo.split("-")[2];
+
 			HashMap<String, Data> parseData = new HashMap<String, Data>();
+			boolean findDataScheme = true;
+
 			for (Map.Entry<String, Data> entry : _dataScheme.entrySet()) {
 				String dataInfo = entry.getKey();
 				String tempProjectInfo = dataInfo.split("-")[0]+dataInfo.split("-")[1]+dataInfo.split("-")[2];
 				if(projectInfo.equals(tempProjectInfo)){
 					parseData.put(dataInfo, entry.getValue());
+					findDataScheme = false;
+				}
+			}
+
+			//data define not in _dataScheme
+			if(findDataScheme){
+				HashMap<String, Data> newData = MysqlUtil.getDataByDataInfo(globalInfo.split("-")[0], globalInfo.split("-")[1], globalInfo.split("-")[2]);
+				for (Map.Entry<String, Data> entry : newData.entrySet()) {
+					parseData.put(entry.getKey(), entry.getValue());
 				}
 			}
 

@@ -7,10 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Mysql utils
@@ -171,6 +168,45 @@ public class MysqlUtil {
         return reData;
     }
 
+    public static HashMap<String, Data> getDataByDataInfo(String wid, String pid, String tid){
+        HashMap<String, Data> reData = new HashMap<String, Data>();
+        Connection con = getConnection();
+        try {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt
+                    .executeQuery("select * from data where wid="+wid+" AND pid="+pid+" AND tid="+tid);
+            while(rs.next()){
+                Data dt = new Data();
+                dt.setWid(rs.getString("wid"));
+                dt.setPid(rs.getString("pid"));
+                dt.setTid(rs.getString("tid"));
+                dt.setDid(rs.getString("dataid"));
+                dt.setDesc(rs.getString("description"));
+                dt.setProperty(rs.getString("property"));
+                dt.setRowKey(rs.getString("rowKey"));
+                dt.setForeignKey(rs.getString("foreignKey"));
+                dt.setForeignValue(rs.getString("foreignValue"));
+                dt.setLink(rs.getString("link"));
+                dt.setProcessWay(rs.getString("processWay"));
+                dt.setDocType(rs.getString("docType"));
+                String hashKey = dt.getWid()+"-"+dt.getPid()+"-"+dt.getTid()+"-"+dt.getDid();
+                System.out.println("hashKey:"+hashKey);
+                System.out.println("property:"+dt.getProperty());
+                reData.put(hashKey, dt);
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }finally {
+            try{
+                con.close();
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
+
+        return reData;
+    }
+
     public static HashMap<String, String> getData(String dataName){
         String wid = dataName.split("-")[0];
         String pid = dataName.split("-")[1];
@@ -239,7 +275,11 @@ public class MysqlUtil {
 //        getTask("1-1-1");
 //        getData();
 //        getRegex();
-        getData("1-1-1-1");
+//        getData("1-1-1-1");
+        HashMap<String, Data> newData = getDataByDataInfo("1", "1", "1");
+        for (Map.Entry<String, Data> entry : newData.entrySet()) {
+            System.out.println(entry.getKey()+":"+entry.getValue().getProcessWay());
+        }
     }
 
 }

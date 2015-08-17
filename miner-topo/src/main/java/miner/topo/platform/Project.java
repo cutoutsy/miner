@@ -9,9 +9,8 @@ import java.util.List;
 
 /**
  * Project class
- *
- * Created by cutoutsy on 8/5/15.
  */
+
 public class Project {
     private static Jedis redis;
 
@@ -53,7 +52,6 @@ public class Project {
         this.condition = projectList.get(6);
         this.executeNum = projectExecuteNum;
     }
-
 
     public String getWid() {
         return wid;

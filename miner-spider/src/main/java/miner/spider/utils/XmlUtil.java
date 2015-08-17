@@ -15,7 +15,6 @@ import java.util.List;
 /**
  * XML Read util
  *
- * Created by cutoutsy on 8/4/15.
  */
 
 public class XmlUtil {
@@ -31,10 +30,6 @@ public class XmlUtil {
         Element root = document.getRootElement();
         for (Iterator<?> i = root.elementIterator(); i.hasNext();){
             Element element = (Element)i.next();
-            //  if(!element.getName().equalsIgnoreCase("url")){
-            //      System.out.println("StudentInfo is:");
-            //      continue;
-            //  }
             System.out.println("attribute value "+ element.getText());
         }
     }
@@ -48,15 +43,12 @@ public class XmlUtil {
         for (Iterator<?> i = root.elementIterator(); i.hasNext();){
             Element element = (Element)i.next();
             if(!element.getName().equalsIgnoreCase(tag)){
-                //System.out.println("StudentInfo is:");
                 continue;
             }
-            //System.out.println("attribute value "+ element.getText());
             reValue = element.getText();
         }
         return reValue;
     }
-
 
     public static void readProjectToRedis(String file, String redisKey) throws DocumentException {
         SAXReader reader = new SAXReader();
@@ -66,7 +58,6 @@ public class XmlUtil {
         for (Iterator<?> i = root.elementIterator(); i.hasNext();){
             Element element = (Element)i.next();
             oneProject += element.getText()+"$";
-            //System.out.println("attribute value "+ element.getText());
         }
         String[] datainfo = oneProject.split("\\$");
         String projectKey = datainfo[0]+"-"+datainfo[1];
@@ -89,7 +80,6 @@ public class XmlUtil {
         for (Iterator<?> i = root.elementIterator(); i.hasNext();){
             Element element = (Element)i.next();
             oneProject += element.getText()+"$";
-            //System.out.println("attribute value "+ element.getText());
         }
         String[] datainfo = oneProject.split("\\$");
         String projectKey = datainfo[0]+"-"+datainfo[1]+"-"+datainfo[2];
@@ -118,7 +108,6 @@ public class XmlUtil {
 
         Connection con = MysqlUtil.getConnection();
         Statement stmt = con.createStatement();
-        // 插入最新测量的数据
         boolean rs = stmt
                 .execute("insert into workspace (wid, name, description) values ('"
                         + wid + "','" + datainfo[1] + "','" + datainfo[2] + "')");
@@ -147,7 +136,6 @@ public class XmlUtil {
 
         Connection con = MysqlUtil.getConnection();
         Statement stmt = con.createStatement();
-        // 插入最新测量的数据
         boolean rs = stmt
                 .execute("insert into project (wid, pid, name, description, datasource, schedule, precondition) values ('"
                         + wid + "','" + pid + "','"+ name + "','"+ description + "','"+ datasource + "','"+ schedule + "','"+ precondition + "')");
@@ -158,7 +146,6 @@ public class XmlUtil {
         redis.hset("project_cronstate", datainfo[0]+"-"+datainfo[1], "3");
         System.out.println("sucess!!");
     }
-
 
     public static void readTaskToMysql(String file) throws Exception {
         SAXReader reader = new SAXReader();
@@ -187,7 +174,6 @@ public class XmlUtil {
 
         System.out.println("sucess!!");
     }
-
 
     public static void readDataToMysql(String file) throws Exception {
         SAXReader reader = new SAXReader();
@@ -227,7 +213,6 @@ public class XmlUtil {
         System.out.println("sucess!!");
     }
 
-
     public static void readRegexToMysql(String file) throws Exception {
         SAXReader reader = new SAXReader();
         Document document = reader.read(file);
@@ -250,7 +235,6 @@ public class XmlUtil {
         for (Iterator it = nodes.iterator(); it.hasNext();) {
             Element elm = (Element) it.next();
             Attribute attribute = elm.attribute("tagname");
-//            System.out.println(attribute.getText() + ":" + elm.getText());
             String tagname = attribute.getText();
             String path = elm.getText();
 
@@ -263,11 +247,8 @@ public class XmlUtil {
         System.out.println("sucess!!");
     }
 
-
-
     public static void main(String[] args){
         try {
-
             //String state = readDocumentByTag("./conf/project.xml", "state");
             //System.out.println(state);
             //project
@@ -296,7 +277,6 @@ public class XmlUtil {
 //            readDataToMysql("./conf/data.xml");
 //            readRegexToMysql("./conf/dataregex.xml");
 
-
 //            readWorkspaceToMysql("./conf/workspace.xml");
 //            readProjectToMysql("./conf/project.xml");
 //            readTaskToMysql("./conf/task.xml");
@@ -304,9 +284,9 @@ public class XmlUtil {
 //            readRegexToMysql("./conf/dataregex.xml");
 
 //            readWorkspaceToMysql("./conf/workspace_elong.xml");
-            readProjectToMysql("./conf/project_elong.xml");
-            readTaskToMysql("./conf/task_elong.xml");
-            readDataToMysql("./conf/data_elong.xml");
+//            readProjectToMysql("./conf/project_elong.xml");
+//            readTaskToMysql("./conf/task_elong.xml");
+//            readDataToMysql("./conf/data_elong.xml");
 //            readRegexToMysql("./conf/dataregex_elong.xml");
         }catch (Exception ex){
             ex.printStackTrace();
