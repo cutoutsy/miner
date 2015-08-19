@@ -1,4 +1,4 @@
-package miner.topo.platform;
+package miner.topo;
 
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
@@ -10,11 +10,9 @@ public class TopologyMain {
 	public static void main(String[] args) {
 		try{
 			TopologyBuilder topologyBuilder = new TopologyBuilder();
-			topologyBuilder.setSpout("BeginSpout", new BeginSpout(), 1);
-			topologyBuilder.setBolt("GenerateUrl", new GenerateUrlBolt(), 1).shuffleGrouping("BeginSpout");
-			topologyBuilder.setBolt("Fetch", new FetchBolt(), 2).shuffleGrouping("GenerateUrl");
-			topologyBuilder.setBolt("Parse", new ParseBolt(), 1).shuffleGrouping("Fetch");
-			topologyBuilder.setBolt("Store", new StoreBolt(), 1).shuffleGrouping("Parse");
+			topologyBuilder.setSpout("Spout", new EmitMessageSpout(), 1);
+			topologyBuilder.setBolt("Parse", new ParseTestBolt(), 1).shuffleGrouping("Spout");
+			topologyBuilder.setBolt("Store", new StoreTestBolt(), 1).shuffleGrouping("Parse");
 			
 			Config config = new Config();
 			config.setDebug(false);
@@ -27,8 +25,10 @@ public class TopologyMain {
 				LocalCluster cluster = new LocalCluster();
 				cluster.submitTopology("test", config, topologyBuilder.createTopology());
 			}
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
+
 }

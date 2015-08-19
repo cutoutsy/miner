@@ -9,9 +9,8 @@ import java.util.List;
 
 /**
  * Project class
- *
- * Created by cutoutsy on 8/5/15.
  */
+
 public class Project {
     private static Jedis redis;
 
@@ -53,7 +52,6 @@ public class Project {
         this.condition = projectList.get(6);
         this.executeNum = projectExecuteNum;
     }
-
 
     public String getWid() {
         return wid;
@@ -118,12 +116,20 @@ public class Project {
     public void setCondition(String condition) {
         this.condition = condition;
     }
+
     //write Project info to redis
     public static void writeProjectToRedis(Project pj){
         String projectKey = pj.wid+"-"+pj.pid;
         String projectValue = pj.state;
         redis = RedisUtil.GetRedis();
         redis.hset("project_state", projectKey, projectValue);
+        redis.hincrBy("project_executenum", projectKey, 1);
+    }
+
+    public static void addProjectExecuteNum(Project pj){
+        String projectKey = pj.wid+"-"+pj.pid;
+        String projectValue = pj.state;
+        redis = RedisUtil.GetRedis();
         redis.hincrBy("project_executenum", projectKey, 1);
     }
 

@@ -7,11 +7,12 @@
     <taskid>1</taskid>
     <name>meituancity</name>
     <description>this task for get cities of meituan</description>
-    <urlpattern></urlpattern>
-    <urlgenerate>false</urlgenerate>
+    <urlpattern>https://account.wandoujia.com/v4/api/simple/profile?uid=[replace]</urlpattern>
+    <urlgenerate>true</urlgenerate>
     <!--
     true: the message source from loop
     false: the message source from redis database
     -->
-    <isloop>true/false</isloop>
+    <isloop>false</isloop>
+
 </task>

@@ -3,9 +3,13 @@ package miner.spider.utils;
 import org.apache.log4j.Logger;
 
 /**
- * Created by cutoutsy on 7/23/15.
+ * Log Class
+ *
+ * not use
  */
+
 public class MyLogger {
+
     private Logger logger = null;
 
     public MyLogger(Class logClass) {

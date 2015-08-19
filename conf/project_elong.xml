@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-    <workspace>1</workspace>
-    <id>2</id>
-    <name>hotelmt</name>
+    <workspace>2</workspace>
+    <id>1</id>
+    <name>elong</name>
     <description>this project for getting the hotel url of each city</description>
-    <datasource>meituancityurl</datasource>
+    <datasource>elong</datasource>
 
-    <schedule>0/5 * * * * ?</schedule>
+    <schedule>0/30 * * * * ?</schedule>
 
     <state>die</state>
 

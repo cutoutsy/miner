@@ -29,6 +29,19 @@
     </dependency>
 
     <dependency>
+      <groupId>xd</groupId>
+      <artifactId>miner-store</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>xd</groupId>
+      <artifactId>miner-parse</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.quartz-scheduler</groupId>
       <artifactId>quartz</artifactId>
       <version>2.2.1</version>

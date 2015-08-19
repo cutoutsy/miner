@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <regex>
-    <wid></wid>
-    <pid></pid>
-    <tid></tid>
-    <id>1</id><!--regex@json-->
-    <dataid>001</dataid>
+    <wid>1</wid>
+    <pid>1</pid>
+    <tid>1</tid>
 
     <rules>
         <!--tagname:path-->
-        <cityname>html.body.div1.cityname</cityname>
-
-        <cityurl>htmmp.body.div1.cityurl</cityurl>
-
+        <item tagname="error">error</item>
+        <item tagname="avatar">member.avatar</item>
+        <item tagname="nick">member.nick</item>
+        <item tagname="registerDays">member.registerDays</item>
+        <item tagname="uid">member.uid</item>
     </rules>
 
 </regex>

@@ -1,4 +1,4 @@
-package miner.topo.platform;
+package miner.topo.bolt;
 
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
@@ -9,7 +9,6 @@ import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import miner.spider.httpclient.Crawl4HttpClient;
 import miner.spider.utils.MyLogger;
-
 
 import java.util.Map;
 

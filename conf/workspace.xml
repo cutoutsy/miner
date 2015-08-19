@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <workplace>
-
     <wid>1</wid>
-    <name>meituan</name>
-    <description>this workplace for meituan</description>
-
+    <name>wdj</name>
+    <description>this workplace for wdj</description>
 </workplace>
