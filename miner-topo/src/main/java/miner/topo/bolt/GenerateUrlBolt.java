@@ -1,4 +1,4 @@
-package miner.topo.platform;
+package miner.topo.bolt;
 
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
@@ -10,6 +10,7 @@ import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import miner.spider.utils.MyLogger;
 import miner.spider.utils.RedisUtil;
+import miner.topo.platform.PlatformUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import redis.clients.jedis.Jedis;

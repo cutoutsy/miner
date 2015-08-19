@@ -4,6 +4,8 @@ import org.apache.log4j.Logger;
 
 /**
  * Log Class
+ *
+ * not use
  */
 
 public class MyLogger {

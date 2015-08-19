@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 
 /**
  * Log Class
+ *
  */
 
 public class MySysLogger {

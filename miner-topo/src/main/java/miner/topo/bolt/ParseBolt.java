@@ -1,4 +1,4 @@
-package miner.topo.platform;
+package miner.topo.bolt;
 
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;

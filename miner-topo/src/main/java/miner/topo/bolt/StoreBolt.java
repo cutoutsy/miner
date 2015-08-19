@@ -1,4 +1,4 @@
-package miner.topo.platform;
+package miner.topo.bolt;
 /**
  * 存储Bolt类
  */
