@@ -10,13 +10,14 @@ import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseBasicBolt;
 import backtype.storm.tuple.Tuple;
 import miner.spider.utils.MyLogger;
+import miner.spider.utils.MySysLogger;
 import miner.store.ImportData;
 
 import java.util.Map;
 
 public class StoreBolt extends BaseBasicBolt {
 
-	private static MyLogger logger = new MyLogger(StoreBolt.class);
+	private static MySysLogger logger = new MySysLogger(StoreBolt.class);
 	private OutputCollector _collector;
 
 	public void execute(Tuple input, BasicOutputCollector collector) {
@@ -24,8 +25,8 @@ public class StoreBolt extends BaseBasicBolt {
 			String globalInfo  = input.getString(0);
 			String data = input.getString(1);
 
-			System.out.println("globalINfo:"+globalInfo);
-			System.out.println("data:" + data);
+			logger.info("globalINfo:"+globalInfo);
+			logger.info("data:" + data);
 
 			ImportData.importData(data);
 		} catch (Exception ex) {

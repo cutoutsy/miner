@@ -9,6 +9,7 @@ import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import miner.spider.httpclient.Crawl4HttpClient;
 import miner.spider.utils.MyLogger;
+import miner.spider.utils.MySysLogger;
 
 import java.util.Map;
 
@@ -19,7 +20,7 @@ import java.util.Map;
  */
 public class FetchBolt extends BaseRichBolt {
 
-    private static MyLogger logger = new MyLogger(FetchBolt.class);
+    private static MySysLogger logger = new MySysLogger(FetchBolt.class);
 
     private OutputCollector _collector;
 

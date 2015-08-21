@@ -38,7 +38,6 @@ public class ParseTestBolt extends BaseBasicBolt{
 					parseData.put(dataInfo, entry.getValue());
 				}
 			}
-
 			for (Map.Entry<String, Data> entry : parseData.entrySet()) {
 				String dataInfo = entry.getKey();
 				String taskRegex = dataInfo.split("-")[0]+"-"+dataInfo.split("-")[1]+"-"+dataInfo.split("-")[2];

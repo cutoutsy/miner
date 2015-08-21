@@ -9,6 +9,7 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import miner.spider.utils.MyLogger;
+import miner.spider.utils.MySysLogger;
 import miner.spider.utils.RedisUtil;
 import miner.topo.platform.PlatformUtils;
 import org.json.JSONArray;
@@ -27,7 +28,7 @@ import java.util.regex.Pattern;
  */
 public class GenerateUrlBolt extends BaseBasicBolt {
 
-    private static MyLogger logger = new MyLogger(GenerateUrlBolt.class);
+    private static MySysLogger logger = new MySysLogger(GenerateUrlBolt.class);
 
     private OutputCollector _collector;
     private Jedis redis;
@@ -44,7 +45,7 @@ public class GenerateUrlBolt extends BaseBasicBolt {
             globalInfo = globalInfo+"-"+uuid;
             if (!emitUrl.isEmpty()) {
                 collector.emit(new Values(globalInfo, emitUrl));
-                System.out.println(globalInfo+"---"+emitUrl);
+                logger.info(globalInfo+"---"+emitUrl);
             }
 
             if(redis.hlen("loopMessage") > 0){

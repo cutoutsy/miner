@@ -7,6 +7,7 @@ import backtype.storm.topology.base.BaseRichSpout;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
 import miner.spider.utils.MyLogger;
+import miner.spider.utils.MySysLogger;
 import miner.spider.utils.RedisUtil;
 import miner.store.CreateTable;
 import miner.topo.enumeration.ProjectState;
@@ -25,7 +26,7 @@ import java.util.Map;
 
 public class BeginSpout extends BaseRichSpout{
 
-	private static MyLogger logger = new MyLogger(BeginSpout.class);
+	private static MySysLogger logger = new MySysLogger(BeginSpout.class);
 
 	private SpoutOutputCollector _collector;
 	private HashMap<String, String> _runningProject = new HashMap<String, String>();
@@ -93,7 +94,7 @@ public class BeginSpout extends BaseRichSpout{
 							String globalInfo = oneProjectName + "-" + taskId;
 							_collector.emit(new Values(globalInfo, emitMessage), globalInfo);
 							redis.hset("message", globalInfo, emitMessage);
-							System.out.println(globalInfo+"--"+emitMessage + "  sending...");
+							logger.info(globalInfo+"--"+emitMessage + "  sending...");
 						}
 					}
 				}
