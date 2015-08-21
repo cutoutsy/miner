@@ -6,5 +6,5 @@ package miner.parse;
  * @date:2015.8.6
  * */
 public enum DocType {
-	HTML, XML, JSON, JSONP;
+	HTML, XML, JSON, JSONP,TEXT;
 }

@@ -121,20 +121,28 @@ public class DocObject {
 	public String get_value(String path, String tag) {
 		if (doc_type.equals(DocType.HTML)) {
 			Element e = html_map.get(path);
-			String result;
-			if (tag.equals("text")) {
-				result = e.text();
-			} else {
-				result = e.attr(tag);
-			}
-			return result;
+            if(e.equals(null)){
+                return "none";
+            }else{
+			    String result;
+			    if (tag.equals("text")) {
+				    result = e.text();
+			    } else {
+				    result = e.attr(tag);
+			    }
+                return result;
+            }
 		} else if (doc_type.equals(DocType.JSON)
 				|| doc_type.equals(DocType.JSONP)) {
 			// System.out.println(json_map.get(path));
-			return json_map.get(path);
+            String result="none";
+            if(json_map.get(path)!=null){
+                result=json_map.get(path);
+            }
+			return result;
 
 		}
-		return null;
+		return "none";
 	}
 
 	public static void main(String[] args) {
@@ -154,12 +162,14 @@ public class DocObject {
 				"rateDetail.rateCount.picNum", "text", DataType.STR));
 		data_rule_map.put("id1", new RuleItem("name1",
 				"rateList_array.name", "text", DataType.ARRAY));
+        data_rule_map.put("id2",new RuleItem("name2","rateList_array.haha","text",DataType.STR));
 		/* 封装数据的规则库map */
 		Set<DataItem> data_item_set = new HashSet<DataItem>();
-		data_item_set.add(new DataItem("1", "1", "1", "1", "name0", "name0",
-                "none", "alone", "id0","id1"));
+//		data_item_set.add(new DataItem("1", "1", "1", "1", "name0", "name0",
+//                "none", "alone", "id0","id1"));
 //		data_item_set.add(new DataItem("1", "1", "1", "1", "name1", "none",
 //				"alone", "alone", "id0"));
+        data_item_set.add(new DataItem("1","1","1","1","none","none","none","alone","id2"));
 		/* 数据生成器 */
 		Generator g = new Generator();
 		g.create_obj("/Users/white/Desktop/workspace/test_json_storage.js",

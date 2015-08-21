@@ -59,7 +59,7 @@ public class Packer {
 				String tag=ri.get_name();
 				if (type.equals(DataType.STR)) {
 					String value = (String) data_object.get(tag);
-					property_obj.put(tag, value);
+                    property_obj.put(tag, value);
 				} else if (type.equals(DataType.ARRAY)) {
 					String[] values = (String[]) data_object.get(tag);
 					JSONArray tmp_json_array = new JSONArray();
