@@ -1,5 +1,6 @@
 package miner.parse;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -7,7 +8,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.jsoup.nodes.Document;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 public class Generator {
 	private Set<RuleItem> parse_rule_set;
@@ -20,13 +24,39 @@ public class Generator {
 	}
 
 	/* 抽取之前必须执行的方法 */
-	public void create_obj(String document, DocType type, CharSet char_set) {
+	public void create_obj(String document) {
+        DocType type=DocType.HTML;
+        CharSet char_set= CharSet.UTF8;
+        if(document.startsWith("<")){
+            type=DocType.HTML;
+            Document tmp_doc= Jsoup.parse(document);
+            Elements char_text = tmp_doc.select("meta[charset]");
+            for(Element e:char_text){
+                if(e.attr("charset").equals("utf-8")){
+                    char_set=CharSet.UTF8;
+                }else if(e.attr("charset").equals("gbk")){
+                    char_set=CharSet.GBK;
+                }else if(e.attr("charset").equals("gb2312")){
+                    char_set=CharSet.GB2312;
+                }
+            }
+        }else if(document.startsWith("{")){
+            type=DocType.JSON;
+            char_set=CharSet.UTF8;
+        }else if(document.endsWith("})")){
+            type=DocType.JSONP;
+            char_set=CharSet.UTF8;
+        }else {
+            type=DocType.TEXT;
+            char_set=CharSet.UTF8;
+        }
 		this.obj = new DocObject(document, char_set, type);
 		this.obj.parse();
 	}
 
 	/* 重载 */
 	public void create_obj(String path, CharSet char_set) {
+
 		this.obj = new DocObject(path, char_set);
 		this.obj.parse();
 	}
