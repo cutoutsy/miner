@@ -17,7 +17,6 @@ public class ProjectJob implements Job {
         String projectWid = context.getJobDetail().getKey().toString().split("\\.")[0];
         String projectPid = context.getJobDetail().getKey().toString().split("\\.")[1];
         redis.lpush("project_execute", projectWid+"-"+projectPid);
-        //System.out.println("In SimpleQuartzJob - executing its JOB at " + new Date() +":"+ context.getJobDetail().getKey());
     }
 
 }
