@@ -12,6 +12,7 @@ import miner.spider.utils.MyLogger;
 import miner.spider.utils.MySysLogger;
 import miner.spider.utils.RedisUtil;
 import miner.topo.platform.PlatformUtils;
+import miner.topo.platform.Task;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import redis.clients.jedis.Jedis;
@@ -31,31 +32,28 @@ public class GenerateUrlBolt extends BaseBasicBolt {
     private static MySysLogger logger = new MySysLogger(GenerateUrlBolt.class);
 
     private OutputCollector _collector;
-    private Jedis redis;
+    private Jedis _redis;
 
     public void execute(Tuple input, BasicOutputCollector collector) {
 
-        String emitUrl = "";
-        String emitUrlLoop = "";
         try {
             String globalInfo = input.getString(0);
             String message = input.getString(1);
-            emitUrl = PlatformUtils.getEmitUrl(globalInfo, message);
-            UUID uuid = UUID.randomUUID();
-            globalInfo = globalInfo+"-"+uuid;
-            if (!emitUrl.isEmpty()) {
-                collector.emit(new Values(globalInfo, emitUrl));
-                logger.info(globalInfo+"---"+emitUrl);
-            }
-
-            if(redis.hlen("loopMessage") > 0){
-                Set keys = redis.hkeys("loopMessage");
-                Iterator it = keys.iterator();
-                it.hasNext();
-                String globalInfoLoop = it.next().toString();
-                String messageLoop = redis.hget("loopMessage", globalInfoLoop);
-
-                JSONObject jsonObject = new JSONObject(messageLoop);
+            Task ta = new Task(globalInfo);
+            if(ta.getIsloop().equals("false")) {
+                String emitUrl = PlatformUtils.getEmitUrl(globalInfo, message);
+                UUID uuid = UUID.randomUUID();
+                globalInfo = globalInfo + "-" + uuid;
+                if (!emitUrl.isEmpty()) {
+                    collector.emit(new Values(globalInfo, emitUrl));
+                    logger.info(globalInfo + "---" + emitUrl);
+                }
+                //loop process
+            }else if(ta.getIsloop().equals("true")){
+                if(_redis.exists(globalInfo)){
+                    _redis.expire(globalInfo, 600);
+                }
+                JSONObject jsonObject = new JSONObject(message);
                 //对property进行处理
                 String property = jsonObject.getString("property");
                 JSONObject propertyjson = new JSONObject(property);
@@ -69,23 +67,32 @@ public class GenerateUrlBolt extends BaseBasicBolt {
                         JSONArray jsonArray = new JSONArray(propertyValue);
                         String propertyData = null;
                         for (int i = 0; i < jsonArray.length();i++) {
-                            emitUrlLoop = PlatformUtils.getEmitUrl(globalInfoLoop, jsonArray.getString(i));
-                            UUID uuidLoop = UUID.randomUUID();
-                            globalInfoLoop = globalInfoLoop+"-"+uuidLoop;
-                            if (!emitUrlLoop.isEmpty()) {
-                                collector.emit(new Values(globalInfoLoop, emitUrlLoop));
+                            String loopMessage = jsonArray.getString(i);
+                            if(!_redis.sismember(globalInfo, loopMessage)){
+                                String emitUrlLoop = PlatformUtils.getEmitUrl(globalInfo, loopMessage);
+                                UUID uuidLoop = UUID.randomUUID();
+                                globalInfo = globalInfo+"-"+uuidLoop;
+                                if (!emitUrlLoop.isEmpty()) {
+                                collector.emit(new Values(globalInfo, emitUrlLoop));
+                              }
+                                _redis.sadd(globalInfo, loopMessage);
                             }
                         }
                     }else{
-                        emitUrlLoop = PlatformUtils.getEmitUrl(globalInfoLoop, propertyValue);
-                        UUID uuidLoop = UUID.randomUUID();
-                        globalInfoLoop = globalInfoLoop+"-"+uuidLoop;
-                        if (!emitUrlLoop.isEmpty()) {
-                            collector.emit(new Values(globalInfoLoop, emitUrlLoop));
+                        String loopMessage = propertyValue;
+                        if(!_redis.sismember(globalInfo, loopMessage)) {
+                            String emitUrlLoop = PlatformUtils.getEmitUrl(globalInfo, loopMessage);
+                            UUID uuidLoop = UUID.randomUUID();
+                            globalInfo = globalInfo + "-" + uuidLoop;
+                            if (!emitUrlLoop.isEmpty()) {
+                                collector.emit(new Values(globalInfo, emitUrlLoop));
+                            }
+                            _redis.sadd(globalInfo, loopMessage);
                         }
                     }
                 }
-                redis.hdel("loopMessage", globalInfoLoop);
+            }else{
+                logger.warn("task loop config wrong.");
             }
         }catch (Exception ex){
             logger.error("Generate Url error:"+ex);
@@ -94,7 +101,7 @@ public class GenerateUrlBolt extends BaseBasicBolt {
     }
 
     public void prepare(Map stormConf, TopologyContext context) {
-        redis = RedisUtil.GetRedis();
+        _redis = RedisUtil.GetRedis();
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {

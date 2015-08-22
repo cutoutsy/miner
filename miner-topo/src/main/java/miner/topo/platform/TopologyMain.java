@@ -16,16 +16,22 @@ public class TopologyMain {
 		try{
 			TopologyBuilder topologyBuilder = new TopologyBuilder();
 
-			topologyBuilder.setSpout("BeginSpout", new BeginSpout(), 1);
-			topologyBuilder.setBolt("GenerateUrl", new GenerateUrlBolt(), 1)
-					.shuffleGrouping("BeginSpout")
-					.shuffleGrouping("Parse", "stream-loop-generate");
-			topologyBuilder.setBolt("Fetch", new FetchBolt(), 2)
-					.shuffleGrouping("GenerateUrl");
-			topologyBuilder.setBolt("Parse", new ParseBolt(), 1)
-					.shuffleGrouping("Fetch");
-			topologyBuilder.setBolt("Store", new StoreBolt(), 1)
-					.shuffleGrouping("Parse");
+			topologyBuilder.setSpout("beginspout", new BeginSpout(), 1);
+
+			topologyBuilder.setBolt("generateurl", new GenerateUrlBolt(), 1)
+					.shuffleGrouping("beginspout");
+			topologyBuilder.setBolt("generateurl-loop-bolt", new GenerateUrlBolt(), 1)
+					.shuffleGrouping("parse", "generate-loop");
+
+			topologyBuilder.setBolt("fetch", new FetchBolt(), 2)
+					.shuffleGrouping("generateurl")
+					.shuffleGrouping("generateurl-loop-bolt");
+
+			topologyBuilder.setBolt("parse", new ParseBolt(), 1)
+					.shuffleGrouping("fetch");
+
+			topologyBuilder.setBolt("store", new StoreBolt(), 1)
+					.shuffleGrouping("parse", "store");
 			
 			Config config = new Config();
 			config.setDebug(false);

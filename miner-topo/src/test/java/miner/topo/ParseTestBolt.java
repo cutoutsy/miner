@@ -55,7 +55,7 @@ public class ParseTestBolt extends BaseBasicBolt{
 						data.getForeignValue(), data.getLink(), properties));
 				/* 数据生成器 */
 				Generator g = new Generator();
-				g.create_obj(resource, Enum.valueOf(DocType.class,data.getDocType().toUpperCase()), CharSet.UTF8);
+				//g.create_obj(resource, Enum.valueOf(DocType.class,data.getDocType().toUpperCase()), CharSet.UTF8);
 				for (Map.Entry<String, RuleItem> entry1 : data_rule_map.entrySet()) {
 					g.set_rule(entry1.getValue());
 				}

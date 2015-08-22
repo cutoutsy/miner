@@ -5,6 +5,7 @@ import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.BasicOutputCollector;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseBasicBolt;
+import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
@@ -19,7 +20,7 @@ import redis.clients.jedis.Jedis;
 
 import java.util.*;
 
-public class ParseBolt extends BaseBasicBolt{
+public class ParseBolt extends BaseRichBolt {
 
 	private static MyLogger logger = new MyLogger(ParseBolt.class);
 
@@ -28,7 +29,7 @@ public class ParseBolt extends BaseBasicBolt{
 	private HashMap<String, String> _regex;
 	private Jedis _redis;
 
-	public void execute(Tuple input, BasicOutputCollector collector) {
+	public void execute(Tuple input) {
 		try {
 			String globalInfo = input.getString(0);
 			String resource = input.getString(1);
@@ -71,7 +72,7 @@ public class ParseBolt extends BaseBasicBolt{
 						data.getForeignValue(), data.getLink(), properties));
 				/* 数据生成器 */
 				Generator g = new Generator();
-				g.create_obj(resource, Enum.valueOf(DocType.class,data.getDocType().toUpperCase()), CharSet.UTF8);
+				g.create_obj(resource);
 				for (Map.Entry<String, RuleItem> entry1 : data_rule_map.entrySet()) {
 					g.set_rule(entry1.getValue());
 				}
@@ -81,31 +82,42 @@ public class ParseBolt extends BaseBasicBolt{
 				if(data.getProcessWay().equals("s")) {
 					while (data_item_it.hasNext()) {
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
-						collector.emit(new Values(globalInfo, packerData.pack()));
+//						collector.emit(new Values(globalInfo, packerData.pack()));
+						emit("store", input, globalInfo, packerData.pack());
 					}
 				}else if(data.getProcessWay().equals("e") || data.getProcessWay().equals("E")){
 					while (data_item_it.hasNext()) {
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
-						_redis.hset("messageloop", taskInfo, packerData.pack());
+						//_redis.hset("messageloop", taskInfo, packerData.pack());
+						emit("generate-loop", input, taskInfo, packerData.pack());
 					}
 				}else{
 					logger.error("there is no valid way to process "+taskInfo+" data");
 				}
 			}
+			_collector.ack(input);
 		}catch (Exception ex){
 			logger.error("parse error!"+ex);
 			ex.printStackTrace();
 		}
 	}
 
-	public void prepare(Map stormConf, TopologyContext context){
+	private void emit(String streamId, Tuple input,String globalInfo, String message){
+		_collector.emit(streamId, input, new Values(globalInfo, message));
+		logger.info("Parse, message emitted: globalInfo=" + globalInfo + ", message=" + message);
+	}
+
+	public void prepare(Map stormConf, TopologyContext context, OutputCollector collector){
+		this._collector = collector;
 		_dataScheme = MysqlUtil.getData();
 		_regex = MysqlUtil.getRegex();
 		_redis = RedisUtil.GetRedis();
 	}
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-		declarer.declare(new Fields("p_globaleinfo","p_resouce"));
+//		declarer.declare(new Fields("p_globaleinfo","p_resouce"));
+		declarer.declareStream("generate-loop", new Fields("p_globalinfo", "p_data"));
+		declarer.declareStream("store", new Fields("p_globalinfo", "p_data"));
 	}
 
 }
