@@ -20,7 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by root on 15-8-12.
+ * ImportData Class
  */
 public class ImportData {
 

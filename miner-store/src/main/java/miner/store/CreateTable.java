@@ -30,12 +30,6 @@ public class CreateTable {
 
     public static void mysqlCheck(String tableWid,String tablePid) throws SQLException{
         boolean flag = true;
-//        String url = "jdbc:mysql://localhost/test?useUnicode=true&characterEncoding=utf8";
-//        Properties property = new Properties();
-//        property.put("user", "root");
-//        property.put("password", "root");
-//        Driver driver = new Driver();
-//        Connection con = driver.connect(url, property);
         Connection con = MysqlUtil.getConnection();
         Statement sta = con.createStatement();
         String sql = "select * from data order by id desc";

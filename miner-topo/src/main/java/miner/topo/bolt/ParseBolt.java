@@ -87,7 +87,7 @@ public class ParseBolt extends BaseRichBolt {
 					}
 				}else if(data.getProcessWay().equals("e") || data.getProcessWay().equals("E")){
 					while (data_item_it.hasNext()) {
-						String loopTaskId = data.getCondition();
+						String loopTaskId = data.getLcondition();
 						String loopTaskInfo = taskInfo.split("-")[0]+"-"+dataInfo.split("-")[1]+"-"+loopTaskId;
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
 						//_redis.hset("messageloop", taskInfo, packerData.pack());

@@ -21,7 +21,7 @@ public class Data {
     private String foreignValue;
     private String link;
     private String processWay;
-    private String condition;
+    private String lcondition;
 
     public Data(String dataName) {
         HashMap<String, String> dataMap = MysqlUtil.getData(dataName);
@@ -36,7 +36,7 @@ public class Data {
         this.foreignValue = dataMap.get("foreignValue");
         this.link = dataMap.get("link");
         this.processWay = dataMap.get("processWay");
-        this.condition = dataMap.get("condition");
+        this.lcondition = dataMap.get("lcondition");
     }
 
     public Data(){
@@ -131,14 +131,13 @@ public class Data {
         this.processWay = processWay;
     }
 
-    public String getCondition() {
-        return condition;
+    public String getLcondition() {
+        return lcondition;
     }
 
-    public void setCondition(String condition) {
-        this.condition = condition;
+    public void setLcondition(String lcondition) {
+        this.lcondition = lcondition;
     }
-
 
 
     public static void main(String[] args){

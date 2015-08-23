@@ -31,19 +31,18 @@ public class BeginSpout extends BaseRichSpout{
 	private SpoutOutputCollector _collector;
 	private HashMap<String, String> _runningProject = new HashMap<String, String>();
 	private QuartzManager _qManager;
-	private int length;
 	private Jedis redis;
 	
-	//消息成功处理
 	public void ack(Object msgId){
 		logger.info("message:" + msgId + "processd sucess!");
 	}
 	
-	//消息失败处理, ensure the message processed
+	//ensure the message processed
 	public void fail(Object msgId){
 		logger.info("消息处理失败:"+msgId+";正在重新发送......");
 		String message = redis.hget("message", msgId.toString());
-		_collector.emit(new Values(msgId, message), msgId);
+		String globalInfo = msgId.toString().split("-")[0]+"-"+msgId.toString().split("-")[1]+"-"+msgId.toString().split("-")[2];
+		_collector.emit(new Values(globalInfo, message), globalInfo);
 	}
 
 	public void nextTuple() {
@@ -92,8 +91,9 @@ public class BeginSpout extends BaseRichSpout{
 							emitMessage = redis.lpop(oneProjectDatasource);
 							String taskId = task.getTid();
 							String globalInfo = oneProjectName + "-" + taskId;
-							_collector.emit(new Values(globalInfo, emitMessage), globalInfo);
-							redis.hset("message", globalInfo, emitMessage);
+							String msgId = globalInfo+"-"+PlatformUtils.getUUID();
+							_collector.emit(new Values(globalInfo, emitMessage), msgId);
+							redis.hset("message", msgId, emitMessage);
 							logger.info(globalInfo+"--"+emitMessage + "  sending...");
 						}
 					}

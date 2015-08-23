@@ -149,7 +149,7 @@ public class MysqlUtil {
                 dt.setForeignValue(rs.getString("foreignValue"));
                 dt.setLink(rs.getString("link"));
                 dt.setProcessWay(rs.getString("processWay"));
-                dt.setCondition(rs.getString("condition"));
+                dt.setLcondition(rs.getString("lcondition"));
                 String hashKey = dt.getWid()+"-"+dt.getPid()+"-"+dt.getTid()+"-"+dt.getDid();
                 System.out.println("hashKey:"+hashKey);
                 System.out.println("property:"+dt.getProperty());
@@ -188,7 +188,7 @@ public class MysqlUtil {
                 dt.setForeignValue(rs.getString("foreignValue"));
                 dt.setLink(rs.getString("link"));
                 dt.setProcessWay(rs.getString("processWay"));
-                dt.setCondition(rs.getString("condition"));
+                dt.setLcondition(rs.getString("lcondition"));
                 String hashKey = dt.getWid()+"-"+dt.getPid()+"-"+dt.getTid()+"-"+dt.getDid();
                 System.out.println("hashKey:"+hashKey);
                 System.out.println("property:"+dt.getProperty());
@@ -231,7 +231,7 @@ public class MysqlUtil {
             reData.put("foreignValue", rs.getString("foreignValue"));
             reData.put("link", rs.getString("link"));
             reData.put("processWay", rs.getString("processWay"));
-            reData.put("condition", rs.getString("condition"));
+            reData.put("lcondition", rs.getString("lcondition"));
         }catch(Exception ex){
             ex.printStackTrace();
         }finally {
@@ -264,7 +264,6 @@ public class MysqlUtil {
         }finally {
             release(stmt, con);
         }
-
         return reRegex;
     }
 
