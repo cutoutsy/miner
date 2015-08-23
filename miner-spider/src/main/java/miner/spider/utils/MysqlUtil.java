@@ -149,7 +149,7 @@ public class MysqlUtil {
                 dt.setForeignValue(rs.getString("foreignValue"));
                 dt.setLink(rs.getString("link"));
                 dt.setProcessWay(rs.getString("processWay"));
-                dt.setDocType(rs.getString("docType"));
+                dt.setCondition(rs.getString("condition"));
                 String hashKey = dt.getWid()+"-"+dt.getPid()+"-"+dt.getTid()+"-"+dt.getDid();
                 System.out.println("hashKey:"+hashKey);
                 System.out.println("property:"+dt.getProperty());
@@ -188,7 +188,7 @@ public class MysqlUtil {
                 dt.setForeignValue(rs.getString("foreignValue"));
                 dt.setLink(rs.getString("link"));
                 dt.setProcessWay(rs.getString("processWay"));
-                dt.setDocType(rs.getString("docType"));
+                dt.setCondition(rs.getString("condition"));
                 String hashKey = dt.getWid()+"-"+dt.getPid()+"-"+dt.getTid()+"-"+dt.getDid();
                 System.out.println("hashKey:"+hashKey);
                 System.out.println("property:"+dt.getProperty());
@@ -231,7 +231,7 @@ public class MysqlUtil {
             reData.put("foreignValue", rs.getString("foreignValue"));
             reData.put("link", rs.getString("link"));
             reData.put("processWay", rs.getString("processWay"));
-            reData.put("docType", rs.getString("docType"));
+            reData.put("condition", rs.getString("condition"));
         }catch(Exception ex){
             ex.printStackTrace();
         }finally {
@@ -269,13 +269,6 @@ public class MysqlUtil {
     }
 
     public static void main(String[] args){
-//        Connection conn = getConnection();
-//        System.out.println(conn);
-//        getProject("1-1");
-//        getTask("1-1-1");
-//        getData();
-//        getRegex();
-//        getData("1-1-1-1");
         HashMap<String, Data> newData = getDataByDataInfo("1", "1", "1");
         for (Map.Entry<String, Data> entry : newData.entrySet()) {
             System.out.println(entry.getKey()+":"+entry.getValue().getProcessWay());

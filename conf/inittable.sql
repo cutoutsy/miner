@@ -45,7 +45,7 @@ create table data(
     foreignValue VARCHAR(100) NOT NULL DEFAULT '',
     link VARCHAR(100) NOT NULL DEFAULT '',
     processWay  VARCHAR(100) NOT NULL DEFAULT '',
-    docType VARCHAR(10) NOT NULL DEFAULT '',
+    condition VARCHAR(10) NOT NULL DEFAULT '',
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

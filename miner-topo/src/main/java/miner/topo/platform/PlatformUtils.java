@@ -146,7 +146,19 @@ public class PlatformUtils {
     //http://cq.meituan.com/==http://[replace].meituan.com/
     //http://hotel.elong.com/dalian/40801255/==http://hotel.elong.com/dalian/[replace]/
     public static String GenerateUrl(String message,String urlPattern){
-        return urlPattern.replace("[replace]", message);
+        String reGenerateUrl = "";
+        boolean flag = true;
+        String[] sts = urlPattern.split("\\[replace\\]");
+        for(int i = 0; i < sts.length; i++ ){
+            String tempString = sts[i];
+            if(message.contains(tempString)){
+                flag = false;
+            }
+        }
+        if(flag){
+            reGenerateUrl = urlPattern.replace("[replace]", message);
+        }
+        return reGenerateUrl;
     }
 
     //register project to schedule
@@ -216,23 +228,11 @@ public class PlatformUtils {
     }
 
     public static void main(String[] args){
-//        String reProject = monitorProject();
-//        System.out.println(reProject);
-
-//        String url = GenerateUrl("cq","http://[replace].meituan.com/");
-//        String url = GenerateUrl("40801255", "http://hotel.elong.com/dalian/[replace]/");
-//        System.out.println(url);
-
-        List reList = MysqlUtil.getTaskByProject("1", "1");
-
-        for(int i = 0 ; i < reList.size(); i++){
-            System.out.println(reList.get(i));
+        String st = "http://dealer.xcar.com.cn[replace]";
+        String[] sts = st.split("\\[replace\\]");
+        for (int i = 0;i < sts.length; i++){
+            System.out.println(sts[i]);
         }
-
-//        String kk = "";
-//        if(kk.isEmpty()){
-//            System.out.println("11111111111");
-//        }
     }
 
 }
