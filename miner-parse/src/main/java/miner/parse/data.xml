@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+    <data_item>
+        <description>4s info</description>
+        <wid>1</wid>
+        <pid>1</pid>
+        <tid>1</tid>
+        <dataid>1</dataid>
+
+        <rowkey>none</rowkey>
+        <foreignkey>none</foreignkey>
+        <foreignvalue>none</foreignvalue>
+        <link>none</link>
+
+        <property>
+            <name>name_name</name><!--公司名称-->
+            <name>name_phone</name><!--电话-->
+            <name>name_address</name><!--地址-->
+            <name>name_sale</name><!--促销-->
+        </property>
+
+        <processway>s</processway>
+    <!--doc type我已经在代码里实现自动识别了，所以这里不用了
+    不过要调用Generator的create_obj(document)这个重载的方法-->
+    </data_item>
+
+    <data_item>
+        <description>page link</description>
+        <wid>1</wid>
+        <pid>1</pid>
+        <tid>1</tid>
+        <dataid>1</dataid>
+
+        <rowkey>none</rowkey>
+        <foreignkey>none</foreignkey>
+        <foreignvalue>none</foreignvalue>
+        <link>none</link>
+
+        <property>
+            <name>name_page_link</name><!--页面地址-->
+        </property>
+
+        <processway>g</processway>
+    </data_item>
+</data>
