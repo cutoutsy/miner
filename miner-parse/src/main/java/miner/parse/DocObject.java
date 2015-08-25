@@ -169,16 +169,14 @@ public class DocObject {
                 "html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dd1.span1", "text", DataType.ARRAY));
         data_rule_map.put("id_sale", new RuleItem("name_sale",
                 "html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dd2.a0", "text", DataType.ARRAY));
-        data_rule_map.put("id_page_num", new RuleItem("name_page_num",
+        data_rule_map.put("id_page_link", new RuleItem("name_page_link",
                 "html0.body0.div8.div0.div0.ul0.div9.a_1_6_", "href", DataType.ARRAY));
 		/* 封装数据的规则库map */
 		Set<DataItem> data_item_set = new HashSet<DataItem>();
 		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
-                "none", "none", "id_name","id_phone","id_address","id_sale","id_page_num"));
-//		data_item_set.add(new DataItem("1", "1", "1", "1", "name1", "none",
-//				"alone", "alone", "id0"));
-//        data_item_set.add(new DataItem("1","1","1","1","none","none","none","alone","id2"));
-
+                "none", "none", "id_name","id_phone","id_address","id_sale"));
+		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
+				"none", "none","id_page_link"));
 
 		/* 数据生成器 */
 		Generator g = new Generator();
