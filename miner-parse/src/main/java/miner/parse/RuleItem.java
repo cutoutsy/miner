@@ -8,7 +8,8 @@ public class RuleItem {
 
 	// 有了name,id能不能去掉？
 	public RuleItem(String name, String path, String tag, DataType type) {
-		this.path = modify_path(path);
+//		this.path = modify_path(path);
+        this.path=path;
 		this.tag = tag;
 		this.type = type;
 		this.name = name;

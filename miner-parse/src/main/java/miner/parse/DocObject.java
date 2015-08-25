@@ -121,7 +121,8 @@ public class DocObject {
 	public String get_value(String path, String tag) {
 		if (doc_type.equals(DocType.HTML)) {
 			Element e = html_map.get(path);
-            if(e.equals(null)){
+//            System.out.println("p:"+!(e==null));
+            if(e==null){
                 return "none";
             }else{
 			    String result;
@@ -156,35 +157,41 @@ public class DocObject {
 		 *  Item:
 		 *  	data_id,project_id,task_id,workstation_id,row_key,foreign_key,foreign_value,link,id0,id1,id2...
 		 * */
+
+        long start = System.currentTimeMillis();
 		/* 抽取单个doc数据的规则库，多个set组成map */
 		Map<String, RuleItem> data_rule_map = new HashMap<String, RuleItem>();
 		data_rule_map.put("id0", new RuleItem("name0",
-				"rateDetail.rateCount.picNum", "text", DataType.STR));
+				"html0.body0", "text", DataType.STR));
 		data_rule_map.put("id1", new RuleItem("name1",
-				"rateList_array.name", "text", DataType.ARRAY));
-        data_rule_map.put("id2",new RuleItem("name2","rateList_array.haha","text",DataType.STR));
+				"html0.head0.TEST.meta_0_2_", "text", DataType.ARRAY));
+//        data_rule_map.put("id2", new RuleItem("name2", "rateList_array.haha","text",DataType.STR));
 		/* 封装数据的规则库map */
 		Set<DataItem> data_item_set = new HashSet<DataItem>();
-//		data_item_set.add(new DataItem("1", "1", "1", "1", "name0", "name0",
-//                "none", "alone", "id0","id1"));
+		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
+                "none", "alone", "id0"));
 //		data_item_set.add(new DataItem("1", "1", "1", "1", "name1", "none",
 //				"alone", "alone", "id0"));
-        data_item_set.add(new DataItem("1","1","1","1","none","none","none","alone","id2"));
+//        data_item_set.add(new DataItem("1","1","1","1","none","none","none","alone","id2"));
+
+
 		/* 数据生成器 */
 		Generator g = new Generator();
-		g.create_obj("/Users/white/Desktop/workspace/test_json_storage.js",
+		g.create_obj("/Users/white/Desktop/workspace/test.html",
 				CharSet.UTF8);
 		for (Map.Entry<String, RuleItem> entry : data_rule_map.entrySet()) {
 			g.set_rule(entry.getValue());
 		}
 		g.generate_data();
+
 		Map<String, Object> m = g.get_result();// m里封装了所有抽取的数据
 		Iterator<DataItem> data_item_it = data_item_set.iterator();
 		while (data_item_it.hasNext()) {
 			Packer packer = new Packer(data_item_it.next(), m, data_rule_map);
 			System.out.println("pack_result:" + packer.pack());
 		}
-
+        long end = System.currentTimeMillis();
+        System.out.println("time:"+(double)(end-start)/1000);
 		// "/Users/white/Desktop/workspace/test.html"
 	}
 }

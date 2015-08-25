@@ -11,7 +11,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-
 public class HtmlUtil {
 	private String document;
 	private Queue<Element> ele_queue;
@@ -40,7 +39,7 @@ public class HtmlUtil {
 		while ((e = ele_queue.poll()) != null && (s = str_queue.poll()) != null) {
 			String key = null;
 			int idx = 0;
-			out.println(s);
+//			out.println(s);
 			for (Element ee : e.children()) {
 				/* 入队 */
 				ele_queue.offer(ee);
@@ -49,6 +48,7 @@ public class HtmlUtil {
 					idx++;
 					key = s + "." + ee.tagName() + idx;
 				}
+//                out.println(key);
 				map.put(key, ee);
 				str_queue.offer(key);
 			}
