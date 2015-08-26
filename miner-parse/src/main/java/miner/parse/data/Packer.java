@@ -7,11 +7,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import miner.parse.DataType;
-
-
+/*一个packer对象只负责生成一个data*/
 public class Packer {
 	private DataItem data_item;
-	private Map<String, Object> data_object;
+	private Map<String,Object> data_object;
 	private Map<String,RuleItem> rule_items;
 
 	public Packer(DataItem data_item, Map<String, Object> data_object,Map<String,RuleItem> rule_items) {
@@ -32,7 +31,6 @@ public class Packer {
             String row_key_str=data_item.get_row_key();
             String f_key_str=data_item.get_foreign_key();
             String f_value_str=data_item.get_foreign_value();
-
             if(row_key_str.equals("none")){
                 return_obj.put("row_key","none");
             }else{
@@ -49,9 +47,7 @@ public class Packer {
 			    return_obj.put("foreign_value", data_object.get(f_value_str));
             }
 			return_obj.put("link", data_item.get_link());
-
 			JSONObject property_obj=new JSONObject();
-
 			for(int i=0;i<data_item.get_data_items().length;i++){
 				String tag_id =data_item.get_data_items()[i];
 				RuleItem ri=rule_items.get(tag_id);

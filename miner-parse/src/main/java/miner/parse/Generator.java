@@ -1,12 +1,9 @@
 package miner.parse;
 
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
+import java.util.concurrent.BlockingDeque;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.Jsoup;
@@ -76,63 +73,50 @@ public class Generator {
 				/* 单个字段 */
 				String result_str = this.obj.get_value(tmp_rule.get_path(),
 						tmp_rule.get_tag());
+//                System.out.println(tmp_rule.get_path());
 				result.put(name, result_str);
 			} else if (tmp_rule.get_type().equals(DataType.ARRAY)) {
-				/* map里所有的key */
-				String[] keys = null;
-				if (this.obj.get_type().equals(DocType.HTML)) {
-					keys = new String[this.obj.get_html_map().size()];
-					int j = 0;
-					for (Entry<String, Element> entry : this.obj.get_html_map()
-							.entrySet()) {
-						keys[j] = entry.getKey();
-						j++;
-					}
-				} else if (this.obj.get_type().equals(DocType.JSON)
-						|| this.obj.get_type().equals(DocType.JSONP)) {
-					keys = new String[this.obj.get_json_map().size()];
-					int j = 0;
-					for (Entry<String, String> entry : this.obj.get_json_map()
-							.entrySet()) {
-						keys[j] = entry.getKey();
-//						System.out.println(keys[j]);
-						j++;
-					}
-				}
-				/* 筛选key */
-				Set<String> key_set = new HashSet<String>();
-				String[] path_split = tmp_rule.get_path().split("\\.");
-				for (int i = 0; i < keys.length; i++) {
-					/* 遍历 */
-					if (path_split.length == keys[i].split("\\.").length) {
-						String[] s = keys[i].split("\\.");
-						boolean b = true;
-						for (int x = 0; x < path_split.length; x++) {
-							if (s[x].equals(path_split[x])
-									|| s[x].startsWith(path_split[x]
-											.split("_array")[0])) {
-								b &= true;
-							} else {
-								b &= false;
-							}
-						}
-						if (b) {
-							key_set.add(keys[i]);
-//							System.out.println(keys[i]);
-						}
-					}
+                String[] tmp_paths=tmp_rule.get_path().split("\\.");
+                Set<String> final_set=new HashSet<String>();
+                final_set.add("");
+                for(int i=0;i<tmp_paths.length;i++){
+                    Set<String> tmp_set=new HashSet<String>();
+                    if(tmp_paths[i].endsWith("_")){
+                        String[] path_clips=tmp_paths[i].split("_");
+                        int start=0,end=0;
+                        String tag=path_clips[0];
+                        start=Integer.parseInt(path_clips[1]);
+                        end=Integer.parseInt(path_clips[2]);
+                        for(int j=start;j<=end;j++){
+                            Iterator<String> set_it=final_set.iterator();
+                            while (set_it.hasNext()){
+                                String tmp_next=set_it.next();
+                                tmp_set.add(tmp_next+tag+j+".");
+                            }
+                        }
+                    }else{
+                        /*以单个数组结尾的情况*/
+                        String clip=tmp_paths[i];
+                        Iterator<String> set_it=final_set.iterator();
+                        while(set_it.hasNext()){
+                            String tmp_next=set_it.next();
+                            tmp_set.add(tmp_next+clip+".");
+                        }
+                    }
+                    final_set=tmp_set;
+                }
 
-				}
-				String[] str_array = new String[key_set.size()];
-				Iterator<String> key_it = key_set.iterator();
-				int y = 0;
-				while (key_it.hasNext()) {
-					str_array[y] = this.obj.get_value(key_it.next(),
-							tmp_rule.get_tag());
-					y++;
-				}
-				result.put(tmp_rule.get_name(), str_array);
-			}
+                Iterator<String> final_it=final_set.iterator();
+                String[] str_array = new String[final_set.size()];
+                int y=0;
+                while (final_it.hasNext()){
+                    String ss=final_it.next();
+//                    System.out.println(ss.substring(0,ss.length()-1));
+                    str_array[y]=this.obj.get_value(ss.substring(0,ss.length()-1),tmp_rule.get_tag());
+                    y++;
+                }
+                result.put(tmp_rule.get_name(), str_array);
+            }
 		}
 
 	}

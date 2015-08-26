@@ -1,7 +1,5 @@
 package miner.parse.data;
 
-
-
 public class DataItem {
 	/* 四元组 */
 	final private String data_id;
@@ -15,8 +13,6 @@ public class DataItem {
 	final private String link;
 	/* data items*/
 	final private String[] data_items;
-
-	/* 实际存放的数据 */
 
 	public DataItem(String workstation_id, String project_id, String task_id,
 					String data_id, String row_key, String foreign_key,
