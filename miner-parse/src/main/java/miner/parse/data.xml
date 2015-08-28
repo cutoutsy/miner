@@ -7,6 +7,7 @@
         <tid>1</tid>
         <dataid>1</dataid>
 
+        <!--下面的四元组，如果要填充内容，必须填下面<property>标签里的内容之一-->
         <rowkey>none</rowkey>
         <foreignkey>none</foreignkey>
         <foreignvalue>none</foreignvalue>

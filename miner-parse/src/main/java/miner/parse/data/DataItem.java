@@ -1,5 +1,10 @@
 package miner.parse.data;
 
+/*
+ * @ name:      DataItem.java
+ * @ author:    white
+ * @ info:      表示一个data对象的类，一个data对象会生成同样格式的多个data，也就是json对象
+ * */
 public class DataItem {
 	/* 四元组 */
 	final private String data_id;
@@ -11,21 +16,21 @@ public class DataItem {
 	final private String foreign_key;
 	final private String foreign_value;
 	final private String link;
-	/* data items*/
+	/* data items */
 	final private String[] data_items;
 
 	public DataItem(String workstation_id, String project_id, String task_id,
 					String data_id, String row_key, String foreign_key,
-					String foreign_value, String link,String... data_items) {
-		this.data_id = data_id;
-		this.project_id = project_id;
-		this.task_id = task_id;
+					String foreign_value, String link, String... data_items) {
+		this.data_id        = data_id;
+		this.project_id     = project_id;
+		this.task_id        = task_id;
 		this.workstation_id = workstation_id;
-		this.row_key = row_key;
-		this.foreign_key = foreign_key;
-		this.foreign_value = foreign_value;
-		this.link = link;
-		this.data_items=data_items;
+		this.row_key        = row_key;
+		this.foreign_key    = foreign_key;
+		this.foreign_value  = foreign_value;
+		this.link           = link;
+		this.data_items     = data_items;
 	}
 
 	public String get_data_id() {

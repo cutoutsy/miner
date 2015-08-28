@@ -1,21 +1,19 @@
 package miner.parse;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import miner.parse.DocType;
 import miner.parse.util.HtmlUtil;
 import miner.parse.util.JsonUtil;
+import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Element;
 import miner.parse.data.Packer;
 import miner.parse.data.DataItem;
+import org.jsoup.nodes.Attributes;
 
 public class DocObject {
 	private String document;
@@ -39,6 +37,35 @@ public class DocObject {
 	public Map<String, Element> get_html_map() {
 		return this.html_map;
 	}
+
+    public String search(String content){
+        if(doc_type.equals(DocType.HTML)){
+            for(Map.Entry<String,Element> e:html_map.entrySet()){
+                if(e.getValue().text().equals(content)){
+                    return e.getKey();
+                }
+                Attributes a=e.getValue().attributes();
+                Iterator<Attribute> it=a.iterator();
+                while (it.hasNext()){
+                    Attribute attr=it.next();
+                    String key=attr.getKey();
+                    String value=attr.getValue();
+                    if(value.equals(content)){
+                        return e.getKey()+"."+key;
+                    }
+                }
+            }
+        } else if(doc_type.equals(DocType.JSON)){
+            for(Map.Entry<String,String> e:json_map.entrySet()){
+                if(e.getValue().equals(content)){
+                    return e.getKey();
+                }
+            }
+        } else if(doc_type.equals(DocType.TEXT)){
+            //to be added...
+        }
+        return "no path found...";
+    }
 
 	public DocObject(String document, CharSet char_set, DocType doc_type) {
 		if (doc_type.equals(DocType.JSONP)) {
@@ -141,7 +168,6 @@ public class DocObject {
                 result=json_map.get(path);
             }
 			return result;
-
 		}
 		return "none";
 	}
@@ -158,19 +184,39 @@ public class DocObject {
 		 *  	data_id,project_id,task_id,workstation_id,row_key,foreign_key,foreign_value,link,id0,id1,id2...
 		 * */
 
+        File file = new File("/Users/white/Desktop/workspace/test.html");
+        String doc_str = "";
+        if (file.isFile() && file.exists()) {
+            InputStreamReader read;
+            try {
+                read = new InputStreamReader(new FileInputStream(file),
+                        "UTF8");
+                BufferedReader buffered_reader = new BufferedReader(read);
+                String line = null;
+                while ((line = buffered_reader.readLine()) != null) {
+                    doc_str += line;
+                }
+                buffered_reader.close();
+                read.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+//        System.out.println(doc_str);
+
         long start = System.currentTimeMillis();
 		/* 抽取单个doc数据的规则库，多个set组成map */
 		Map<String, RuleItem> data_rule_map = new HashMap<String, RuleItem>();
 		data_rule_map.put("id_name", new RuleItem("name_name",
-				"html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dt0.a0", "title", DataType.ARRAY));
+				"html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dt0.a0.title"));
 		data_rule_map.put("id_phone", new RuleItem("name_phone",
-				"html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dd0.em0.b0", "text", DataType.ARRAY));
+				"html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dd0.em0.b0.text"));
         data_rule_map.put("id_address", new RuleItem("name_address",
-                "html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dd1.span1", "text", DataType.ARRAY));
+                "html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dd1.span1.text"));
         data_rule_map.put("id_sale", new RuleItem("name_sale",
-                "html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dd2.a0", "text", DataType.ARRAY));
+                "html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dd2.a0.text"));
         data_rule_map.put("id_page_link", new RuleItem("name_page_link",
-                "html0.body0.div8.div0.div0.ul0.div9.a_1_6_", "href", DataType.ARRAY));
+                "html0.body0.div8.div0.div0.ul0.div9.a_1_6_.href"));
 		/* 封装数据的规则库map */
 		Set<DataItem> data_item_set = new HashSet<DataItem>();
 		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
@@ -180,21 +226,30 @@ public class DocObject {
 
 		/* 数据生成器 */
 		Generator g = new Generator();
-		g.create_obj("/Users/white/Desktop/workspace/test.html",
-				CharSet.UTF8);
+		g.create_obj(doc_str);
 		for (Map.Entry<String, RuleItem> entry : data_rule_map.entrySet()) {
 			g.set_rule(entry.getValue());
 		}
 		g.generate_data();
+//        System.out.println(g.get_doc_obj().search("4006859919"));
 
 		Map<String, Object> m = g.get_result();// m里封装了所有抽取的数据
 		Iterator<DataItem> data_item_it = data_item_set.iterator();
 		while (data_item_it.hasNext()) {
 			Packer packer = new Packer(data_item_it.next(), m, data_rule_map);
-			System.out.println("pack_result:" + packer.pack());
+//            String final_s= packer.pack();
+//            try {
+//                byte[] final_b = final_s.getBytes("UTF8");
+//                System.out.println("pack_result:" + new String(final_b, "UTF8"));
+//            }catch (UnsupportedEncodingException e){
+//                e.printStackTrace();
+//            }
+            String[] result_str=packer.pack();
+            for(int i=0;i<result_str.length;i++){
+                System.out.println(result_str[i]);
+            }
 		}
         long end = System.currentTimeMillis();
         System.out.println("time:"+(double)(end-start)/1000);
-		// "/Users/white/Desktop/workspace/test.html"
 	}
 }

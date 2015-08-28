@@ -11,6 +11,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+/*
+ * @ name:      HtmlUtil.java
+ * @ author:    white
+ * @ info:      处理HTML文档的类
+ * */
 public class HtmlUtil {
 	private String document;
 	private Queue<Element> ele_queue;

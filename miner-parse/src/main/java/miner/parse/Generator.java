@@ -1,5 +1,6 @@
 package miner.parse;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.Map.Entry;
@@ -15,6 +16,10 @@ public class Generator {
 	private DocObject obj;
 	private Map<String, Object> result;// 存放抽取出来的字段
 
+    public DocObject get_doc_obj(){
+        return this.obj;
+    }
+
 	public Generator() {
 		parse_rule_set = new HashSet<RuleItem>();
 		result = new HashMap<String, Object>();
@@ -27,15 +32,16 @@ public class Generator {
         if(document.startsWith("<")){
             type=DocType.HTML;
             Document tmp_doc= Jsoup.parse(document);
-            Elements char_text = tmp_doc.select("meta[charset]");
+            Elements char_text = tmp_doc.select("meta");
             for(Element e:char_text){
-                if(e.attr("charset").equals("utf-8")){
+                if(e.attr("charset").equals("utf-8")||e.attr("content").contains("utf-8")){
                     char_set=CharSet.UTF8;
-                }else if(e.attr("charset").equals("gbk")){
+                }else if(e.attr("charset").equals("gbk")||e.attr("content").contains("gbk")){
                     char_set=CharSet.GBK;
-                }else if(e.attr("charset").equals("gb2312")){
+                }else if(e.attr("charset").equals("gb2312")||e.attr("content").contains("gb2312")){
                     char_set=CharSet.GB2312;
                 }
+//                System.out.println(char_set);
             }
         }else if(document.startsWith("{")){
             type=DocType.JSON;
@@ -47,8 +53,23 @@ public class Generator {
             type=DocType.TEXT;
             char_set=CharSet.UTF8;
         }
-		this.obj = new DocObject(document, char_set, type);
-		this.obj.parse();
+        String encoding_charset=null;
+        if(char_set.equals(CharSet.UTF8)){
+            encoding_charset="UTF8";
+        }else if(char_set.equals(CharSet.GBK)){
+            encoding_charset="GBK";
+        } else if (char_set.equals(CharSet.GB2312)){
+            encoding_charset="GB2312";
+        }
+        try{
+            byte[] doc_bytes=document.getBytes(encoding_charset);
+            String final_doc=new String(doc_bytes,"UTF8");
+//            System.out.println(final_doc);
+            this.obj = new DocObject(final_doc, char_set, type);
+            this.obj.parse();
+        } catch (UnsupportedEncodingException e){
+            e.printStackTrace();
+        }
 	}
 
 	/* 重载 */
