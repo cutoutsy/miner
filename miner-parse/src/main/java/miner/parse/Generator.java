@@ -62,9 +62,9 @@ public class Generator {
             encoding_charset="GB2312";
         }
         try{
-            byte[] doc_bytes=document.getBytes(encoding_charset);
-            String final_doc=new String(doc_bytes,"UTF8");
-//            System.out.println(final_doc);
+            byte[] doc_bytes=document.getBytes();
+            String final_doc=new String(doc_bytes,"utf-8");
+//            System.out.println(document);
             //下面的document参数等会一定要修改成final_doc
             this.obj = new DocObject(final_doc, char_set, type);
             this.obj.parse();

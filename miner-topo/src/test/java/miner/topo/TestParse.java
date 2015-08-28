@@ -23,6 +23,7 @@ public class TestParse {
 
     public static void main(String[] args){
         String doc_str = Crawl4HttpClient.downLoadPage("http://dealer.xcar.com.cn/d1_475/?type=1&page=1");
+//        System.out.println(doc_str);
         DocObject.testParse(doc_str);
     }
 }

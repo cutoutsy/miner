@@ -16,6 +16,7 @@ import miner.parse.data.DataItem;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+//import miner.spider.httpclient.Crawl4HttpClient;
 
 public class DocObject {
 	private String document;
@@ -237,33 +238,34 @@ public class DocObject {
 		 *  	data_id,project_id,task_id,workstation_id,row_key,foreign_key,foreign_value,link,id0,id1,id2...
 		 * */
 
-        File file = new File("/Users/white/Desktop/workspace/test.html");
-        String doc_str = "";
-        if (file.isFile() && file.exists()) {
-            InputStreamReader read;
-            try {
-                read = new InputStreamReader(new FileInputStream(file),
-                        "UTF8");
-                BufferedReader buffered_reader = new BufferedReader(read);
-                String line = null;
-                while ((line = buffered_reader.readLine()) != null) {
-                    doc_str += line;
-                }
-                buffered_reader.close();
-                read.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-//        System.out.println(doc_str);
-//        try {
-//            Document doc = Jsoup.connect("http://dealer.xcar.com.cn/d1_475/?type=1&page=13").get();
-//            doc_str=doc.toString();
-////            System.out.println(doc_str);
-//        }catch (IOException e){
-//            e.printStackTrace();
+//        File file = new File("/Users/white/Desktop/workspace/test.html");
+//        String doc_str = "";
+//        if (file.isFile() && file.exists()) {
+//            InputStreamReader read;
+//            try {
+//                read = new InputStreamReader(new FileInputStream(file),
+//                        "UTF8");
+//                BufferedReader buffered_reader = new BufferedReader(read);
+//                String line = null;
+//                while ((line = buffered_reader.readLine()) != null) {
+//                    doc_str += line;
+//                }
+//                buffered_reader.close();
+//                read.close();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
 //        }
-//         doc_str = Crawl4HttpClient.downLoadPage("http://dealer.xcar.com.cn/d1_475/?type=1&page=1");
+//        System.out.println(doc_str);
+        String doc_str=null;
+        try {
+            Document doc = Jsoup.connect("http://dealer.xcar.com.cn/d1_475/?type=1&page=13").get();
+             doc_str=doc.toString();
+//            System.out.println(doc_str);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+//        String doc_str = Crawl4HttpClient.downLoadPage("http://dealer.xcar.com.cn/d1_475/?type=1&page=1");
 
 
         long start = System.currentTimeMillis();
