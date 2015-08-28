@@ -3,19 +3,21 @@
 <data>
     <wid>3</wid>
     <pid>1</pid>
-    <tid>1</tid>
+    <tid>2</tid>
     <dataid>1</dataid>
-    <description>wdj info</description>
+    <description>4s info</description>
+
     <property>
-        <name>error</name>
-        <name>avatar</name>
-        <name>nick</name>
-        <name>registerDays</name>
-        <name>uid</name>
+        <name>name</name><!--公司名称-->
+        <name>phone</name><!--电话-->
+        <name>address</name><!--地址-->
+        <name>sale</name><!--促销-->
     </property>
+
     <rowkey>none</rowkey>
     <foreignkey>none</foreignkey>
     <foreignvalue>none</foreignvalue>
     <link>none</link>
     <processway>s</processway>
+    <condition>none</condition>
 </data>

@@ -92,12 +92,10 @@ public class PlatformUtils {
 
     //return execute task list
     public static List getProjectList(){
-//        String reProject = "";
         List<String> reList = new ArrayList<String>();
 
         redis = RedisUtil.GetRedis();
         List<String> projectList = redis.lrange("project_execute", 0, -1);
-
         if(projectList.size() > 0) {
 
             for(int i = 0; i < projectList.size(); i++ ){
@@ -108,6 +106,7 @@ public class PlatformUtils {
                 if (pj.getCondition().equals("alone")) {
                     if(redis.hget("project_state", projectName).equals("die")) {
                         reList.add(projectName);
+                        redis.lrem("project_execute", 1, projectName);
                     }
                 } else {
                     boolean projectExecute = true;
@@ -129,6 +128,7 @@ public class PlatformUtils {
                     if (projectExecute) {
                         if(redis.hget("project_state", projectName).equals("die")) {
                             reList.add(projectName);
+                            redis.lrem("project_execute", 1, projectName);
                         }
                     }
 
@@ -227,7 +227,9 @@ public class PlatformUtils {
     }
 
     public static void main(String[] args){
-        System.out.println(getUUID());
+//        System.out.println(getUUID());
+        QuartzManager q = new QuartzManager();
+        registerProject(q);
     }
 
 }

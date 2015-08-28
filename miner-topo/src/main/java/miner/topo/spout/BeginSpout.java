@@ -27,7 +27,6 @@ import java.util.Map;
 public class BeginSpout extends BaseRichSpout{
 
 	private static MySysLogger logger = new MySysLogger(BeginSpout.class);
-
 	private SpoutOutputCollector _collector;
 	private HashMap<String, String> _runningProject = new HashMap<String, String>();
 	private QuartzManager _qManager;

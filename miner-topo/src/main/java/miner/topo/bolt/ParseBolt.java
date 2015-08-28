@@ -14,6 +14,7 @@ import miner.parse.data.DataItem;
 import miner.parse.data.Packer;
 import miner.spider.pojo.Data;
 import miner.spider.utils.MyLogger;
+import miner.spider.utils.MySysLogger;
 import miner.spider.utils.MysqlUtil;
 import miner.spider.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
@@ -22,7 +23,7 @@ import java.util.*;
 
 public class ParseBolt extends BaseRichBolt {
 
-	private static MyLogger logger = new MyLogger(ParseBolt.class);
+	private static MySysLogger logger = new MySysLogger(ParseBolt.class);
 
 	private OutputCollector _collector;
 	private HashMap<String, Data> _dataScheme;
@@ -65,7 +66,7 @@ public class ParseBolt extends BaseRichBolt {
 					String tagName = properties[i];
 					String path = _regex.get(taskInfo+"-"+tagName);
 					data_rule_map.put(tagName, new RuleItem(tagName,
-							path, "text", DataType.STR));
+							path.split(":")[0], path.split(":")[1], DataType.ARRAY));
 				}
 				Set<DataItem> data_item_set = new HashSet<DataItem>();
 				data_item_set.add(new DataItem(data.getWid(), data.getPid(), data.getTid(), data.getDid(), data.getRowKey(), data.getForeignKey(),
@@ -84,6 +85,7 @@ public class ParseBolt extends BaseRichBolt {
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
 //						collector.emit(new Values(globalInfo, packerData.pack()));
 						emit("store", input, globalInfo, packerData.pack());
+						logger.info(packerData.pack());
 					}
 				}else if(data.getProcessWay().equals("e") || data.getProcessWay().equals("E")){
 					while (data_item_it.hasNext()) {
@@ -92,6 +94,7 @@ public class ParseBolt extends BaseRichBolt {
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
 						//_redis.hset("messageloop", taskInfo, packerData.pack());
 						emit("generate-loop", input, loopTaskInfo, packerData.pack());
+						logger.info(packerData.pack());
 					}
 				}else{
 					logger.error("there is no valid way to process "+taskInfo+" data");
@@ -101,6 +104,7 @@ public class ParseBolt extends BaseRichBolt {
 		}catch (Exception ex){
 			logger.error("parse error!"+ex);
 			ex.printStackTrace();
+			_collector.fail(input);
 		}
 	}
 

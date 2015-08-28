@@ -180,7 +180,7 @@ public class DocObject {
 
 		/* 数据生成器 */
 		Generator g = new Generator();
-		g.create_obj("/Users/white/Desktop/workspace/test.html",
+		g.create_obj("/home/cutoutsy/test.html",
 				CharSet.UTF8);
 		for (Map.Entry<String, RuleItem> entry : data_rule_map.entrySet()) {
 			g.set_rule(entry.getValue());

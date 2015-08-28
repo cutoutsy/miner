@@ -4,18 +4,17 @@
     <wid>3</wid>
     <pid>1</pid>
     <tid>1</tid>
-    <dataid>1</dataid>
-    <description>wdj info</description>
+    <dataid>2</dataid>
+    <description>4s info</description>
+
     <property>
-        <name>error</name>
-        <name>avatar</name>
-        <name>nick</name>
-        <name>registerDays</name>
-        <name>uid</name>
+        <name>page_link</name><!--页面地址-->
     </property>
+
     <rowkey>none</rowkey>
     <foreignkey>none</foreignkey>
     <foreignvalue>none</foreignvalue>
     <link>none</link>
-    <processway>s</processway>
+    <processway>e</processway>
+    <condition>2</condition>
 </data>

@@ -27,7 +27,7 @@ public class TopologyMain {
 					.shuffleGrouping("generateurl")
 					.shuffleGrouping("generateurl-loop-bolt");
 
-			topologyBuilder.setBolt("parse", new ParseBolt(), 1)
+			topologyBuilder.setBolt("parse", new ParseBolt(), 2)
 					.shuffleGrouping("fetch");
 
 			topologyBuilder.setBolt("store", new StoreBolt(), 1)
