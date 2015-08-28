@@ -15,13 +15,10 @@ import java.util.Map;
 
 /**
  * The Bolt for downloading page
- *
- * Created by cutoutsy on 8/5/15.
  */
 public class FetchBolt extends BaseRichBolt {
 
     private static MySysLogger logger = new MySysLogger(FetchBolt.class);
-
     private OutputCollector _collector;
 
     public void execute(Tuple input) {
@@ -32,7 +29,6 @@ public class FetchBolt extends BaseRichBolt {
             logger.info("downloadurl:"+downloadUrl);
 
             String resource = Crawl4HttpClient.downLoadPage(downloadUrl);
-//            System.out.println("resource:"+resource);
             _collector.emit(new Values(globalInfo, resource));
             _collector.ack(input);
         } catch (Exception ex) {

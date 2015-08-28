@@ -7,12 +7,11 @@ import org.quartz.JobExecutionException;
 import redis.clients.jedis.Jedis;
 
 /**
- * Created by cutoutsy on 8/7/15.
+ * Project Class
  */
 public class ProjectJob implements Job {
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
-
         Jedis redis = RedisUtil.GetRedis();
         String projectWid = context.getJobDetail().getKey().toString().split("\\.")[0];
         String projectPid = context.getJobDetail().getKey().toString().split("\\.")[1];

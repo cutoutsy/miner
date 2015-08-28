@@ -5,10 +5,7 @@ import miner.spider.utils.MysqlUtil;
 import miner.spider.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * some PlatformUtils for the platform
@@ -95,12 +92,10 @@ public class PlatformUtils {
 
     //return execute task list
     public static List getProjectList(){
-//        String reProject = "";
         List<String> reList = new ArrayList<String>();
 
         redis = RedisUtil.GetRedis();
         List<String> projectList = redis.lrange("project_execute", 0, -1);
-
         if(projectList.size() > 0) {
 
             for(int i = 0; i < projectList.size(); i++ ){
@@ -111,6 +106,7 @@ public class PlatformUtils {
                 if (pj.getCondition().equals("alone")) {
                     if(redis.hget("project_state", projectName).equals("die")) {
                         reList.add(projectName);
+                        redis.lrem("project_execute", 1, projectName);
                     }
                 } else {
                     boolean projectExecute = true;
@@ -132,6 +128,7 @@ public class PlatformUtils {
                     if (projectExecute) {
                         if(redis.hget("project_state", projectName).equals("die")) {
                             reList.add(projectName);
+                            redis.lrem("project_execute", 1, projectName);
                         }
                     }
 
@@ -140,7 +137,6 @@ public class PlatformUtils {
         }
         return reList;
     }
-
 
     //generate url
     //http://cq.meituan.com/==http://[replace].meituan.com/
@@ -164,7 +160,6 @@ public class PlatformUtils {
     //register project to schedule
     public static void registerProject(QuartzManager qManager){
         redis = RedisUtil.GetRedis();
-//        redis.hkeys("project_cronState");
         Set<String> projectKeys = redis.hkeys("project_cronstate");
         Iterator it = projectKeys.iterator();
         while(it.hasNext()) {
@@ -180,7 +175,6 @@ public class PlatformUtils {
 
     public static void initRegisterProject(QuartzManager qManager){
         redis = RedisUtil.GetRedis();
-//        redis.hkeys("project_cronState");
         Set<String> projectKeys = redis.hkeys("project_cronstate");
         Iterator it = projectKeys.iterator();
         while(it.hasNext()) {
@@ -227,12 +221,15 @@ public class PlatformUtils {
         return emitUrl;
     }
 
+    public static String getUUID(){
+        String s = UUID.randomUUID().toString();
+        return s.substring(0,8)+s.substring(9,13)+s.substring(14,18)+s.substring(19,23)+s.substring(24);
+    }
+
     public static void main(String[] args){
-        String st = "http://dealer.xcar.com.cn[replace]";
-        String[] sts = st.split("\\[replace\\]");
-        for (int i = 0;i < sts.length; i++){
-            System.out.println(sts[i]);
-        }
+//        System.out.println(getUUID());
+        QuartzManager q = new QuartzManager();
+        registerProject(q);
     }
 
 }

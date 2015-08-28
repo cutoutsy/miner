@@ -37,21 +37,21 @@ public class GenerateUrlBolt extends BaseBasicBolt {
     public void execute(Tuple input, BasicOutputCollector collector) {
 
         try {
-            String globalInfo = input.getString(0);
+            String taskInfo = input.getString(0);
             String message = input.getString(1);
-            Task ta = new Task(globalInfo);
+            Task ta = new Task(taskInfo);
             if(ta.getIsloop().equals("false")) {
-                String emitUrl = PlatformUtils.getEmitUrl(globalInfo, message);
+                String emitUrl = PlatformUtils.getEmitUrl(taskInfo, message);
                 UUID uuid = UUID.randomUUID();
-                globalInfo = globalInfo + "-" + uuid;
+                String globalInfo = taskInfo + "-" + uuid;
                 if (!emitUrl.isEmpty()) {
                     collector.emit(new Values(globalInfo, emitUrl));
                     logger.info(globalInfo + "---" + emitUrl);
                 }
                 //loop process
             }else if(ta.getIsloop().equals("true")){
-                if(_redis.exists(globalInfo)){
-                    _redis.expire(globalInfo, 600);
+                if(_redis.exists(taskInfo)){
+                    _redis.expire(taskInfo, 600);
                 }
                 JSONObject jsonObject = new JSONObject(message);
                 //对property进行处理
@@ -68,26 +68,26 @@ public class GenerateUrlBolt extends BaseBasicBolt {
                         String propertyData = null;
                         for (int i = 0; i < jsonArray.length();i++) {
                             String loopMessage = jsonArray.getString(i);
-                            if(!_redis.sismember(globalInfo, loopMessage)){
-                                String emitUrlLoop = PlatformUtils.getEmitUrl(globalInfo, loopMessage);
+                            if(!_redis.sismember(taskInfo, loopMessage)){
+                                String emitUrlLoop = PlatformUtils.getEmitUrl(taskInfo, loopMessage);
                                 UUID uuidLoop = UUID.randomUUID();
-                                globalInfo = globalInfo+"-"+uuidLoop;
+                                String globalInfo = taskInfo+"-"+uuidLoop;
                                 if (!emitUrlLoop.isEmpty()) {
                                 collector.emit(new Values(globalInfo, emitUrlLoop));
                               }
-                                _redis.sadd(globalInfo, loopMessage);
+                                _redis.sadd(taskInfo, loopMessage);
                             }
                         }
                     }else{
                         String loopMessage = propertyValue;
-                        if(!_redis.sismember(globalInfo, loopMessage)) {
-                            String emitUrlLoop = PlatformUtils.getEmitUrl(globalInfo, loopMessage);
+                        if(!_redis.sismember(taskInfo, loopMessage)) {
+                            String emitUrlLoop = PlatformUtils.getEmitUrl(taskInfo, loopMessage);
                             UUID uuidLoop = UUID.randomUUID();
-                            globalInfo = globalInfo + "-" + uuidLoop;
+                            String globalInfo = taskInfo + "-" + uuidLoop;
                             if (!emitUrlLoop.isEmpty()) {
                                 collector.emit(new Values(globalInfo, emitUrlLoop));
                             }
-                            _redis.sadd(globalInfo, loopMessage);
+                            _redis.sadd(taskInfo, loopMessage);
                         }
                     }
                 }
