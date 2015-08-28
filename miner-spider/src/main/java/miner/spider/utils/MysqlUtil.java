@@ -159,8 +159,8 @@ public class MysqlUtil {
                 dt.setProcessWay(rs.getString("processWay"));
                 dt.setLcondition(rs.getString("lcondition"));
                 String hashKey = dt.getWid()+"-"+dt.getPid()+"-"+dt.getTid()+"-"+dt.getDid();
-                System.out.println("hashKey:"+hashKey);
-                System.out.println("property:"+dt.getProperty());
+//                System.out.println("hashKey:"+hashKey);
+//                System.out.println("property:"+dt.getProperty());
                 reData.put(hashKey, dt);
             }
         }catch(Exception ex){
@@ -198,8 +198,8 @@ public class MysqlUtil {
                 dt.setProcessWay(rs.getString("processWay"));
                 dt.setLcondition(rs.getString("lcondition"));
                 String hashKey = dt.getWid()+"-"+dt.getPid()+"-"+dt.getTid()+"-"+dt.getDid();
-                System.out.println("hashKey:"+hashKey);
-                System.out.println("property:"+dt.getProperty());
+//                System.out.println("hashKey:"+hashKey);
+//                System.out.println("property:"+dt.getProperty());
                 reData.put(hashKey, dt);
             }
         }catch(Exception ex){

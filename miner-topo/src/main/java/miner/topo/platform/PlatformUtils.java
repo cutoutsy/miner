@@ -11,7 +11,7 @@ import java.util.*;
  * some PlatformUtils for the platform
  */
 public class PlatformUtils {
-    private static MyLogger logger = new MyLogger(PlatformUtils.class);
+//    private static MyLogger logger = new MyLogger(PlatformUtils.class);
 
     public static Jedis redis;
 
