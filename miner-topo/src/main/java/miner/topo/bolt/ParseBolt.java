@@ -65,8 +65,8 @@ public class ParseBolt extends BaseRichBolt {
 				for(int i = 0; i < properties.length; i++){
 					String tagName = properties[i];
 					String path = _regex.get(taskInfo+"-"+tagName);
-					data_rule_map.put(tagName, new RuleItem(tagName,
-							path.split(":")[0], path.split(":")[1], DataType.ARRAY));
+//					data_rule_map.put(tagName, new RuleItem(tagName,
+//							path.split(":")[0], path.split(":")[1], DataType.ARRAY));
 				}
 				Set<DataItem> data_item_set = new HashSet<DataItem>();
 				data_item_set.add(new DataItem(data.getWid(), data.getPid(), data.getTid(), data.getDid(), data.getRowKey(), data.getForeignKey(),
@@ -84,7 +84,7 @@ public class ParseBolt extends BaseRichBolt {
 					while (data_item_it.hasNext()) {
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
 //						collector.emit(new Values(globalInfo, packerData.pack()));
-						emit("store", input, globalInfo, packerData.pack());
+//						emit("store", input, globalInfo, packerData.pack());
 						logger.info(packerData.pack());
 					}
 				}else if(data.getProcessWay().equals("e") || data.getProcessWay().equals("E")){
@@ -93,7 +93,7 @@ public class ParseBolt extends BaseRichBolt {
 						String loopTaskInfo = taskInfo.split("-")[0]+"-"+dataInfo.split("-")[1]+"-"+loopTaskId;
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
 						//_redis.hset("messageloop", taskInfo, packerData.pack());
-						emit("generate-loop", input, loopTaskInfo, packerData.pack());
+//						emit("generate-loop", input, loopTaskInfo, packerData.pack());
 						logger.info(packerData.pack());
 					}
 				}else{
