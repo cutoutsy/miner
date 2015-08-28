@@ -75,8 +75,9 @@ public class MysqlUtil {
         return reList;
     }
 
-    public static List getTask(String taskName){
-        List reList = new ArrayList();
+    public static HashMap<String, String> getTask(String taskName){
+//        List reList = new ArrayList();
+        HashMap<String, String> reData = new HashMap<String, String>();
         Connection con = getConnection();
         try {
             String wid = taskName.split("-")[0];
@@ -88,10 +89,17 @@ public class MysqlUtil {
                     .executeQuery("select * from task where wid="
                             + wid+" AND pid=" + pid+" AND tid=" + tid);
             rs.next();// 指向有效的一行
-            for(int i = 2; i < 10; i++){
-                String re = rs.getString(i);
-                reList.add(re);
-            }
+            reData.put("wid", rs.getString("wid"));
+            reData.put("pid", rs.getString("pid"));
+            reData.put("tid", rs.getString("tid"));
+            reData.put("description", rs.getString("description"));
+            reData.put("urlpattern", rs.getString("urlpattern"));
+            reData.put("urlgenerate", rs.getString("urlgenerate"));
+            reData.put("isloop", rs.getString("isloop"));
+//            for(int i = 2; i < 10; i++){
+//                String re = rs.getString(i);
+//                reList.add(re);
+//            }
         }catch(Exception ex){
             ex.printStackTrace();
         }finally {
@@ -101,7 +109,7 @@ public class MysqlUtil {
                 ex.printStackTrace();
             }
         }
-        return reList;
+        return reData;
     }
 
     public static List getTaskByProject(String wid, String pid){
