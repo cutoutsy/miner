@@ -14,6 +14,8 @@ import org.jsoup.nodes.Element;
 import miner.parse.data.Packer;
 import miner.parse.data.DataItem;
 import org.jsoup.nodes.Attributes;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 public class DocObject {
 	private String document;
@@ -203,6 +205,15 @@ public class DocObject {
             }
         }
 //        System.out.println(doc_str);
+//        try {
+//            Document doc = Jsoup.connect("http://dealer.xcar.com.cn/d1_475/?type=1&page=13").get();
+//            doc_str=doc.toString();
+////            System.out.println(doc_str);
+//        }catch (IOException e){
+//            e.printStackTrace();
+//        }
+//         doc_str = Crawl4HttpClient.downLoadPage("http://dealer.xcar.com.cn/d1_475/?type=1&page=1");
+
 
         long start = System.currentTimeMillis();
 		/* 抽取单个doc数据的规则库，多个set组成map */

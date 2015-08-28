@@ -95,6 +95,12 @@ public class Generator {
 				/* 单个字段 */
 				String result_str = this.obj.get_value(tmp_rule.get_path(),
 						tmp_rule.get_tag());
+//                if(result_str.equals("none")&&tmp_rule.get_extra_paths()!=null){
+//                    for(int y=0;y<tmp_rule.get_extra_paths().length;y++){
+//                        String extra_path=tmp_rule.get_extra_paths()[y];
+//                        this.obj.get_value(extra_path,)
+//                    }
+//                }
 //                System.out.println(tmp_rule.get_path());
 				result.put(name, result_str);
 			} else if (tmp_rule.get_type().equals(DataType.ARRAY)) {
