@@ -66,7 +66,7 @@ public class Generator {
             String final_doc=new String(doc_bytes,"UTF8");
 //            System.out.println(final_doc);
             //下面的document参数等会一定要修改成final_doc
-            this.obj = new DocObject(document, char_set, type);
+            this.obj = new DocObject(final_doc, char_set, type);
             this.obj.parse();
         } catch (UnsupportedEncodingException e){
             e.printStackTrace();
