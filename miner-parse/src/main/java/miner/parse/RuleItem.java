@@ -10,11 +10,14 @@ public class RuleItem {
 	final private String tag;   //只有对于html，这个tag变量是有效的
 	final private DataType type;
 	final private String name;
+    private String[] extra_paths;
 
     /* 在构造器中间接的派生了tag和type两个变量 */
 	public RuleItem(String name, String path) {
+//        System.out.println(extra_paths);
         int type_flag=0;
         String[] paths=path.split("\\.");
+
         for(int i=0;i<paths.length;i++){
             if(paths[i].endsWith("_")){
                 type_flag=1;
@@ -41,6 +44,12 @@ public class RuleItem {
 		this.name = name;
 //        System.out.println(this.path+" "+this.name+" "+this.tag+" "+this.type.equals(DataType.ARRAY));
 	}
+    public RuleItem(String name,String path,String...extra_paths){
+        this(name,path);
+        this.extra_paths=extra_paths;
+    }
+
+
 
 	public String get_path() {
 		return this.path;
