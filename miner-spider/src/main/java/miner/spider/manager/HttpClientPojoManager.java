@@ -22,7 +22,7 @@ import java.util.List;
  * Created by cutoutsy on 7/24/15.
  */
 public class HttpClientPojoManager {
-    public static MyLogger logger = new MyLogger(HttpClientPojoManager.class);
+//    public static MyLogger logger = new MyLogger(HttpClientPojoManager.class);
     // 连接池管理器，用于多线程调用
     public static PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
     public static int pool_current = 0;
@@ -139,7 +139,7 @@ public class HttpClientPojoManager {
         private  HttpClientPojo(ProxyPojo proxyPojo) {
             if (proxyPojo == null) {
                 this.proxy = null;
-                logger.info("proxyPojo is null");
+//                logger.info("proxyPojo is null");
                 this.httpClient = HttpClients.custom().build();
             } else {
                 this.proxyPojo = proxyPojo;

@@ -47,8 +47,8 @@ public class ParseTestBolt extends BaseBasicBolt{
 				for(int i = 0; i < properties.length; i++){
 					String tagName = properties[i];
 					String path = _regex.get(taskRegex+"-"+tagName);
-					data_rule_map.put(tagName, new RuleItem(tagName,
-							path, "text", DataType.STR));
+//					data_rule_map.put(tagName, new RuleItem(tagName,
+//							path, "text", DataType.STR));
 				}
 				Set<DataItem> data_item_set = new HashSet<DataItem>();
 				data_item_set.add(new DataItem(data.getWid(), data.getPid(), data.getTid(), data.getDid(), data.getRowKey(), data.getForeignKey(),
