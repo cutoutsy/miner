@@ -3,6 +3,7 @@ package miner.spider.httpclient;
 import miner.spider.charset.EncodeUtil;
 import miner.spider.enumeration.HttpRequestMethod;
 import miner.spider.manager.HttpClientPojoManager;
+import miner.spider.pojo.ContentPojo;
 import miner.spider.pojo.HttpRequestPojo;
 import miner.spider.utils.ObjectAndByteArrayConvertUtil;
 import miner.spider.utils.StaticValue;
@@ -91,11 +92,11 @@ public class Crawl4HttpClient {
         try{
             HttpEntity entity = response.getEntity();
             byte[] byteArray = ObjectAndByteArrayConvertUtil.getByteArrayOutputStream(entity.getContent());
-//			ContentPojo contentPojo = encodeUtil.getWebPageCharset(byteArray,entity.getContentType().toString());
-//			if(contentPojo != null){
-//				return new String(byteArray,contentPojo.getCharset());
-//			}
-            return new String(byteArray,"utf-8");
+			ContentPojo contentPojo = encodeUtil.getWebPageCharset(byteArray,entity.getContentType().toString());
+			if(contentPojo != null){
+				return new String(byteArray,contentPojo.getCharset());
+			}
+//            return new String(byteArray,"gb2312");
         }catch(Exception e){
             e.printStackTrace();
         }finally{
