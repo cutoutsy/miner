@@ -205,6 +205,9 @@ public class PlatformUtils {
     }
     //return emit url in the GenerateUrlBolt
     public static String getEmitUrl(String globalInfo, String message){
+        if(message.equals("none")){
+            return "";
+        }
         String emitUrl = "";
         String taskName = globalInfo;
         Task ta = new Task(taskName);
@@ -228,8 +231,12 @@ public class PlatformUtils {
 
     public static void main(String[] args){
 //        System.out.println(getUUID());
-        QuartzManager q = new QuartzManager();
-        registerProject(q);
+//        QuartzManager q = new QuartzManager();
+//        registerProject(q);
+        String kk = getEmitUrl("1-1-1", "none");
+        if(kk.isEmpty()){
+            System.out.println("==========");
+        }
     }
 
 }

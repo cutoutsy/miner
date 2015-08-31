@@ -73,9 +73,9 @@ public class GenerateUrlBolt extends BaseBasicBolt {
                                 UUID uuidLoop = UUID.randomUUID();
                                 String globalInfo = taskInfo+"-"+uuidLoop;
                                 if (!emitUrlLoop.isEmpty()) {
-                                collector.emit(new Values(globalInfo, emitUrlLoop));
+                                    collector.emit(new Values(globalInfo, emitUrlLoop));
+                                    _redis.sadd(taskInfo, loopMessage);
                               }
-                                _redis.sadd(taskInfo, loopMessage);
                             }
                         }
                     }else{
@@ -86,8 +86,8 @@ public class GenerateUrlBolt extends BaseBasicBolt {
                             String globalInfo = taskInfo + "-" + uuidLoop;
                             if (!emitUrlLoop.isEmpty()) {
                                 collector.emit(new Values(globalInfo, emitUrlLoop));
+                                _redis.sadd(taskInfo, loopMessage);
                             }
-                            _redis.sadd(taskInfo, loopMessage);
                         }
                     }
                 }
