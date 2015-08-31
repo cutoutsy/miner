@@ -191,8 +191,8 @@ public class DocObject {
 				"html0.body0.div8.div0.div0.ul0.div9.a_1_6_.href"));
 		/* 封装数据的规则库map */
 		Set<DataItem> data_item_set = new HashSet<DataItem>();
-		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
-				"none", "none", "id_name","id_phone","id_address","id_sale"));
+//		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
+//				"none", "none", "id_name","id_phone","id_address","id_sale"));
 		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
 				"none", "none","id_page_link"));
 

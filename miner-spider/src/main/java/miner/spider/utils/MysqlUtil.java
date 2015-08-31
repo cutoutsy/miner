@@ -263,8 +263,8 @@ public class MysqlUtil {
                 String tagName = rs.getString("tagname");
                 String path = rs.getString("path");
                 String hashKey = wid+"-"+pid+"-"+tid+"-"+tagName;
-                System.out.println("hashKey:"+hashKey);
-                System.out.println("property:" + path);
+//                System.out.println("hashKey:"+hashKey);
+//                System.out.println("property:" + path);
                 reRegex.put(hashKey, path);
             }
         }catch(Exception ex){

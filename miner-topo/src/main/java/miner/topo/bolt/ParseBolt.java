@@ -97,7 +97,7 @@ public class ParseBolt extends BaseRichBolt {
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
 						String[] result_str=packerData.pack();
 						for(int i=0;i<result_str.length;i++){
-							emit("store", input, loopTaskInfo, result_str[i]);
+							emit("generate-loop", input, loopTaskInfo, result_str[i]);
 							logger.info(result_str[i]);
 						}
 //						emit("generate-loop", input, loopTaskInfo, packerData.pack());
