@@ -265,6 +265,12 @@ public class DocObject {
         }catch (IOException e){
             e.printStackTrace();
         }
+//        try {
+//            byte[] tmp = doc_str.getBytes("utf-8");
+//            doc_str = new String(tmp, "GB2312");
+//        }catch (UnsupportedEncodingException e){
+//            e.printStackTrace();
+//        }
 //        String doc_str = Crawl4HttpClient.downLoadPage("http://dealer.xcar.com.cn/d1_475/?type=1&page=1");
 
 
