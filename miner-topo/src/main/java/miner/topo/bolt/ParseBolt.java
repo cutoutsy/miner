@@ -65,8 +65,7 @@ public class ParseBolt extends BaseRichBolt {
 				for(int i = 0; i < properties.length; i++){
 					String tagName = properties[i];
 					String path = _regex.get(taskInfo+"-"+tagName);
-//					data_rule_map.put(tagName, new RuleItem(tagName,
-//							path.split(":")[0], path.split(":")[1], DataType.ARRAY));
+					data_rule_map.put(tagName, new RuleItem(tagName, path));
 				}
 				Set<DataItem> data_item_set = new HashSet<DataItem>();
 				data_item_set.add(new DataItem(data.getWid(), data.getPid(), data.getTid(), data.getDid(), data.getRowKey(), data.getForeignKey(),
@@ -83,18 +82,26 @@ public class ParseBolt extends BaseRichBolt {
 				if(data.getProcessWay().equals("s")) {
 					while (data_item_it.hasNext()) {
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
-//						collector.emit(new Values(globalInfo, packerData.pack()));
+						String[] result_str=packerData.pack();
+						for(int i=0;i<result_str.length;i++){
+							emit("store", input, globalInfo, result_str[i]);
+							logger.info(result_str[i]);
+						}
 //						emit("store", input, globalInfo, packerData.pack());
-						logger.info(packerData.pack());
+//						logger.info(packerData.pack());
 					}
 				}else if(data.getProcessWay().equals("e") || data.getProcessWay().equals("E")){
 					while (data_item_it.hasNext()) {
 						String loopTaskId = data.getLcondition();
 						String loopTaskInfo = taskInfo.split("-")[0]+"-"+dataInfo.split("-")[1]+"-"+loopTaskId;
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
-						//_redis.hset("messageloop", taskInfo, packerData.pack());
+						String[] result_str=packerData.pack();
+						for(int i=0;i<result_str.length;i++){
+							emit("generate-loop", input, loopTaskInfo, result_str[i]);
+							logger.info(result_str[i]);
+						}
 //						emit("generate-loop", input, loopTaskInfo, packerData.pack());
-						logger.info(packerData.pack());
+//						logger.info(packerData.pack());
 					}
 				}else{
 					logger.error("there is no valid way to process "+taskInfo+" data");

@@ -191,8 +191,8 @@ public class DocObject {
 				"html0.body0.div8.div0.div0.ul0.div9.a_1_6_.href"));
 		/* 封装数据的规则库map */
 		Set<DataItem> data_item_set = new HashSet<DataItem>();
-		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
-				"none", "none", "id_name","id_phone","id_address","id_sale"));
+//		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
+//				"none", "none", "id_name","id_phone","id_address","id_sale"));
 		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
 				"none", "none","id_page_link"));
 
@@ -203,19 +203,13 @@ public class DocObject {
 			g.set_rule(entry.getValue());
 		}
 		g.generate_data();
-		System.out.println(g.get_doc_obj().search("010-84916660"));
+
+//		System.out.println(g.get_doc_obj().search("010-84916660"));
 
 		Map<String, Object> m = g.get_result();// m里封装了所有抽取的数据
 		Iterator<DataItem> data_item_it = data_item_set.iterator();
 		while (data_item_it.hasNext()) {
 			Packer packer = new Packer(data_item_it.next(), m, data_rule_map);
-//            String final_s= packer.pack();
-//            try {
-//                byte[] final_b = final_s.getBytes("UTF8");
-//                System.out.println("pack_result:" + new String(final_b, "UTF8"));
-//            }catch (UnsupportedEncodingException e){
-//                e.printStackTrace();
-//            }
 			String[] result_str=packer.pack();
 			for(int i=0;i<result_str.length;i++){
 				System.out.println(result_str[i]);
