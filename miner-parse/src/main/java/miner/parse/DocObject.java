@@ -21,7 +21,6 @@ import org.jsoup.nodes.Document;
 public class DocObject {
 	private String document;
 	private DocType doc_type;
-	private CharSet char_set;
 	/* 字段存放处 */
 	public Map<String, Element> html_map;
 	public Map<String, String> json_map;
@@ -70,7 +69,7 @@ public class DocObject {
         return "no path found...";
     }
 
-	public DocObject(String document, CharSet char_set, DocType doc_type) {
+	public DocObject(String document, DocType doc_type) {
 		if (doc_type.equals(DocType.JSONP)) {
 			this.document = document.substring(document.indexOf('{'),
 					document.length() - 1);
@@ -78,7 +77,6 @@ public class DocObject {
 			this.document = document;
 		}
 		this.doc_type = doc_type;
-		this.char_set = char_set;
 		this.html_map = new HashMap<String, Element>();
 		this.json_map = new HashMap<String, String>();
 	}

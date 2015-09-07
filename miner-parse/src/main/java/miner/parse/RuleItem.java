@@ -7,9 +7,12 @@ package miner.parse;
  * */
 public class RuleItem {
 	final private String path;
-	final private String tag;   //只有对于html，这个tag变量是有效的
+    /* 只有对于html这个tag变量是有效的 */
+	final private String tag;
 	final private DataType type;
 	final private String name;
+    /* extra operation */
+    private  String extra_operation;
     
 
     /* 在构造器中间接的派生了tag和type两个变量 */
@@ -45,6 +48,11 @@ public class RuleItem {
 //        System.out.println(this.path+" "+this.name+" "+this.tag+" "+this.type.equals(DataType.ARRAY));
 	}
 
+    public RuleItem(String name, String path,String extra_operation){
+        this(name,path);
+        this.extra_operation=extra_operation;
+    }
+
 
 
 	public String get_path() {
@@ -63,4 +71,7 @@ public class RuleItem {
 		return this.name;
 	}
 
+    public String get_extra_operation(){
+        return this.extra_operation;
+    }
 }

@@ -1,10 +1,6 @@
 package miner.parse;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.BlockingDeque;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.Jsoup;
@@ -16,61 +12,58 @@ public class Generator {
 	private DocObject obj;
 	private Map<String, Object> result;// 存放抽取出来的字段
 
+    public Set<RuleItem> get_parse_rule_set(){
+        return this.parse_rule_set;
+    }
+
     public DocObject get_doc_obj(){
         return this.obj;
     }
 
-	public Generator() {
+    /* 返回已经抽取出来的数据 */
+    public Map<String, Object> get_result() {
+        return this.result;
+    }
+
+    public Generator() {
 		parse_rule_set = new HashSet<RuleItem>();
 		result = new HashMap<String, Object>();
 	}
+
+    public DocType judge_doc_type(String document){
+        DocType type=DocType.HTML;
+        if(document.endsWith("</html>")){
+            type=DocType.HTML;
+        }else if(document.startsWith("<")){
+            type=DocType.XML;
+        } else if(document.startsWith("{")){
+            type=DocType.JSON;
+        }else if(document.endsWith("})")){
+            type=DocType.JSONP;
+        }else {
+            type=DocType.TEXT;
+        }
+        return type;
+    }
 
 	/* 抽取之前必须执行的方法 */
 	public void create_obj(String document) {
         DocType type=DocType.HTML;
         CharSet char_set= CharSet.UTF8;
-        if(document.startsWith("<")){
-            type=DocType.HTML;
-            Document tmp_doc= Jsoup.parse(document);
-            Elements char_text = tmp_doc.select("meta");
-            for(Element e:char_text){
-                if(e.attr("charset").equals("utf-8")||e.attr("content").contains("utf-8")){
-                    char_set=CharSet.UTF8;
-                }else if(e.attr("charset").equals("gbk")||e.attr("content").contains("gbk")){
-                    char_set=CharSet.GBK;
-                }else if(e.attr("charset").equals("gb2312")||e.attr("content").contains("gb2312")){
-                    char_set=CharSet.GB2312;
-                }
-//                System.out.println(char_set);
-            }
-        }else if(document.startsWith("{")){
-            type=DocType.JSON;
-            char_set=CharSet.UTF8;
-        }else if(document.endsWith("})")){
-            type=DocType.JSONP;
-            char_set=CharSet.UTF8;
-        }else {
-            type=DocType.TEXT;
-            char_set=CharSet.UTF8;
-        }
-        String encoding_charset=null;
-        if(char_set.equals(CharSet.UTF8)){
-            encoding_charset="UTF8";
-        }else if(char_set.equals(CharSet.GBK)){
-            encoding_charset="GBK";
-        } else if (char_set.equals(CharSet.GB2312)){
-            encoding_charset="GB2312";
-        }
-        try{
-            byte[] doc_bytes=document.getBytes();
-            String final_doc=new String(doc_bytes,"utf-8");
-//            System.out.println(document);
-            //下面的document参数等会一定要修改成final_doc
-            this.obj = new DocObject(final_doc, char_set, type);
-            this.obj.parse();
-        } catch (UnsupportedEncodingException e){
-            e.printStackTrace();
-        }
+        type = this.judge_doc_type(document);
+//        String encoding_charset=null;
+//        if(char_set.equals(CharSet.UTF8)){
+//            encoding_charset="UTF8";
+//        }else if(char_set.equals(CharSet.GBK)){
+//            encoding_charset="GBK";
+//        } else if (char_set.equals(CharSet.GB2312)){
+//            encoding_charset="GB2312";
+//        }
+//        byte[] doc_bytes=document.getBytes();
+//        String final_doc=new String(doc_bytes,"utf-8");
+//        System.out.println(document);
+        this.obj = new DocObject(document, type);
+        this.obj.parse();
 	}
 
 	/* 重载 */
@@ -147,10 +140,6 @@ public class Generator {
             }
 		}
 
-	}
-
-	public Map<String, Object> get_result() {
-		return this.result;
 	}
 
 }
