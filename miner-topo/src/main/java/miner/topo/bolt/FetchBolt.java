@@ -9,18 +9,16 @@ import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import miner.spider.httpclient.Crawl4HttpClient;
 import miner.spider.utils.MyLogger;
+import miner.spider.utils.MySysLogger;
 
 import java.util.Map;
 
 /**
  * The Bolt for downloading page
- *
- * Created by cutoutsy on 8/5/15.
  */
 public class FetchBolt extends BaseRichBolt {
 
-    private static MyLogger logger = new MyLogger(FetchBolt.class);
-
+    private static MySysLogger logger = new MySysLogger(FetchBolt.class);
     private OutputCollector _collector;
 
     public void execute(Tuple input) {
@@ -31,7 +29,6 @@ public class FetchBolt extends BaseRichBolt {
             logger.info("downloadurl:"+downloadUrl);
 
             String resource = Crawl4HttpClient.downLoadPage(downloadUrl);
-//            System.out.println("resource:"+resource);
             _collector.emit(new Values(globalInfo, resource));
             _collector.ack(input);
         } catch (Exception ex) {

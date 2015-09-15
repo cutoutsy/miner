@@ -204,12 +204,12 @@ public class XmlUtil {
         String foreignvalue = datainfo[8];
         String link = datainfo[9];
         String processWay = datainfo[10];
-        String docType = datainfo[11];
+        String lcondition = datainfo[11];
         Connection con = MysqlUtil.getConnection();
         Statement stmt = con.createStatement();
         boolean rs = stmt
-                .execute("insert into data (wid, pid, tid, dataid , description, property, rowKey, foreignKey, foreignValue, link, processWay, docType) values ('"
-                        + wid + "','" + pid + "','"+ tid + "','"+ did + "','"+ description + "','"+ property + "','"+ rowKey + "','"+ foreignkey + "','"+ foreignvalue + "','"+ link + "','"+ processWay + "','"+ docType + "')");
+                .execute("insert into data (wid, pid, tid, dataid , description, property, rowKey, foreignKey, foreignValue, link, processWay, lcondition) values ('"
+                        + wid + "','" + pid + "','"+ tid + "','"+ did + "','"+ description + "','"+ property + "','"+ rowKey + "','"+ foreignkey + "','"+ foreignvalue + "','"+ link + "','"+ processWay + "','"+ lcondition + "')");
         System.out.println("sucess!!");
     }
 
@@ -288,6 +288,20 @@ public class XmlUtil {
 //            readTaskToMysql("./conf/task_elong.xml");
 //            readDataToMysql("./conf/data_elong.xml");
 //            readRegexToMysql("./conf/dataregex_elong.xml");
+
+//            readWorkspaceToMysql("./conf/workspace_4s.xml");
+//            readProjectToMysql("./conf/project_4s.xml");
+//            readTaskToMysql("./conf/task_4s_1.xml");
+//            readTaskToMysql("./conf/task_4s_2.xml");
+
+//            readDataToMysql("./conf/data_4s_1_task1.xml");
+//            readDataToMysql("./conf/data_4s_1_task2.xml");
+//            readDataToMysql("./conf/data_4s_2_task1.xml");
+//            readDataToMysql("./conf/data_4s_2_task2.xml");
+//
+//            readRegexToMysql("./conf/dataregex_4s.xml");
+//            readRegexToMysql("./conf/dataregex_4s_task2.xml");
+
         }catch (Exception ex){
             ex.printStackTrace();
         }
