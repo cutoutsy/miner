@@ -77,5 +77,6 @@
     <module>miner-spider</module>
     <module>miner-topo</module>
     <module>miner-parse</module>
+    <module>miner-proxy</module>
   </modules>
 </project>

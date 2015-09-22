@@ -276,10 +276,12 @@ public class MysqlUtil {
 //        getData();
 //        getRegex();
 //        getData("1-1-1-1");
-        HashMap<String, Data> newData = getDataByDataInfo("1", "1", "1");
-        for (Map.Entry<String, Data> entry : newData.entrySet()) {
-            System.out.println(entry.getKey()+":"+entry.getValue().getProcessWay());
-        }
+//        HashMap<String, Data> newData = getDataByDataInfo("1", "1", "1");
+//        for (Map.Entry<String, Data> entry : newData.entrySet()) {
+//            System.out.println(entry.getKey()+":"+entry.getValue().getProcessWay());
+//        }
+
+        getConnection();
     }
 
 }
