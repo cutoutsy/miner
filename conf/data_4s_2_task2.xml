@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <data>
-    <wid>2</wid>
+    <wid>3</wid>
     <pid>1</pid>
-    <tid>1</tid>
-    <dataid>1</dataid>
-    <description>elong info</description>
+    <tid>2</tid>
+    <dataid>2</dataid>
+    <description>4s info</description>
     <property>
-        <name>success</name>
-        <name>message</name>
-        <name>value</name>
+        <name>page_link</name><!--页面地址-->
     </property>
+
     <rowkey>none</rowkey>
     <foreignkey>none</foreignkey>
     <foreignvalue>none</foreignvalue>
     <link>none</link>
-    <processway>s</processway>
+    <processway>e</processway>
     <condition>2</condition>
 </data>

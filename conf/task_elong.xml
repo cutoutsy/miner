@@ -9,6 +9,5 @@
     <description>this project for getting the cities hotel url of meituan</description>
     <urlpattern>http://hotel.elong.com/isajax/HotelFillOrder/GetOrderCountIn24Hours?hotelId=[replace]</urlpattern>
     <urlgenerate>true</urlgenerate>
-
     <isloop>false</isloop>
 </task>

@@ -7,7 +7,7 @@ import java.io.*;
  */
 public class ObjectAndByteArrayConvertUtil {
     // 做日志用
-    public static MyLogger logger = new MyLogger(ObjectAndByteArrayConvertUtil.class);
+//    public static MyLogger logger = new MyLogger(ObjectAndByteArrayConvertUtil.class);
 
     /**
      * 将字节数组转换为对象
@@ -28,7 +28,7 @@ public class ObjectAndByteArrayConvertUtil {
             bi.close();
             oi.close();
         } catch (Exception e) {
-            logger.info("ByteArrayToObject字节对象转换为对象时，出现错误--" + e.getMessage());
+//            logger.info("ByteArrayToObject字节对象转换为对象时，出现错误--" + e.getMessage());
             e.printStackTrace();
         }
         return obj;

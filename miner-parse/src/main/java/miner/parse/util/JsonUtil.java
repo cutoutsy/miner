@@ -10,7 +10,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
+/*
+ * @ name:      JsonUtil.java
+ * @ author:    white
+ * @ info:      处理JSON文档的类
+ * */
 public class JsonUtil {
 	private JSONObject root_obj;
 	/* 存放JSONObj文本的队列 */

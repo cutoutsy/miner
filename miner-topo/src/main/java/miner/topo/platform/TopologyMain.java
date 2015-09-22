@@ -4,17 +4,34 @@ import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
 import backtype.storm.topology.TopologyBuilder;
+import miner.topo.bolt.FetchBolt;
+import miner.topo.bolt.GenerateUrlBolt;
+import miner.topo.bolt.ParseBolt;
+import miner.topo.bolt.StoreBolt;
+import miner.topo.spout.BeginSpout;
 
 public class TopologyMain {
 
 	public static void main(String[] args) {
 		try{
 			TopologyBuilder topologyBuilder = new TopologyBuilder();
-			topologyBuilder.setSpout("BeginSpout", new BeginSpout(), 1);
-			topologyBuilder.setBolt("GenerateUrl", new GenerateUrlBolt(), 1).shuffleGrouping("BeginSpout");
-			topologyBuilder.setBolt("Fetch", new FetchBolt(), 2).shuffleGrouping("GenerateUrl");
-			topologyBuilder.setBolt("Parse", new ParseBolt(), 1).shuffleGrouping("Fetch");
-			topologyBuilder.setBolt("Store", new StoreBolt(), 1).shuffleGrouping("Parse");
+
+			topologyBuilder.setSpout("beginspout", new BeginSpout(), 1);
+
+			topologyBuilder.setBolt("generateurl", new GenerateUrlBolt(), 1)
+					.shuffleGrouping("beginspout");
+			topologyBuilder.setBolt("generateurl-loop-bolt", new GenerateUrlBolt(), 1)
+					.shuffleGrouping("parse", "generate-loop");
+
+			topologyBuilder.setBolt("fetch", new FetchBolt(), 2)
+					.shuffleGrouping("generateurl")
+					.shuffleGrouping("generateurl-loop-bolt");
+
+			topologyBuilder.setBolt("parse", new ParseBolt(), 2)
+					.shuffleGrouping("fetch");
+
+			topologyBuilder.setBolt("store", new StoreBolt(), 1)
+					.shuffleGrouping("parse", "store");
 			
 			Config config = new Config();
 			config.setDebug(false);

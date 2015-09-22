@@ -15,9 +15,8 @@ public class TestLog {
 //    private static Logger LOG = MySysLogger.getInstance();
     private static MySysLogger  logger = new MySysLogger(TestLog.class);
     public static void main(String[] args){
-        for(int i = 0; i < 100; i++) {
-            logger.info("============");
-            logger.error("iiiiiiiiiii");
-        }
+        String kk = "html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dt0.a0:title";
+
+        System.out.println(kk.split(":")[0]+"===="+kk.split(":")[1]);
     }
 }
