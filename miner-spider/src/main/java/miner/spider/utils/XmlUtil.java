@@ -19,8 +19,8 @@ import java.util.List;
 
 public class XmlUtil {
 
-    private static MyLogger logger = new MyLogger(XmlUtil.class);
-
+//    private static MyLogger logger = new MyLogger(XmlUtil.class);
+    private static MySysLogger logger = new MySysLogger(XmlUtil.class);
     public static Jedis redis;
 
     //This method is for read XML
@@ -299,8 +299,8 @@ public class XmlUtil {
 //            readDataToMysql("./conf/data_4s_2_task1.xml");
 //            readDataToMysql("./conf/data_4s_2_task2.xml");
 //
-//            readRegexToMysql("./conf/dataregex_4s.xml");
-//            readRegexToMysql("./conf/dataregex_4s_task2.xml");
+            readRegexToMysql("./conf/dataregex_4s.xml");
+            readRegexToMysql("./conf/dataregex_4s_task2.xml");
 
         }catch (Exception ex){
             ex.printStackTrace();

@@ -178,15 +178,15 @@ public class DocObject {
 		/* 抽取单个doc数据的规则库，多个set组成map */
 		Map<String, RuleItem> data_rule_map = new HashMap<String, RuleItem>();
 		data_rule_map.put("id_name", new RuleItem("name_name",
-				"html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dt0.a0.title"));
+				"html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dt0.a0.title"));
 		data_rule_map.put("id_phone", new RuleItem("name_phone",
-				"html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dd0.em0.b0.text"));
+				"html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd0.em0.b0.text"));
 		data_rule_map.put("id_address", new RuleItem("name_address",
-				"html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dd1.span1.text"));
+				"html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd1.span1.text"));
 		data_rule_map.put("id_sale", new RuleItem("name_sale",
-				"html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dd2.a0.text"));
+				"html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd2.a0.text"));
 		data_rule_map.put("id_page_link", new RuleItem("name_page_link",
-				"html0.body0.div8.div0.div0.ul0.div9.a_1_6_.href"));
+				"html0.body0.div8.div0.div0.div1.div0.a_1_6_.href"));
 		/* 封装数据的规则库map */
 		Set<DataItem> data_item_set = new HashSet<DataItem>();
 //		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",

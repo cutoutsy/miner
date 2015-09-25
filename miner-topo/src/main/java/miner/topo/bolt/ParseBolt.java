@@ -87,7 +87,7 @@ public class ParseBolt extends BaseRichBolt {
 							emit("store", input, globalInfo, result_str[i]);
 							logger.info(result_str[i]);
 						}
-//						emit("store", input, globalInfo, packerData.pack());
+//						emit("store", input, globalInfo, packerData.pack().toString());
 //						logger.info(packerData.pack());
 					}
 				}else if(data.getProcessWay().equals("e") || data.getProcessWay().equals("E")){
