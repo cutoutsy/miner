@@ -101,10 +101,12 @@ public class BeginSpout extends BaseRichSpout{
 					redis.hset("project_state", oneProjectName, ProjectState.die.toString());
 				}
 				String oneOriginDatasource = oneProjectDatasource.substring(0, oneProjectDatasource.length()-1);
-				if (oneProjectDatasource.contains("1")) {
+				if (oneProjectDatasource.contains("1") && !emitMessage.isEmpty()) {
 					redis.rpush(oneOriginDatasource + "2", emitMessage);
-				} else {
+				} else if(oneProjectDatasource.contains("1") && !emitMessage.isEmpty() ){
 					redis.rpush(oneOriginDatasource + "1", emitMessage);
+				}else{
+					logger.error("message exchange error!");
 				}
 			}
 		if(_runningProject.size() <= 0){

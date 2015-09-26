@@ -29,7 +29,7 @@ public class StaticValue {
     /**
      * hbase:host
      */
-    public static String hbase_host = "192.168.1.208";
+    public static String hbase_host = "192.168.1.230";
 
 
     //设置请求和传输超时时间,单位ms
