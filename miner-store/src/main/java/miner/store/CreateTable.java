@@ -10,15 +10,17 @@ import java.sql.Connection;
 
 import com.mysql.jdbc.Driver;
 import miner.spider.utils.MysqlUtil;
+import miner.spider.utils.StaticValue;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 
 public class CreateTable {
+
     private static Configuration configuration = null;
     static{
         configuration = HBaseConfiguration.create();
-        configuration.set("hbase.zookeeper.quorum", "127.0.0.1");
+        configuration.set("hbase.zookeeper.quorum", StaticValue.hbase_host);
         configuration.set("hbase.rootdir","hdfs://master:8020/hbase");
         configuration.set("hbase.master", "hdfs://master:60000");
     }
