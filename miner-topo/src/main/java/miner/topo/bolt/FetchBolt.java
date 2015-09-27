@@ -35,7 +35,6 @@ public class FetchBolt extends BaseRichBolt {
             logger.error("Download page:" +downloadUrl+" error!"+ex);
             _collector.fail(input);
         }
-
     }
 
     public void prepare(Map conf,TopologyContext context,OutputCollector collector){

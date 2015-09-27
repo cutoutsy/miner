@@ -48,27 +48,13 @@ public class Generator {
 
 	/* 抽取之前必须执行的方法 */
 	public void create_obj(String document) {
-        DocType type=DocType.HTML;
-        CharSet char_set= CharSet.UTF8;
-        type = this.judge_doc_type(document);
-//        String encoding_charset=null;
-//        if(char_set.equals(CharSet.UTF8)){
-//            encoding_charset="UTF8";
-//        }else if(char_set.equals(CharSet.GBK)){
-//            encoding_charset="GBK";
-//        } else if (char_set.equals(CharSet.GB2312)){
-//            encoding_charset="GB2312";
-//        }
-//        byte[] doc_bytes=document.getBytes();
-//        String final_doc=new String(doc_bytes,"utf-8");
-//        System.out.println(document);
+        DocType type = this.judge_doc_type(document);
         this.obj = new DocObject(document, type);
         this.obj.parse();
 	}
 
 	/* 重载 */
 	public void create_obj(String path, CharSet char_set) {
-
 		this.obj = new DocObject(path, char_set);
 		this.obj.parse();
 	}
