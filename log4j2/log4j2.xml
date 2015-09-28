@@ -13,8 +13,8 @@
     <Loggers>
         <!-- debug级别 -->
         <Root level="debug">
-            <!--<AppenderRef ref="A1"/>-->
-            <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="A1"/>
+            <!--<AppenderRef ref="STDOUT"/>-->
         </Root>
     </Loggers>
 </Configuration>
