@@ -23,12 +23,15 @@ public class RedisUtil {
 	private JedisPool init_jedis_pool(String ip, int port, String password) {
 		if (pool == null) {
 			int max_active = 1000;
+            int max_total = 1000;
 			int max_idle = 1000;
 			int max_wait = 100;
 			JedisPoolConfig config = new JedisPoolConfig();
-			config.setMaxActive(max_active);
+//			config.setMaxActive(max_active);
+            config.setMaxWaitMillis(1000 * max_wait);
 			config.setMaxIdle(max_idle);
-			config.setMaxWait(1000 * max_wait);
+            config.setMaxTotal(max_total);
+//			config.setMaxWait(1000 * max_wait);
 			config.setTestOnBorrow(true);
 			config.setTestOnReturn(true);
 			try {
@@ -71,5 +74,15 @@ public class RedisUtil {
 	public void clean_set(Jedis jedis, String set_name) {
 		jedis.del(set_name);
 	}
+
+    /* 从set中随机取元素 */
+    public String pick(Jedis jedis,String set_name){
+        return jedis.spop(set_name);
+    }
+
+    /* 保存单个元素到set中 */
+    public void add(Jedis jedis,String set_name,String element){
+        jedis.sadd(set_name,element);
+    }
 
 }
