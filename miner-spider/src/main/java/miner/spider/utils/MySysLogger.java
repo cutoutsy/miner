@@ -18,8 +18,8 @@ public class MySysLogger {
     private Logger logger = null;
     static {
         try {
-            String config = System.getProperty("user.dir");
-            source = new ConfigurationSource(new FileInputStream(config + "/log4j2/log4j2.xml"));
+//            String config = System.getProperty("user.dir");
+            source = new ConfigurationSource(new FileInputStream("/usr/local/storm/conf/log4j2.xml"));
             Configurator.initialize(null, source);
         } catch (Exception ex) {
             ex.printStackTrace();

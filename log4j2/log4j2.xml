@@ -1,33 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<configuration status="error">
-    <appenders>
-        <Console name="Console" target="SYSTEM_OUT">
-            <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+<Configuration>
+    <!-- Appenders 输出目的地 -->
+    <Appenders>
+        <!-- 配置日志输出文件名字     追加读写     host地址  端口    -->
+        <Socket name="A1" host="192.168.1.220" port="5000">
+            <SerializedLayout/>
+        </Socket>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
         </Console>
-
-        <File name="log" fileName="log/test.log" append="false">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
-        </File>
-
-        <File name="ERROR" fileName="log/error.log">
-            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout pattern="%d{yyyy.MM.dd 'at' HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"/>
-        </File>
-
-        <RollingFile name="RollingFile" fileName="log/app.log" filePattern="log/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
-            <SizeBasedTriggeringPolicy size="50MB"/>
-        </RollingFile>
-    </appenders>
-
-    <loggers>
-        <root level="trace">
-            <appender-ref ref="Console"/>
-            <!--<appender-ref ref="RollingFile"/>-->
-            <appender-ref ref="ERROR"/>
-            <appender-ref ref="log"/>
-        </root>
-    </loggers>
-</configuration>
+    </Appenders>
+    <Loggers>
+        <!-- debug级别 -->
+        <Root level="debug">
+            <!--<AppenderRef ref="A1"/>-->
+            <AppenderRef ref="STDOUT"/>
+        </Root>
+    </Loggers>
+</Configuration>
