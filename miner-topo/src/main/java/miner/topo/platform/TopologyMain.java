@@ -16,7 +16,7 @@ public class TopologyMain {
 		try{
 			TopologyBuilder topologyBuilder = new TopologyBuilder();
 
-			topologyBuilder.setSpout("beginspout", new BeginSpout(), 2);
+			topologyBuilder.setSpout("beginspout", new BeginSpout(), 1);
 
 			topologyBuilder.setBolt("generateurl", new GenerateUrlBolt(), 2)
 					.shuffleGrouping("beginspout");
@@ -44,6 +44,8 @@ public class TopologyMain {
 				LocalCluster cluster = new LocalCluster();
 				cluster.submitTopology("test", config, topologyBuilder.createTopology());
 			}
+
+
 		}catch(Exception e){
 			e.printStackTrace();
 		}
