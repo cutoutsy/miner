@@ -22,7 +22,7 @@ public class ProxyBolt extends BaseBasicBolt {
     private OutputCollector collector;
     private Jedis jedis;
     private RedisUtil ru;
-    private Map<String,TaskProxySetting> workspace_setting=new HashMap<String, TaskProxySetting>();
+    private Map<String,ProxySetting> workspace_setting=new HashMap<String, ProxySetting>();
 
     /* 从proxy_pool更新单个workspace的代理池，在workspace初始和运行中两种情况都包含 */
     private void refresh_workspace_proxy_pool(String workspace_id){
@@ -59,9 +59,9 @@ public class ProxyBolt extends BaseBasicBolt {
 
         /* ------加入workspace的setting------ */
         if(!workspace_setting.containsKey(workspace_id)){
-            workspace_setting.put(workspace_id,new TaskProxySetting(delay_time));
+            workspace_setting.put(workspace_id,new ProxySetting(delay_time));
         }
-        TaskProxySetting current_workspace_setting=workspace_setting.get(workspace_id);
+        ProxySetting current_workspace_setting=workspace_setting.get(workspace_id);
 //        System.err.println(current_workspace_setting==null);
         /* ----更新当前workspace的IP pool---- */
         Long last_update_time = current_workspace_setting.get_last_update_time();
@@ -91,9 +91,9 @@ public class ProxyBolt extends BaseBasicBolt {
         ru.add(jedis, workspace_id + "_black_set", proxy + "_" + System.currentTimeMillis());
         current_workspace_setting.set_last_action_time(System.currentTimeMillis());
         /* -------------回收--------------- */
-        for(Map.Entry<String,TaskProxySetting> entry:workspace_setting.entrySet()) {
+        for(Map.Entry<String,ProxySetting> entry:workspace_setting.entrySet()) {
             String key=entry.getKey();
-            TaskProxySetting tps=entry.getValue();
+            ProxySetting tps=entry.getValue();
             Long last_action_time = tps.get_last_action_time();
             Long elapse_time = System.currentTimeMillis() - last_action_time;
             int dead_time = tps.get_dead_time();

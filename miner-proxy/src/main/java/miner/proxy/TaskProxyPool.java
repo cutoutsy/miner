@@ -25,7 +25,7 @@ public class TaskProxyPool implements Runnable {
 		return this.task_handle_name;
 	}
 
-	public TaskProxyPool(TaskProxySetting setting, RedisUtil ru,
+	public TaskProxyPool(ProxySetting setting, RedisUtil ru,
 			String task_handle_name) {
 		this.task_handle_name = task_handle_name;
 		this.delay_time = setting.get_delay_time();
