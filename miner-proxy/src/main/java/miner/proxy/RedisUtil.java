@@ -85,4 +85,9 @@ public class RedisUtil {
         jedis.sadd(set_name,element);
     }
 
+    /* 查询set中的元素数量 */
+    public Long num(Jedis jedis,String set_name){
+        return jedis.scard(set_name);
+    }
+
 }

@@ -1,5 +1,7 @@
 package miner.proxy;
 
+import com.sun.javafx.tk.Toolkit;
+
 /**
  * @author white
  * @name TaskProxySetting
@@ -7,9 +9,19 @@ package miner.proxy;
  * @extra 这里写成一个类来封装一些配置，应对以后需要加一些东西的情况
  */
 public class TaskProxySetting {
-	private int delay_time;
-	private int dead_time;
+	private int delay_time = 1000*2;
+	private int dead_time = 1000*30;
     private Long last_action_time;
+    /* 上次更新redis的时间 */
+    private Long last_update_time=0l;
+
+    public void set_last_update_time(Long last_update_time){
+        this.last_update_time=last_update_time;
+    }
+
+    public Long get_last_update_time(){
+        return this.last_update_time;
+    }
 
     public void set_last_action_time(Long last_action_time){this.last_action_time=last_action_time;}
 
@@ -31,7 +43,12 @@ public class TaskProxySetting {
 		return this.delay_time;
 	}
 
+    public TaskProxySetting(){
+        this.last_action_time=System.currentTimeMillis();
+    }
+
 	public TaskProxySetting(int delay_time) {
+        this();
 		this.delay_time = delay_time;
 	}
 
