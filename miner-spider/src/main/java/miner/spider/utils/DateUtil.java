@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by cutoutsy on 7/23/15.
+ * 日期工具类
  */
 public class DateUtil {
     public static int dateStringLength = "yyyy-MM-dd HH:mm:ss".length();
@@ -108,7 +108,7 @@ public class DateUtil {
         }
     }
 
-    public String getStringByDate(Date date) throws Exception {
+    public static String getStringByDate(Date date) throws Exception {
         return yyyyMMddHHmmss.format(date);
     }
 
@@ -230,9 +230,8 @@ public class DateUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(System.currentTimeMillis()/1000);
-        long s = System.currentTimeMillis();
-        String k = TimeStamp2Date(s,"HH");
-        System.out.println(k);
+       // Date date = new Date();
+
+        System.out.println(GetTodayDate());
     }
 }

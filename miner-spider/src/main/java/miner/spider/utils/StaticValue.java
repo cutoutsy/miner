@@ -29,8 +29,11 @@ public class StaticValue {
     /**
      * hbase:host
      */
-    public static String hbase_host = "192.168.1.230";
+    public static String hbase_zookeeper_host = "192.168.1.230";
 
+    // 集群日志存放目录
+//    public static String logPathDir = "/usr/local/storm/logs/";
+    public static String logPathDir = "/Users/cutoutsy/";
 
     //设置请求和传输超时时间,单位ms
     public static int http_connection_timeout = 5000; //请求超时时间

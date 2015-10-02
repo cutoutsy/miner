@@ -5,9 +5,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * Created by cutoutsy on 15/9/28.
+ * 日志服务器
  */
-public class TestServer {
+public class LogServer {
 
     public static void main(String[] args) throws IOException{
         ServerSocket socket = new ServerSocket(5000);

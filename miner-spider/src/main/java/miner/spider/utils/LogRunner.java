@@ -4,9 +4,10 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.util.Date;
 
 /**
- * Created by cutoutsy on 15/9/28.
+ * 日志运行线程
  */
 public class LogRunner implements Runnable{
 
@@ -23,8 +24,35 @@ public class LogRunner implements Runnable{
     public void run(){
         try{
             while(true){
+
+                StringBuilder logStringBuilder = new StringBuilder("");
+
+                //将集群日志写入文件
+                String logTime = DateUtil.getStringByDate(new Date());
+                logStringBuilder.append(logTime);
                 Object obj = ois.readObject();
-                System.out.println(obj.toString()+"-----------");
+                logStringBuilder.append(" " + obj.toString()+"\n");
+
+                String todayDate = DateUtil.GetTodayDate();
+                String logPath = StaticValue.logPathDir+"miner-"+todayDate+".log";
+
+                if(FileOperatorUtil.existFile(logPath)){
+                    if(FileOperatorUtil.getFileSize(logPath) >= 100){
+                        String logRenamePath = StaticValue.logPathDir+"miner-"+ logTime + ".log";
+                        if(FileOperatorUtil.renameFile(logPath, logRenamePath)) {
+                            FileOperatorUtil.createFile(logPath);
+                            IOUtil.writeFile(logPath, logStringBuilder.toString(), true, StaticValue.default_encoding);
+                        }else{
+                            System.out.println("rename file failed!");
+                        }
+                    }else {
+                        IOUtil.writeFile(logPath, logStringBuilder.toString(), true, StaticValue.default_encoding);
+                    }
+                }else{
+                    FileOperatorUtil.createFile(logPath);
+                    IOUtil.writeFile(logPath, logStringBuilder.toString(), true, StaticValue.default_encoding);
+                }
+
             }
         }catch (java.io.EOFException e){
             //读取的时候到达尾端抛出的异常,屏蔽掉

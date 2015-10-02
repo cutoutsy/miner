@@ -3,8 +3,9 @@
     <!-- Appenders 输出目的地 -->
     <Appenders>
         <!-- 配置日志输出文件名字     追加读写     host地址  端口    -->
-        <Socket name="A1" host="192.168.1.220" port="5000">
+        <Socket name="A1" host="127.0.0.1" port="5000">
             <SerializedLayout/>
+            <!--<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>-->
         </Socket>
         <Console name="STDOUT" target="SYSTEM_OUT">
             <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
@@ -14,7 +15,14 @@
         <!-- debug级别 -->
         <Root level="debug">
             <AppenderRef ref="A1"/>
-            <!--<AppenderRef ref="STDOUT"/>-->
+            <AppenderRef ref="STDOUT"/>
         </Root>
     </Loggers>
 </Configuration>
+
+<!--
+Logger=miner.spider.utils.MysqlUtil Level=DEBUG Message=debug
+Logger=miner.spider.utils.MysqlUtil Level=INFO Message=info
+Logger=miner.spider.utils.MysqlUtil Level=WARN Message=warn
+Logger=miner.spider.utils.MysqlUtil Level=ERROR Message=error...
+-->

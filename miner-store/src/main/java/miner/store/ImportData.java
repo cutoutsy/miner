@@ -28,7 +28,7 @@ public class ImportData {
     private static Configuration configuration = null;
     static{
         configuration = HBaseConfiguration.create();
-        configuration.set("hbase.zookeeper.quorum", StaticValue.hbase_host);
+        configuration.set("hbase.zookeeper.quorum", StaticValue.hbase_zookeeper_host);
         configuration.set("hbase.rootdir","hdfs://master:8020/hbase");
         configuration.set("hbase.master", "hdfs://master:60000");
     }

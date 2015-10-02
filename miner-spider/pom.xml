@@ -71,7 +71,7 @@
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
               <!--指明main方法所在的类-->
-              <mainClass>miner.spider.utils.TestServer</mainClass>
+              <mainClass>miner.spider.utils.LogServer</mainClass>
             </manifest>
           </archive>
         </configuration>

@@ -7,7 +7,8 @@ import java.util.*;
  * Created by cutoutsy on 7/24/15.
  */
 public class FileOperatorUtil {
-    public static MyLogger logger = new MyLogger(FileOperatorUtil.class);
+
+    private static MySysLogger logger = new MySysLogger(FileOperatorUtil.class);
 
     // 创建root_path的所在文件夹的所有路径
     public static boolean createRootDir(String root_path) {
@@ -49,6 +50,61 @@ public class FileOperatorUtil {
         return false;
     }
 
+    //创建文件
+    public static boolean createFile(String destFileName){
+        File file = new File(destFileName);
+        if(file.exists()){
+            logger.error("create single file " + destFileName + " failed,file exist.");
+            return false;
+        }
+        if(destFileName.endsWith(File.separator)){
+            logger.error("create single file " + destFileName + " failed,file can't be directory.");
+            return false;
+        }
+        //判断目标文件所在目录是否存在
+        if(!file.getParentFile().exists()){
+            if(!file.getParentFile().mkdirs()){
+                logger.error("create file directory failed!");
+                return false;
+            }
+        }
+        //创建目标文件
+        try{
+            if(file.createNewFile()){
+                logger.info("create single file " + destFileName + " succeed!");
+                return true;
+            }else{
+                logger.info("create single file " + destFileName + " failed!");
+                return false;
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+            logger.error("create single file " + destFileName + "failed!" + e.getMessage());
+            return false;
+        }
+    }
+
+    //重命名文件
+    public static boolean renameFile(String oldName, String newName){
+        if(!oldName.equals(newName)){
+            File oldFile = new File(oldName);
+            File newFile = new File(newName);
+            if(!oldFile.exists()){
+                return false;
+            }
+            if(newFile.exists()){
+                logger.error(newName + " file exist!");
+                return false;
+            }else{
+                oldFile.renameTo(newFile);
+                return true;
+            }
+        }else{
+            logger.error("new file name same with old file name!");
+            return false;
+        }
+    }
+
     // 创建root_path的所在文件夹的所有路径
     public static void createNewFile(String filePath) {
         File f = new File(filePath);
@@ -72,6 +128,7 @@ public class FileOperatorUtil {
         return file.exists() && file.isDirectory();
     }
 
+    // 判断文件是否存在
     public static boolean existFile(String filepath){
         return new File(filepath).exists();
     }
@@ -133,6 +190,14 @@ public class FileOperatorUtil {
 
         ps.flush();
         ps.close();
+    }
+
+    //获得文件大小
+    public static long getFileSize(String filePath){
+        File f = new File(filePath);
+        long size	= f.length();
+
+        return size/(1024*1024);
     }
 
     //删除文件夹
