@@ -42,12 +42,16 @@ public class CreateTable {
             if(wid.equals(tableWid)&&pid.equals(tablePid)){
                 String tid = rs.getString("tid");
                 String dataid = rs.getString("dataid");
+                String processWay = rs.getString("processWay");
                 String foreignkey = rs.getString("foreignkey");
                  if(foreignkey.equals("none")){
                      flag = false;
                     }
-                 String tablename = wid+pid+tid+dataid;
-                 createTable(configuration, tablename, flag);
+                // 在hbase创建data处理方式为s的相应的表
+                if(processWay.equals("s") || processWay.equals("S")) {
+                    String tablename = wid + pid + tid + dataid;
+                    createTable(configuration, tablename, flag);
+                }
             }else{
                 break;
             }

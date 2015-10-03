@@ -7,29 +7,30 @@ public class StaticValue {
     /**
      * redis host定义和密码认证
      */
-//    public static String redis_host = "127.0.0.1";
-    public static String redis_host = "192.168.1.211";
+    public static String redis_host = "127.0.0.1";
+//    public static String redis_host = "192.168.1.211";
     public static String redis_auth = "xidian123";
 
     /**
      * mysql:host, username, password, port, database
      */
-//    public static String mysql_host = "127.0.0.1";
-//    public static String mysql_user = "root";
-//    public static String mysql_port = "3307";
-//    public static String mysql_password = "simple";
-//    public static String mysql_database = "platform_config";
-
-    public static String mysql_host = "192.168.1.212";
+    public static String mysql_host = "127.0.0.1";
     public static String mysql_user = "root";
-    public static String mysql_port = "3306";
-    public static String mysql_password = "LNkiller&212";
+    public static String mysql_port = "3307";
+    public static String mysql_password = "simple";
     public static String mysql_database = "platform_config";
+
+//    public static String mysql_host = "192.168.1.212";
+//    public static String mysql_user = "root";
+//    public static String mysql_port = "3306";
+//    public static String mysql_password = "LNkiller&212";
+//    public static String mysql_database = "platform_config";
 
     /**
      * hbase:host
      */
-    public static String hbase_zookeeper_host = "192.168.1.230";
+//    public static String hbase_zookeeper_host = "192.168.1.230";
+    public static String hbase_zookeeper_host = "127.0.0.1";
 
     // 集群日志存放目录
 //    public static String logPathDir = "/usr/local/storm/logs/";
