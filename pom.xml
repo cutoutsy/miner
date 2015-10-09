@@ -78,6 +78,7 @@
     <module>miner-topo</module>
     <module>miner-parse</module>
     <module>miner-proxy</module>
+    <module>miner-monitor</module>
   </modules>
 
   <build>
