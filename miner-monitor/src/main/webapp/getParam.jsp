@@ -1,0 +1,51 @@
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.HashMap" %>
+<%
+  Map<String,String> wmap = new HashMap<String,String>();
+  Map<String,String> pmap = new HashMap<String,String>();
+  Map<String,String> tmap = new HashMap<String,String>();
+  Map<String,String> dmap = new HashMap<String,String>();
+  Map<String,String> rmap = new HashMap<String,String>();
+  wmap.put("wwid",request.getParameter("wwid"));
+  wmap.put("wname",request.getParameter("wname"));
+  wmap.put("wdescription",request.getParameter("wdescription"));
+  pmap.put("pwid",request.getParameter("pwid"));
+  pmap.put("ppid",request.getParameter("ppid"));
+  pmap.put("pname",request.getParameter("pname"));
+  pmap.put("pdescription",request.getParameter("pdescription"));
+  pmap.put("pdatasource",request.getParameter("pdatasource"));
+  pmap.put("pschedule",request.getParameter("pschedule"));
+  pmap.put("pprecondition",request.getParameter("pprecondition"));
+  tmap.put("twid",request.getParameter("twid"));
+  tmap.put("tpid",request.getParameter("tpid"));
+  tmap.put("ttid",request.getParameter("ttid"));
+  tmap.put("tdescription",request.getParameter("tdescription"));
+  tmap.put("turlpattern",request.getParameter("turlpattern"));
+  tmap.put("turlgenerate",request.getParameter("turlgenerate"));
+  tmap.put("tisloop",request.getParameter("tisloop"));
+  dmap.put("dwid",request.getParameter("dwid"));
+  dmap.put("dpid",request.getParameter("dpid"));
+  dmap.put("dtid",request.getParameter("dtid"));
+  dmap.put("ddataid",request.getParameter("ddataid"));
+  dmap.put("ddescription",request.getParameter("ddescription"));
+  dmap.put("dname1",request.getParameter("dname1"));
+  dmap.put("dname2",request.getParameter("dname2"));
+  dmap.put("dname3",request.getParameter("dname3"));
+  dmap.put("dname4",request.getParameter("dname4"));
+  dmap.put("dname5",request.getParameter("dname5"));
+  dmap.put("dname6",request.getParameter("dname6"));
+  dmap.put("dname7",request.getParameter("dname7"));
+  dmap.put("dname8",request.getParameter("dname8"));
+  dmap.put("dname9",request.getParameter("dname9"));
+  dmap.put("dname10",request.getParameter("dname10"));
+  dmap.put("drowkey",request.getParameter("drowkey"));
+  dmap.put("dforeignkey",request.getParameter("dforeignkey"));
+  dmap.put("dforeignvalue",request.getParameter("dforeignvalue"));
+  dmap.put("dlink",request.getParameter("dlink"));
+  dmap.put("dprocessway",request.getParameter("dprocessway"));
+  rmap.put("rwid",request.getParameter("rwid"));
+  rmap.put("rpid",request.getParameter("rpid"));
+  rmap.put("rtid",request.getParameter("rtid"));
+  rmap.put("rtagname",request.getParameter("rtagname"));
+  rmap.put("rpath",request.getParameter("rpath"));
+%>
