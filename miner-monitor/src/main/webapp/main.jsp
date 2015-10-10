@@ -116,16 +116,68 @@
           <font size="6" color="black">regex:</font>
           <br>
           <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;wid:</font>
-          <input type="text" name="rwid">
+          <input type="text" name="rwid5">
           <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;pid:</font>
-          <input type="text" name="rpid">
+          <input type="text" name="rpid5">
           <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;tid:</font>
-          <input type="text" name="rtid">
+          <input type="text" name="rtid5">
           <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;tagname:</font>
-          <input type="text" name="rtagname">
+          <input type="text" name="rtagname5">
           <br>
           <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;path:</font>
-          <input type="text" name="rpath">
+          <input type="text" name="rpath5">
+          <br>
+          <br>
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;wid:</font>
+          <input type="text" name="rwid1">
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;pid:</font>
+          <input type="text" name="rpid1">
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;tid:</font>
+          <input type="text" name="rtid1">
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;tagname:</font>
+          <input type="text" name="rtagname1">
+          <br>
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;path:</font>
+          <input type="text" name="rpath1">
+          <br>
+          <br>
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;wid:</font>
+          <input type="text" name="rwid2">
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;pid:</font>
+          <input type="text" name="rpid2">
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;tid:</font>
+          <input type="text" name="rtid2">
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;tagname:</font>
+          <input type="text" name="rtagname2">
+          <br>
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;path:</font>
+          <input type="text" name="rpath2">
+          <br>
+          <br>
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;wid:</font>
+          <input type="text" name="rwid3">
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;pid:</font>
+          <input type="text" name="rpid3">
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;tid:</font>
+          <input type="text" name="rtid3">
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;tagname:</font>
+          <input type="text" name="rtagname3">
+          <br>
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;path:</font>
+          <input type="text" name="rpath3">
+          <br>
+          <br>
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;wid:</font>
+          <input type="text" name="rwid4">
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;pid:</font>
+          <input type="text" name="rpid4">
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;tid:</font>
+          <input type="text" name="rtid4">
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;tagname:</font>
+          <input type="text" name="rtagname4">
+          <br>
+          <font size="5" color="black">&nbsp; &nbsp; &nbsp;&nbsp;path:</font>
+          <input type="text" name="rpath4">
           <br>
               <input type="submit",value="提交">
         </form>
