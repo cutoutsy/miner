@@ -13,6 +13,7 @@ import java.util.Set;
 public class ProxyMonitor {
     private Jedis jedis;
 
+    /* 两种构造器 */
     public ProxyMonitor(String ip_address, int port, String password){
         jedis=new RedisUtil(ip_address, port, password).get_jedis_instance();
     }
@@ -48,12 +49,14 @@ public class ProxyMonitor {
         return this.get_set("workspace_pool");
     }
 
+    /* 访问单个workspace的IP池，黑白名单数量用“_”隔开 */
     public String get_single_workspace_proxy_count(String workspace_name){
         int white_size=jedis.smembers(workspace_name+"_white_set").size();
         int black_size=jedis.smembers(workspace_name+"_black_set").size();
         return white_size+"_"+black_size;
     }
 
+    /* 得到关于每个workspace中黑白名单中IP的数量，格式为workspace_name->white_num _ black_num */
     public Map<String,String> get_workspaces_proxy_count(){
         Set<String> workspace_names=this.get_workspace_pool_set();
         Map<String,String> return_map=new HashMap<String,String>();

@@ -39,8 +39,8 @@ public class ProxyBolt extends BaseBasicBolt {
                 ru.add(jedis,workspace_id+"_white_set",tmp);
             }
         }
-        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-                .format(new Date()) + " refresh wid:" + workspace_id + " workspace proxy pool");
+//        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+//                .format(new Date()) + " refresh wid:" + workspace_id + " workspace proxy pool");
     }
 
     private String get_workspace_id(String global_info){
@@ -48,6 +48,7 @@ public class ProxyBolt extends BaseBasicBolt {
     }
 
     public void execute(Tuple tuple, BasicOutputCollector collector) {
+        /* 这个初始化能不能放在prepare方法里面？ */
         ru = new RedisUtil("127.0.0.1",6379,"password");
         jedis = ru.get_jedis_instance();
         String global_info = (String) tuple.getValue(0);
@@ -60,12 +61,16 @@ public class ProxyBolt extends BaseBasicBolt {
         /* ------加入workspace的setting------ */
         if(!workspace_setting.containsKey(workspace_id)){
             workspace_setting.put(workspace_id,new ProxySetting(delay_time));
+            /*-----IMPORTANT!!! 这里记录了使用代理的所有workspace------*/
+            jedis.sadd("workspace_pool",workspace_id);
         }
         ProxySetting current_workspace_setting=workspace_setting.get(workspace_id);
 //        System.err.println(current_workspace_setting==null);
         /* ----更新当前workspace的IP pool---- */
         Long last_update_time = current_workspace_setting.get_last_update_time();
-        /* 暂且设置成10秒更新一次 */
+        /* 暂且设置成10秒更新一次
+         * 也可以强制每次都更新
+         * */
         if(System.currentTimeMillis()-last_update_time>1000*10){
             refresh_workspace_proxy_pool(workspace_id);
             current_workspace_setting.set_last_update_time(System.currentTimeMillis());
@@ -99,9 +104,11 @@ public class ProxyBolt extends BaseBasicBolt {
             int dead_time = tps.get_dead_time();
             if (elapse_time > dead_time) {
                 /* 在Redis中删除这个set */
-                ru.clean_set(jedis, workspace_id + "_white_set");
-                ru.clean_set(jedis, workspace_id + "_black_set");
+                ru.clean_set(jedis, key + "_white_set");
+                ru.clean_set(jedis, key + "_black_set");
                 workspace_setting.remove(key);
+                /* 在这里也要删除workspace_id */
+                jedis.srem("workspace_pool",workspace_id);
             }
         }
         collector.emit(new Values(global_info, download_url,proxy));
