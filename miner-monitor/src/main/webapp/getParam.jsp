@@ -1,11 +1,17 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.ArrayList" %>
 <%
   Map<String,String> wmap = new HashMap<String,String>();
   Map<String,String> pmap = new HashMap<String,String>();
   Map<String,String> tmap = new HashMap<String,String>();
   Map<String,String> dmap = new HashMap<String,String>();
   Map<String,String> rmap = new HashMap<String,String>();
+  Map<String,String> rmap1 = new HashMap<String,String>();
+  Map<String,String> rmap2 = new HashMap<String,String>();
+  Map<String,String> rmap3 = new HashMap<String,String>();
+  Map<String,String> rmap4 = new HashMap<String,String>();
+  ArrayList<Map<String,String>> list = new ArrayList<Map<String, String>>();
   wmap.put("wwid",request.getParameter("wwid"));
   wmap.put("wname",request.getParameter("wname"));
   wmap.put("wdescription",request.getParameter("wdescription"));
@@ -43,9 +49,35 @@
   dmap.put("dforeignvalue",request.getParameter("dforeignvalue"));
   dmap.put("dlink",request.getParameter("dlink"));
   dmap.put("dprocessway",request.getParameter("dprocessway"));
-  rmap.put("rwid",request.getParameter("rwid"));
-  rmap.put("rpid",request.getParameter("rpid"));
-  rmap.put("rtid",request.getParameter("rtid"));
-  rmap.put("rtagname",request.getParameter("rtagname"));
-  rmap.put("rpath",request.getParameter("rpath"));
+
+  rmap.put("rwid5",request.getParameter("rwid5"));
+  rmap.put("rpid5",request.getParameter("rpid5"));
+  rmap.put("rtid5",request.getParameter("rtid5"));
+  rmap.put("rtagname5",request.getParameter("rtagname5"));
+  rmap.put("rpath5",request.getParameter("rpath5"));
+  rmap1.put("rwid1",request.getParameter("rwid1"));
+  rmap1.put("rpid1",request.getParameter("rpid1"));
+  rmap1.put("rtid1",request.getParameter("rtid1"));
+  rmap1.put("rtagname1",request.getParameter("rtagname1"));
+  rmap1.put("rpath1",request.getParameter("rpath1"));
+  rmap2.put("rwid2",request.getParameter("rwid2"));
+  rmap2.put("rpid2",request.getParameter("rpid2"));
+  rmap2.put("rtid2",request.getParameter("rtid2"));
+  rmap2.put("rtagname2",request.getParameter("rtagname2"));
+  rmap2.put("rpath2",request.getParameter("rpath2"));
+  rmap3.put("rwid3",request.getParameter("rwid3"));
+  rmap3.put("rpid3",request.getParameter("rpid3"));
+  rmap3.put("rtid3",request.getParameter("rtid3"));
+  rmap3.put("rtagname3",request.getParameter("rtagname3"));
+  rmap3.put("rpath3",request.getParameter("rpath3"));
+  rmap4.put("rwid4",request.getParameter("rwid4"));
+  rmap4.put("rpid4",request.getParameter("rpid4"));
+  rmap4.put("rtid4",request.getParameter("rtid4"));
+  rmap4.put("rtagname4",request.getParameter("rtagname4"));
+  rmap4.put("rpath4",request.getParameter("rpath4"));
+  list.add(rmap);
+  list.add(rmap1);
+  list.add(rmap2);
+  list.add(rmap3);
+  list.add(rmap4);
 %>
