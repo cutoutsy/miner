@@ -50,7 +50,7 @@ public class ProxyBolt extends BaseBasicBolt {
     }
 
     public void execute(Tuple tuple, BasicOutputCollector collector) {
-        ru = new RedisUtil("127.0.0.1",6379,"password");
+        ru = new RedisUtil("127.0.0.1",6379,"xidian123");
         jedis = ru.get_jedis_instance();
         String global_info = (String) tuple.getValue(0);
         String download_url= (String) tuple.getValue(1);
@@ -106,7 +106,7 @@ public class ProxyBolt extends BaseBasicBolt {
                 workspace_setting.remove(key);
             }
         }
-        collector.emit(new Values(global_info, download_url,proxy));
+        collector.emit(new Values(global_info, download_url, proxy));
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {

@@ -88,7 +88,7 @@
         String property = null;
         public static final Properties info = new Properties();
         //public static final String url ="jdbc:mysql://127.0.0.1/storm?useUnicode=true&characterEncoding=utf8";
-        public static final String url ="jdbc:mysql://localhost/platform_config?useUnicode=true&characterEncoding=utf8";
+        public static final String url ="jdbc:mysql://localhost:3307/platform_config?useUnicode=true&characterEncoding=utf8";
     %>
     <%@include file="getParam.jsp"%>
     <%

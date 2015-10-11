@@ -85,7 +85,7 @@ public class ParseBolt extends BaseRichBolt {
 						String[] result_str=packerData.pack();
 						for(int i=0;i<result_str.length;i++){
 							emit("store", input, globalInfo, result_str[i]);
-							logger.info(result_str[i]);
+//							logger.info(result_str[i]);
 						}
 //						emit("store", input, globalInfo, packerData.pack().toString());
 //						logger.info(packerData.pack());
@@ -98,7 +98,7 @@ public class ParseBolt extends BaseRichBolt {
 						String[] result_str=packerData.pack();
 						for(int i=0;i<result_str.length;i++){
 							emit("generate-loop", input, loopTaskInfo, result_str[i]);
-							logger.info(result_str[i]);
+//							logger.info(result_str[i]);
 						}
 //						emit("generate-loop", input, loopTaskInfo, packerData.pack());
 //						logger.info(packerData.pack());

@@ -28,7 +28,7 @@ public class StoreBolt extends BaseBasicBolt {
 			logger.info("globalINfo:"+globalInfo);
 			logger.info("data:" + data);
 
-			ImportData.importData(data);
+			//ImportData.importData(data);
 		} catch (Exception ex) {
 			logger.error("store error!"+ex);
 			ex.printStackTrace();

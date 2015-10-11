@@ -9,6 +9,7 @@ import java.sql.Connection;
 
 
 import com.mysql.jdbc.Driver;
+import miner.spider.utils.MySysLogger;
 import miner.spider.utils.MysqlUtil;
 import miner.spider.utils.StaticValue;
 import org.apache.hadoop.conf.Configuration;
@@ -16,6 +17,8 @@ import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 
 public class CreateTable {
+
+    private static MySysLogger logger = new MySysLogger(CreateTable.class);
 
     private static Configuration configuration = null;
     static{
@@ -26,8 +29,8 @@ public class CreateTable {
     }
     public static void main(String args[]) throws SQLException{
 
-        new CreateTable().mysqlCheck("1","1");
-//        new CreateTable().createTable(configuration, "1", true);
+        //new CreateTable().mysqlCheck("1","1");
+        new CreateTable().createTable(configuration, "1", true);
     }
 
     public static void mysqlCheck(String tableWid,String tablePid) throws SQLException{
@@ -78,12 +81,15 @@ public class CreateTable {
         } catch (MasterNotRunningException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            logger.error("Master Not Running "+ e.getMessage());
         } catch (ZooKeeperConnectionException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            logger.error("Zookeeper Connect Exception " + e.getMessage());
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            logger.error("IO exception"+ e.getMessage());
         }
     }
 
