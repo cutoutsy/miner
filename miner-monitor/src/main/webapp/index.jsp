@@ -87,7 +87,8 @@
         String SQL= null;
         String property = null;
         public static final Properties info = new Properties();
-        public static final String url ="jdbc:mysql://127.0.0.1/storm?useUnicode=true&characterEncoding=utf-8";
+        //public static final String url ="jdbc:mysql://127.0.0.1/storm?useUnicode=true&characterEncoding=utf8";
+        public static final String url ="jdbc:mysql://localhost:3307/platform_config?useUnicode=true&characterEncoding=utf8";
     %>
     <%@include file="getParam.jsp"%>
     <%
@@ -95,7 +96,7 @@
         %>
     <%
             info.put("user","root");
-            info.put("password", "root");
+            info.put("password", "simple");
             //String string = request.getParameter("wid");
             Driver driver = new Driver();
             Connection con = driver.connect(url, info);
@@ -108,7 +109,7 @@
             statement.execute(SQL);
         for(Map<String,String> map : list){
             SQL = insertsqlreg(map, "regex");
-            if(SQL!=null){
+            if(SQL != null){
             statement.execute(SQL);
             }
         }

@@ -45,7 +45,6 @@ public class BeginSpout extends BaseRichSpout{
 	}
 
 	public void nextTuple() {
-
 		try {
 			Thread.sleep(1000);
 			PlatformUtils.registerProject(_qManager);
@@ -58,11 +57,14 @@ public class BeginSpout extends BaseRichSpout{
 					Project pj = new Project(tempProjectName);
 					//create table in hbase
 					CreateTable.mysqlCheck(pj.getWid(), pj.getPid());
+
 					String tempDatasource = pj.getDatasource();
 					if (redis.llen(tempDatasource + "1") == redis.smembers(tempDatasource).size()) {
 						_runningProject.put(newAddProject.get(i), tempDatasource + "1");
-					} else {
+					} else if(redis.llen(tempDatasource + "2") == redis.smembers(tempDatasource).size()){
 						_runningProject.put(newAddProject.get(i), tempDatasource + "2");
+					}else{
+						logger.error(tempProjectName + " 消息源数据不一致.");
 					}
 					redis.hset("project_state", tempProjectName, ProjectState.running.toString());
 				}
@@ -128,6 +130,7 @@ public class BeginSpout extends BaseRichSpout{
 			PlatformUtils.initRegisterProject(_qManager);
 			scheduler.start();
 			//init Hbase tables
+
 			CreateTable.initHbaseTable();
 		}catch(Exception ex){
 			ex.printStackTrace();

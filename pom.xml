@@ -79,6 +79,7 @@
     <module>miner-parse</module>
     <module>miner-proxy</module>
     <module>miner-monitor</module>
+    <module>miner-utils</module>
   </modules>
 
   <build>

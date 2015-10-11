@@ -162,7 +162,7 @@ public class ProxyPool extends Thread {
 		proxy_param_map.put("format", format);
 		proxy_param_map.put("sep", sep);
 		/* 刷新时间设置成5分钟 */
-		ProxyPool pp = new ProxyPool(0, 0, 5, "127.0.0.1", 6379, "password",
+		ProxyPool pp = new ProxyPool(0, 0, 30, "127.0.0.1", 6379, "xidian123",
 				proxy_param_map);
 		pp.start();
 
