@@ -5,7 +5,7 @@
   Time: 下午3:27
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.Properties" %>
 <%@ page import="com.mysql.jdbc.Driver"%>
@@ -87,7 +87,7 @@
         String SQL= null;
         String property = null;
         public static final Properties info = new Properties();
-        public static final String url ="jdbc:mysql://127.0.0.1/storm?useUnicode=true&characterEncoding=utf8";
+        public static final String url ="jdbc:mysql://127.0.0.1/storm?useUnicode=true&characterEncoding=utf-8";
     %>
     <%@include file="getParam.jsp"%>
     <%
