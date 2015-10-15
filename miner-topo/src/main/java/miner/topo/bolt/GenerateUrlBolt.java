@@ -8,18 +8,16 @@ import backtype.storm.topology.base.BaseBasicBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
-import miner.spider.utils.MyLogger;
-import miner.spider.utils.MySysLogger;
-import miner.spider.utils.RedisUtil;
 import miner.topo.platform.PlatformUtils;
 import miner.topo.platform.Task;
+import miner.utils.MySysLogger;
+import miner.utils.RedisUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import redis.clients.jedis.Jedis;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,6 +30,7 @@ public class GenerateUrlBolt extends BaseBasicBolt {
     private static MySysLogger logger = new MySysLogger(GenerateUrlBolt.class);
 
     private OutputCollector _collector;
+    private RedisUtil ru;
     private Jedis _redis;
 
     public void execute(Tuple input, BasicOutputCollector collector) {
@@ -101,7 +100,8 @@ public class GenerateUrlBolt extends BaseBasicBolt {
     }
 
     public void prepare(Map stormConf, TopologyContext context) {
-        _redis = RedisUtil.GetRedis();
+        ru = new RedisUtil();
+        _redis = ru.getJedisInstance();
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {

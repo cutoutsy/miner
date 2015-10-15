@@ -1,8 +1,7 @@
 package miner.topo.platform;
 
-import miner.spider.utils.MyLogger;
 import miner.spider.utils.MysqlUtil;
-import miner.spider.utils.RedisUtil;
+import miner.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
 import java.util.*;
@@ -13,12 +12,14 @@ import java.util.*;
 public class PlatformUtils {
 //    private static MyLogger logger = new MyLogger(PlatformUtils.class);
 
+    private static RedisUtil ru;
     public static Jedis redis;
 
     //monitor the project, return a project can execute
     public static String monitorProject(){
         String reProject = "";
-        redis = RedisUtil.GetRedis();
+        ru = new RedisUtil();
+        redis = ru.getJedisInstance();
         Set<String> projectKeys = redis.hkeys("project_state");
         Iterator it = projectKeys.iterator();
         while(it.hasNext()){
@@ -55,7 +56,8 @@ public class PlatformUtils {
 
     public static String getProject(){
         String reProject = "";
-        redis = RedisUtil.GetRedis();
+        ru = new RedisUtil();
+        redis = ru.getJedisInstance();
         long executeProjectNums = redis.llen("project_execute");
         if(executeProjectNums > 0) {
             String projectName = redis.rpop("project_execute");
@@ -93,8 +95,8 @@ public class PlatformUtils {
     //return execute task list
     public static List getProjectList(){
         List<String> reList = new ArrayList<String>();
-
-        redis = RedisUtil.GetRedis();
+        ru = new RedisUtil();
+        redis = ru.getJedisInstance();
         List<String> projectList = redis.lrange("project_execute", 0, -1);
         if(projectList.size() > 0) {
 
@@ -159,7 +161,8 @@ public class PlatformUtils {
 
     //register project to schedule
     public static void registerProject(QuartzManager qManager){
-        redis = RedisUtil.GetRedis();
+        ru = new RedisUtil();
+        redis = ru.getJedisInstance();
         Set<String> projectKeys = redis.hkeys("project_cronstate");
         Iterator it = projectKeys.iterator();
         while(it.hasNext()) {
@@ -174,7 +177,8 @@ public class PlatformUtils {
     }
 
     public static void initRegisterProject(QuartzManager qManager){
-        redis = RedisUtil.GetRedis();
+        ru = new RedisUtil();
+        redis = ru.getJedisInstance();
         Set<String> projectKeys = redis.hkeys("project_cronstate");
         Iterator it = projectKeys.iterator();
         while(it.hasNext()) {

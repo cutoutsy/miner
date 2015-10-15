@@ -1,12 +1,7 @@
 package miner.spider;
 
 
-import miner.spider.utils.MySysLogger;
-import miner.spider.utils.MysqlUtil;
-
-import java.io.File;
-import java.util.Date;
-
+import miner.utils.MySysLogger;
 
 /**
  * Created by cutoutsy on 15/9/28.

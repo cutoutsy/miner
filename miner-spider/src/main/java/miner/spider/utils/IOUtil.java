@@ -1,5 +1,8 @@
 package miner.spider.utils;
 
+import miner.utils.MySysLogger;
+import miner.utils.StaticValue;
+
 import java.io.*;
 import java.util.*;
 

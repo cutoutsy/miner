@@ -12,6 +12,8 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import miner.utils.RedisUtil;
+import miner.utils.StaticValue;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
@@ -36,6 +38,7 @@ public class ProxyPool extends Thread {
 	private Map<String, String> proxy_param_map;
 	/* 用于访问数据库的 */
 	private RedisUtil ru;
+
 	private Jedis jedis;
 
 	public RedisUtil get_redis_util() {
@@ -43,10 +46,9 @@ public class ProxyPool extends Thread {
 	}
 
 	public ProxyPool(int refresh_hour, int refresh_min, int refresh_sec,
-			String ip, int port, String password,
 			Map<String, String> proxy_param_map) {
-		this.ru = new RedisUtil(ip, port, password);
-		this.jedis = ru.get_jedis_instance();
+		this.ru = new RedisUtil();
+		this.jedis = ru.getJedisInstance();
 		this.refresh_hour = refresh_hour;
 		this.refresh_min = refresh_min;
 		this.refresh_sec = refresh_sec;
@@ -162,8 +164,9 @@ public class ProxyPool extends Thread {
 		proxy_param_map.put("format", format);
 		proxy_param_map.put("sep", sep);
 		/* 刷新时间设置成5分钟 */
-		ProxyPool pp = new ProxyPool(0, 0, 30, "127.0.0.1", 6379, "xidian123",
-				proxy_param_map);
+//		ProxyPool pp = new ProxyPool(0, 0, 30, "127.0.0.1", 6379, "xidian123",
+//				proxy_param_map);
+		ProxyPool pp = new ProxyPool(0, 0, 30, proxy_param_map);
 		pp.start();
 
 		// /* 从配置文件读入的task参数 */

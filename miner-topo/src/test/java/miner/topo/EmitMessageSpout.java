@@ -8,8 +8,6 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
 import backtype.storm.utils.Utils;
 import miner.spider.httpclient.Crawl4HttpClient;
-import miner.spider.utils.RedisUtil;
-import redis.clients.jedis.Jedis;
 
 import java.util.Map;
 import java.util.Random;

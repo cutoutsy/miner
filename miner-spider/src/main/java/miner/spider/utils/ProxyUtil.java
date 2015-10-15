@@ -2,6 +2,8 @@ package miner.spider.utils;
 
 
 import miner.spider.pojo.ProxyPojo;
+import miner.utils.RedisUtil;
+import miner.utils.StaticValue;
 import redis.clients.jedis.Jedis;
 
 import java.util.Iterator;
@@ -13,7 +15,8 @@ import java.util.Set;
  * Created by cutoutsy on 7/24/15.
  */
 public class ProxyUtil {
-    public static MyLogger logger = new MyLogger(ProxyUtil.class);
+//    public static MyLogger logger = new MyLogger(ProxyUtil.class);
+    private static RedisUtil ru;
     public static Jedis redisdb0;
 
     // 读取代理列表，并加入到proxy中
@@ -22,8 +25,9 @@ public class ProxyUtil {
     static {
         try {
             if (StaticValue.proxy_open) {
-                redisdb0 = RedisUtil.GetRedis();
-                logger.info("proxy server has been used!");
+                ru = new RedisUtil();
+                redisdb0 = ru.getJedisInstance();
+//                logger.info("proxy server has been used!");
                 Set<String> ip_ports = redisdb0.hkeys("ip_port");
                 String temp_proxy_paras[] = null;
                 ProxyPojo proxyPojo = null;
@@ -47,10 +51,10 @@ public class ProxyUtil {
 
                 }
             } else {
-                logger.info("proxy server is forbidden!");
+//                logger.info("proxy server is forbidden!");
             }
         } catch (Exception e) {
-            logger.info("读取代理服务器列表参数时抛出异常，请检查!");
+//            logger.info("读取代理服务器列表参数时抛出异常，请检查!");
             e.printStackTrace();
         }
     }

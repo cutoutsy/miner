@@ -2,7 +2,7 @@ package miner.store;
 
 
 
-import miner.spider.utils.StaticValue;
+import miner.utils.StaticValue;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.MasterNotRunningException;

@@ -21,5 +21,11 @@
       <version>${project.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>xd</groupId>
+      <artifactId>miner-utils</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
   </dependencies>
 </project>

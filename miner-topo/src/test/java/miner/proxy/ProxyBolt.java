@@ -8,10 +8,9 @@ import backtype.storm.topology.base.BaseBasicBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
-import miner.spider.utils.MySysLogger;
+import miner.utils.MySysLogger;
 import redis.clients.jedis.Jedis;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**

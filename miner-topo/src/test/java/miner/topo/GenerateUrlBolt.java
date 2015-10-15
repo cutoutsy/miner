@@ -8,19 +8,9 @@ import backtype.storm.topology.base.BaseBasicBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
-import miner.spider.utils.MySysLogger;
-import miner.spider.utils.RedisUtil;
-import miner.topo.platform.PlatformUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import redis.clients.jedis.Jedis;
+import miner.utils.MySysLogger;
 
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * The Bolt is Url Generator

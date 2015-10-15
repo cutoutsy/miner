@@ -1,12 +1,8 @@
 package miner.spider;
 
 import miner.spider.httpclient.Crawl4HttpClient;
-import miner.spider.manager.HttpClientPojoManager;
-import miner.spider.utils.StaticValue;
+import miner.utils.StaticValue;
 import org.apache.http.HttpHost;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 
@@ -14,7 +10,6 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
-import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 
@@ -29,7 +24,7 @@ public class ProxyTest {
         int success = 0;
         int fail = 0;
         try{
-            String proxyUrl = "http://svip.kuaidaili.com/api/getproxy/?orderid=944046759126341&num=500&area=%E4%B8%AD%E5%9B%BD&browser=1&protocol=1&method=1&an_tr=1&an_an=1&an_ha=1&sp2=1&quality=2&sort=0&format=text&sep=1";
+            String proxyUrl = "http://svip.kuaidaili.com/api/getproxy/?orderid=904228416555060&num=100&area=%E4%B8%AD%E5%9B%BD&browser=1&protocol=1&method=1&an_ha=1&sp1=1&quality=2&sort=0&format=text&sep=1";
             String proxyList = Crawl4HttpClient.downLoadPage(proxyUrl);
             String[] proxys = proxyList.split("\\r\\n");
             for(int i = 0; i < proxys.length; i++){

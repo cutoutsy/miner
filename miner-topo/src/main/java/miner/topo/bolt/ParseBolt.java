@@ -2,9 +2,7 @@ package miner.topo.bolt;
 
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
-import backtype.storm.topology.BasicOutputCollector;
 import backtype.storm.topology.OutputFieldsDeclarer;
-import backtype.storm.topology.base.BaseBasicBolt;
 import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
@@ -13,10 +11,9 @@ import miner.parse.*;
 import miner.parse.data.DataItem;
 import miner.parse.data.Packer;
 import miner.spider.pojo.Data;
-import miner.spider.utils.MyLogger;
-import miner.spider.utils.MySysLogger;
 import miner.spider.utils.MysqlUtil;
-import miner.spider.utils.RedisUtil;
+import miner.utils.MySysLogger;
+import miner.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
 import java.util.*;
@@ -28,6 +25,7 @@ public class ParseBolt extends BaseRichBolt {
 	private OutputCollector _collector;
 	private HashMap<String, Data> _dataScheme;
 	private HashMap<String, String> _regex;
+	private RedisUtil _ru;
 	private Jedis _redis;
 
 	public void execute(Tuple input) {
@@ -124,7 +122,8 @@ public class ParseBolt extends BaseRichBolt {
 		this._collector = collector;
 		_dataScheme = MysqlUtil.getData();
 		_regex = MysqlUtil.getRegex();
-		_redis = RedisUtil.GetRedis();
+		_ru = new RedisUtil();
+		_redis = _ru.getJedisInstance();
 	}
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {

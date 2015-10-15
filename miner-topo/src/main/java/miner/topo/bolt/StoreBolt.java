@@ -9,9 +9,7 @@ import backtype.storm.topology.BasicOutputCollector;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseBasicBolt;
 import backtype.storm.tuple.Tuple;
-import miner.spider.utils.MyLogger;
-import miner.spider.utils.MySysLogger;
-import miner.store.ImportData;
+import miner.utils.MySysLogger;
 
 import java.util.Map;
 

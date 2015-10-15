@@ -8,9 +8,9 @@ import backtype.storm.topology.base.BaseBasicBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
-import miner.proxy.RedisUtil;
 import miner.proxy.ProxySetting;
-import miner.spider.utils.MySysLogger;
+import miner.utils.MySysLogger;
+import miner.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
 import java.text.SimpleDateFormat;
@@ -50,8 +50,10 @@ public class ProxyBolt extends BaseBasicBolt {
     }
 
     public void execute(Tuple tuple, BasicOutputCollector collector) {
-        ru = new RedisUtil("127.0.0.1",6379,"xidian123");
-        jedis = ru.get_jedis_instance();
+
+        ru = new RedisUtil();
+        jedis = ru.getJedisInstance();
+
         String global_info = (String) tuple.getValue(0);
         String download_url= (String) tuple.getValue(1);
         /* delay_time需要从上一个得到 */
