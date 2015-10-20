@@ -20,33 +20,26 @@ public class FetchBolt extends BaseRichBolt {
     private static MySysLogger logger = new MySysLogger(FetchBolt.class);
     private OutputCollector _collector;
 
-    public void execute(Tuple input) {
-        int i = 3;
-        String downloadUrl = "";
+    public void execute(Tuple tuple) {
+
+        String globalInfo = tuple.getString(0);
+        String downloadUrl = tuple.getString(1);
+        String proxy = tuple.getString(2);
+
         try{
-            String globalInfo = input.getString(0);
-            downloadUrl = input.getString(1);
-            String proxy = input.getString(2);
-//            logger.info("downloadurl:"+downloadUrl);
-//            System.err.println(globalInfo+"=="+downloadUrl+"=="+proxy);
             String resource = "";
-            while(i > 0) {
-                resource = Crawl4HttpClient.downLoadPage(downloadUrl, proxy);
-                if(!resource.equals("")){
-                    logger.info(proxy+"--request succeed!");
-                    break;
-                }
-                i--;
-            }
+            resource = Crawl4HttpClient.downLoadPage(downloadUrl, proxy);
+
             if(!resource.equals("")) {
-                _collector.emit(new Values(globalInfo, resource));
-                _collector.ack(input);
+                _collector.emit(tuple, new Values(globalInfo, resource));
+                _collector.ack(tuple);
             }else{
                 logger.warn(downloadUrl + " return null");
+                _collector.fail(tuple);
             }
         } catch (Exception ex) {
             logger.error("Download page:" +downloadUrl+" error!"+ex);
-            _collector.fail(input);
+            _collector.fail(tuple);
         }
     }
 
