@@ -8,8 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.Properties" %>
+<%@ page import="java.util.Map"%>
 <%@ page import="com.mysql.jdbc.Driver"%>
-<%@ page import="java.util.regex.Pattern" %>
+<%@ page import="redis.clients.jedis.Jedis" %>
 <html>
 <head>
     <title></title>
@@ -70,7 +71,7 @@
                 valuesql = valuesql+","+"'"+value+"'";
                 }else {
                     if(!value.equals("")){
-                    property = property+"+"+value;
+                    property = property+"$"+value;
                     }
                 }
             }
@@ -80,6 +81,15 @@
             sql = "insert into data("+keysql+",property) VALUE ("+valuesql+",'"+property+"')";
             System.out.print(sql);
             return sql;
+        }
+
+        public void insertRedis(String wid,String pid){
+            Jedis redis = new Jedis("192.168.1.211",6379);
+            String state = "die";
+            String projectExecuteNum = "0";
+            redis.hset("project_state",wid+"-"+pid,state);
+            redis.hset("project_executenum",wid+"-"+pid,projectExecuteNum);
+            redis.hset("project_cronstate",wid+"-"+pid,"3");
         }
     %>
     <%!
@@ -96,8 +106,10 @@
         %>
     <%
             info.put("user","root");
-            info.put("password", "simple");
-            //String string = request.getParameter("wid");
+            info.put("password", "LNkiller&212");
+            String wid = new String(request.getParameter("pwid").getBytes("ISO-8859-1"),"UTF-8");
+            String pid = new String(request.getParameter("ppid").getBytes("ISO-8859-1"),"UTF-8");
+            insertRedis(wid,pid);
             Driver driver = new Driver();
             Connection con = driver.connect(url, info);
             statement=con.createStatement();
