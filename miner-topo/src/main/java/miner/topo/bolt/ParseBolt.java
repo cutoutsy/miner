@@ -94,6 +94,8 @@ public class ParseBolt extends BaseRichBolt {
 						String[] result_str=packerData.pack();
 						for(int i=0;i<result_str.length;i++){
 							emit("generate-loop", tuple, loopTaskInfo, result_str[i]);
+							//set url to redis for LoopSpout get
+							_redis.hset("message_loop", loopTaskInfo, result_str[i]);
 						}
 					}
 				}else{
