@@ -28,7 +28,7 @@ public class StoreBolt extends BaseRichBolt {
 			logger.info("globalINfo:"+globalInfo);
 			logger.info("data:" + data);
 
-			ImportData.importData(data);
+			//ImportData.importData(data);
 
 			_collector.ack(tuple);
 		} catch (Exception ex) {

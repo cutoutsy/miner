@@ -12,6 +12,7 @@ import miner.parse.data.DataItem;
 import miner.parse.data.Packer;
 import miner.spider.pojo.Data;
 import miner.spider.utils.MysqlUtil;
+import miner.topo.platform.PlatformUtils;
 import miner.utils.MySysLogger;
 import miner.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
@@ -106,8 +107,10 @@ public class ParseBolt extends BaseRichBolt {
 						String[] result_str=packerData.pack();
 						for(int i=0;i<result_str.length;i++){
 							//set url to redis for LoopSpout get
-							_redis.hset("message_loop", loopTaskInfo, result_str[i]);
-							logger.info(loopTaskInfo+"--"+result_str[i]+"--store to message_loop.");
+							String uuid = PlatformUtils.getUUID();
+							String tempEmitInfo = loopTaskInfo+"-"+uuid;
+							_redis.hset("message_loop", tempEmitInfo, result_str[i]);
+							logger.info(tempEmitInfo + "--" + result_str[i] + "--store to message_loop.");
 						}
 					}
 				}else{

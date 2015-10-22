@@ -40,7 +40,7 @@ public class BeginSpout extends BaseRichSpout{
 		logger.info("消息处理失败:"+msgId+";正在重新发送......");
 		String message = redis.hget("message", msgId.toString());
 		String globalInfo = msgId.toString().split("-")[0]+"-"+msgId.toString().split("-")[1]+"-"+msgId.toString().split("-")[2];
-		_collector.emit(new Values(globalInfo, message), globalInfo);
+		_collector.emit(new Values(globalInfo, message), msgId);
 	}
 
 	public void nextTuple() {

@@ -6,6 +6,7 @@ import backtype.storm.StormSubmitter;
 import backtype.storm.topology.TopologyBuilder;
 import miner.topo.bolt.*;
 import miner.topo.spout.BeginSpout;
+import miner.topo.spout.LoopSpout;
 
 public class TopologyMain {
 
@@ -13,25 +14,27 @@ public class TopologyMain {
 		try{
 			TopologyBuilder topologyBuilder = new TopologyBuilder();
 
-			topologyBuilder.setSpout("beginspout", new BeginSpout(), 1).setMaxSpoutPending(500);//1,500
+			topologyBuilder.setSpout("beginspout", new BeginSpout(), 1).setMaxSpoutPending(100);//1,500
+			topologyBuilder.setSpout("loopspout", new LoopSpout(), 1).setMaxSpoutPending(100);
 
 			topologyBuilder.setBolt("generateurl", new GenerateUrlBolt(), 1)//2
-					.shuffleGrouping("beginspout");
-			topologyBuilder.setBolt("generateurl-loop-bolt", new GenerateUrlBolt(), 2)//2
+					.shuffleGrouping("beginspout")
+					.shuffleGrouping("loopspout");
+			topologyBuilder.setBolt("generateurl-loop-bolt", new GenerateUrlBolt(), 1)//2
 					.shuffleGrouping("parse", "generate-loop");
 
-			topologyBuilder.setBolt("proxy", new ProxyBolt(), 10)//2
+			topologyBuilder.setBolt("proxy", new ProxyBolt(), 1)//2
 					.shuffleGrouping("generateurl")
 					.shuffleGrouping("generateurl-loop-bolt");
 
-			topologyBuilder.setBolt("fetch", new FetchBolt(), 10)//10
+			topologyBuilder.setBolt("fetch", new FetchBolt(), 1)//10
 					.shuffleGrouping("proxy");
 
-			topologyBuilder.setBolt("parse", new ParseBolt(), 10)//10
+			topologyBuilder.setBolt("parse", new ParseBolt(), 1)//10
 					.shuffleGrouping("fetch");
 
 
-			topologyBuilder.setBolt("store", new StoreBolt(), 5)//5
+			topologyBuilder.setBolt("store", new StoreBolt(), 1)//5
 					.shuffleGrouping("parse", "store");
 			
 			Config config = new Config();
