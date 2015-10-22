@@ -6,6 +6,7 @@ import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseRichSpout;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
+import miner.store.CreateTable;
 import miner.topo.enumeration.ProjectState;
 import miner.topo.platform.PlatformUtils;
 import miner.topo.platform.Project;
@@ -55,7 +56,7 @@ public class BeginSpout extends BaseRichSpout{
 					String tempProjectName = newAddProject.get(i);
 					Project pj = new Project(tempProjectName);
 					//create table in hbase
-//					CreateTable.mysqlCheck(pj.getWid(), pj.getPid());
+					CreateTable.mysqlCheck(pj.getWid(), pj.getPid());
 
 					String tempDatasource = pj.getDatasource();
 					if (redis.llen(tempDatasource + "1") == redis.smembers(tempDatasource).size()) {
@@ -133,7 +134,7 @@ public class BeginSpout extends BaseRichSpout{
 			scheduler.start();
 			//init Hbase tables
 
-//			CreateTable.initHbaseTable();
+			CreateTable.initHbaseTable();
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
