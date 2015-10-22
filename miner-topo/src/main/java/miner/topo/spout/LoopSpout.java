@@ -12,7 +12,9 @@ import miner.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * LoopSpout
@@ -30,10 +32,23 @@ public class LoopSpout extends BaseRichSpout{
         this._redis = ru.getJedisInstance();
     }
 
+    //once emit one
     public void nextTuple(){
         try {
             Thread.sleep(1000);
-
+            Set<String> infoKeys = _redis.hkeys("message_loop");
+            Iterator it = infoKeys.iterator();
+            while (it.hasNext()){
+                String tempKey = it.next().toString();
+                if(!_redis.sismember("message_emit", tempKey)){
+                    String tempUrl = _redis.hget("message_loop", tempKey);
+                    String emitGlobalInfo = tempKey.split("-")[0]+tempKey.split("-")[1]+tempKey.split("-")[2];
+                    _collector.emit(new Values(emitGlobalInfo, tempUrl), tempKey);
+                    _redis.sadd("message_emit", tempKey);
+                    logger.info(tempKey+"--"+tempUrl + "  sending...");
+                    break;
+                }
+            }
         }catch (Exception e){
             logger.error("loopspout emit failed "+ e);
             e.printStackTrace();
@@ -43,6 +58,7 @@ public class LoopSpout extends BaseRichSpout{
 
     public void ack(Object msgId){
         _redis.hdel("message_loop", msgId.toString());
+        _redis.srem("message_emit", msgId.toString());
         logger.info(msgId.toString()+" ack.");
     }
 
@@ -50,7 +66,8 @@ public class LoopSpout extends BaseRichSpout{
     public void fail(Object msgId){
         String globalInfo = msgId.toString();
         String emitUrl = _redis.hget("message_loop", globalInfo);
-        _collector.emit(new Values(globalInfo, emitUrl), msgId);
+        String emitGlobalInfo = globalInfo.split("-")[0]+globalInfo.split("-")[1]+globalInfo.split("-")[2];
+        _collector.emit(new Values(emitGlobalInfo, emitUrl), msgId);
         logger.warn(globalInfo+" fail,retry......");
     }
 

@@ -95,7 +95,19 @@ public class ParseBolt extends BaseRichBolt {
 						for(int i=0;i<result_str.length;i++){
 							emit("generate-loop", tuple, loopTaskInfo, result_str[i]);
 							//set url to redis for LoopSpout get
+							//_redis.hset("message_loop", loopTaskInfo, result_str[i]);
+						}
+					}
+				}else if(data.getProcessWay().equals("l") || data.getProcessWay().equals("L")){
+					while (data_item_it.hasNext()) {
+						String loopTaskId = data.getLcondition();
+						String loopTaskInfo = taskInfo.split("-")[0]+"-"+dataInfo.split("-")[1]+"-"+loopTaskId;
+						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
+						String[] result_str=packerData.pack();
+						for(int i=0;i<result_str.length;i++){
+							//set url to redis for LoopSpout get
 							_redis.hset("message_loop", loopTaskInfo, result_str[i]);
+							logger.info(loopTaskInfo+"--"+result_str[i]+"--store to message_loop.");
 						}
 					}
 				}else{
