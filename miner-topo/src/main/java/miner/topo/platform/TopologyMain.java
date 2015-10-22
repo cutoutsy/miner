@@ -4,11 +4,9 @@ import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
 import backtype.storm.topology.TopologyBuilder;
-import miner.topo.bolt.FetchBolt;
-import miner.topo.bolt.GenerateUrlBolt;
-import miner.topo.bolt.ParseBolt;
-import miner.topo.bolt.StoreBolt;
+import miner.topo.bolt.*;
 import miner.topo.spout.BeginSpout;
+import miner.topo.spout.LoopSpout;
 
 public class TopologyMain {
 
@@ -16,34 +14,43 @@ public class TopologyMain {
 		try{
 			TopologyBuilder topologyBuilder = new TopologyBuilder();
 
-			topologyBuilder.setSpout("beginspout", new BeginSpout(), 1);
+			topologyBuilder.setSpout("beginspout", new BeginSpout(), 1).setMaxSpoutPending(100);//1,500
+			topologyBuilder.setSpout("loopspout", new LoopSpout(), 1).setMaxSpoutPending(100);
 
-			topologyBuilder.setBolt("generateurl", new GenerateUrlBolt(), 1)
-					.shuffleGrouping("beginspout");
-			topologyBuilder.setBolt("generateurl-loop-bolt", new GenerateUrlBolt(), 1)
+			topologyBuilder.setBolt("generateurl", new GenerateUrlBolt(), 2)//2
+					.shuffleGrouping("beginspout")
+					.shuffleGrouping("loopspout");
+			topologyBuilder.setBolt("generateurl-loop-bolt", new GenerateUrlBolt(), 2)//2
 					.shuffleGrouping("parse", "generate-loop");
 
-			topologyBuilder.setBolt("fetch", new FetchBolt(), 2)
+			topologyBuilder.setBolt("proxy", new ProxyBolt(), 2)//2
 					.shuffleGrouping("generateurl")
 					.shuffleGrouping("generateurl-loop-bolt");
 
-			topologyBuilder.setBolt("parse", new ParseBolt(), 2)
+			topologyBuilder.setBolt("fetch", new FetchBolt(), 10)//10
+					.shuffleGrouping("proxy");
+
+			topologyBuilder.setBolt("parse", new ParseBolt(), 10)//10
 					.shuffleGrouping("fetch");
 
-			topologyBuilder.setBolt("store", new StoreBolt(), 1)
+
+			topologyBuilder.setBolt("store", new StoreBolt(), 5)//5
 					.shuffleGrouping("parse", "store");
 			
 			Config config = new Config();
 			config.setDebug(false);
+			//config.setMaxSpoutPending(2000);
 			
 			if(args != null && args.length>0){
-				config.setNumWorkers(4);
+				config.setNumWorkers(20);
 				StormSubmitter.submitTopology(args[0], config, topologyBuilder.createTopology());
 			}else{
 				config.setMaxTaskParallelism(2);
 				LocalCluster cluster = new LocalCluster();
 				cluster.submitTopology("test", config, topologyBuilder.createTopology());
 			}
+
+
 		}catch(Exception e){
 			e.printStackTrace();
 		}

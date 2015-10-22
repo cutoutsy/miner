@@ -16,7 +16,6 @@ import miner.parse.data.DataItem;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-//import miner.spider.httpclient.Crawl4HttpClient;
 
 public class DocObject {
 	private String document;
@@ -57,7 +56,7 @@ public class DocObject {
                     }
                 }
             }
-        } else if(doc_type.equals(DocType.JSON)){
+        } else if(doc_type.equals(DocType.JSON)||doc_type.equals(DocType.JSONP)){
             for(Map.Entry<String,String> e:json_map.entrySet()){
                 if(e.getValue().equals(content)){
                     return e.getKey();
@@ -65,7 +64,10 @@ public class DocObject {
             }
         } else if(doc_type.equals(DocType.TEXT)){
             //to be added...
+        }else if(doc_type.equals(DocType.XML)){
+            //to be added...
         }
+
         return "no path found...";
     }
 
@@ -149,7 +151,6 @@ public class DocObject {
 	public String get_value(String path, String tag) {
 		if (doc_type.equals(DocType.HTML)) {
 			Element e = html_map.get(path);
-//            System.out.println("p:"+!(e==null));
             if(e==null){
                 return "none";
             }else{
@@ -163,7 +164,6 @@ public class DocObject {
             }
 		} else if (doc_type.equals(DocType.JSON)
 				|| doc_type.equals(DocType.JSONP)) {
-			// System.out.println(json_map.get(path));
             String result="none";
             if(json_map.get(path)!=null){
                 result=json_map.get(path);
@@ -178,21 +178,21 @@ public class DocObject {
 		/* 抽取单个doc数据的规则库，多个set组成map */
 		Map<String, RuleItem> data_rule_map = new HashMap<String, RuleItem>();
 		data_rule_map.put("id_name", new RuleItem("name_name",
-				"html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dt0.a0.title"));
+				"html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dt0.a0.title"));
 		data_rule_map.put("id_phone", new RuleItem("name_phone",
-				"html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dd0.em0.b0.text"));
+				"html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd0.em0.b0.text"));
 		data_rule_map.put("id_address", new RuleItem("name_address",
-				"html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dd1.span1.text"));
+				"html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd1.span1.text"));
 		data_rule_map.put("id_sale", new RuleItem("name_sale",
-				"html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dd2.a0.text"));
+				"html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd2.a0.text"));
 		data_rule_map.put("id_page_link", new RuleItem("name_page_link",
-				"html0.body0.div8.div0.div0.ul0.div9.a_1_6_.href"));
+				"html0.body0.div8.div0.div0.div1.div0.a_1_6_.href"));
 		/* 封装数据的规则库map */
 		Set<DataItem> data_item_set = new HashSet<DataItem>();
 //		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
 //				"none", "none", "id_name","id_phone","id_address","id_sale"));
 		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
-				"none", "none","id_page_link"));
+                "none", "none", "id_page_link"));
 
 		/* 数据生成器 */
 		Generator g = new Generator();
@@ -249,36 +249,29 @@ public class DocObject {
 //            }
 //        }
 //        System.out.println(doc_str);
+
         String doc_str=null;
         try {
-            Document doc = Jsoup.connect("http://dealer.xcar.com.cn/d1_475/?type=1&page=13").get();
+            Document doc = Jsoup.connect("http://dealer.xcar.com.cn/d1_475/?type=1&page=1").get();
              doc_str=doc.toString();
 //            System.out.println(doc_str);
         }catch (IOException e){
             e.printStackTrace();
         }
-//        try {
-//            byte[] tmp = doc_str.getBytes("utf-8");
-//            doc_str = new String(tmp, "GB2312");
-//        }catch (UnsupportedEncodingException e){
-//            e.printStackTrace();
-//        }
-//        String doc_str = Crawl4HttpClient.downLoadPage("http://dealer.xcar.com.cn/d1_475/?type=1&page=1");
-
 
         long start = System.currentTimeMillis();
 		/* 抽取单个doc数据的规则库，多个set组成map */
 		Map<String, RuleItem> data_rule_map = new HashMap<String, RuleItem>();
 		data_rule_map.put("id_name", new RuleItem("name_name",
-				"html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dt0.a0.title"));
+				"html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dt0.a0.title"));
 		data_rule_map.put("id_phone", new RuleItem("name_phone",
-				"html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dd0.em0.b0.text"));
+				"html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd0.em0.b0.text"));
         data_rule_map.put("id_address", new RuleItem("name_address",
-                "html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dd1.span1.text"));
+                "html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd1.span1.text"));
         data_rule_map.put("id_sale", new RuleItem("name_sale",
-                "html0.body0.div8.div0.div0.ul0.li_0_9_.dl0.dd2.a0.text"));
+                "html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd2.a0.text"));
         data_rule_map.put("id_page_link", new RuleItem("name_page_link",
-                "html0.body0.div8.div0.div0.ul0.div9.a_1_6_.href"));
+                "html0.body0.div8.div0.div0.div1.div0.a_1_6_.href"));
 		/* 封装数据的规则库map */
 		Set<DataItem> data_item_set = new HashSet<DataItem>();
 		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
@@ -293,19 +286,16 @@ public class DocObject {
 			g.set_rule(entry.getValue());
 		}
 		g.generate_data();
-        System.out.println(g.get_doc_obj().search("010-84916660"));
+        System.out.println(g.get_doc_obj().search("/d1_475/?type=1&page=12"));
+//        System.out.println(g.get_doc_obj().search("北京盈之宝汽车销售服务有限公司"));
+//        System.out.println(g.get_doc_obj().search("/d1_475/?type=1&page=4"));
+//        System.out.println(g.get_doc_obj().search("/d1_475/?type=1&page=5"));
+//        System.out.println(g.get_doc_obj().search("/d1_475/?type=1&page=6"));
 
 		Map<String, Object> m = g.get_result();// m里封装了所有抽取的数据
 		Iterator<DataItem> data_item_it = data_item_set.iterator();
 		while (data_item_it.hasNext()) {
 			Packer packer = new Packer(data_item_it.next(), m, data_rule_map);
-//            String final_s= packer.pack();
-//            try {
-//                byte[] final_b = final_s.getBytes("UTF8");
-//                System.out.println("pack_result:" + new String(final_b, "UTF8"));
-//            }catch (UnsupportedEncodingException e){
-//                e.printStackTrace();
-//            }
             String[] result_str=packer.pack();
             for(int i=0;i<result_str.length;i++){
                 System.out.println(result_str[i]);

@@ -1,11 +1,10 @@
 package miner.topo.platform;
 
 import miner.spider.utils.MysqlUtil;
-import miner.spider.utils.RedisUtil;
+import miner.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  *
@@ -14,6 +13,7 @@ import java.util.List;
  */
 public class Task {
     private static Jedis redis;
+    private static RedisUtil ru;
 
     private String wid;
     private String pid;
@@ -44,7 +44,8 @@ public class Task {
     private String state;
 
     public Task(String taskName) {
-        redis = RedisUtil.GetRedis();
+        ru = new RedisUtil();
+        redis = ru.getJedisInstance();
 //        String taskValue = redis.hget("taskInfo", taskName);
         HashMap<String, String> taskMap = MysqlUtil.getTask(taskName);
         this.wid = taskMap.get("wid");
@@ -109,7 +110,9 @@ public class Task {
     public static void writeTaskToRedis(Task ta){
         String taskKey = ta.wid+"-"+ta.pid+"-"+ta.tid;
         String taskValue = ta.description+"$"+ta.urlpattern+"$"+ta.urlgenerate+"$"+ta.state;
-        redis = RedisUtil.GetRedis();
+//        redis = RedisUtil.GetRedis();
+        ru = new RedisUtil();
+        redis = ru.getJedisInstance();
         redis.hset("taskInfo", taskKey, taskValue);
     }
 

@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 
 import miner.parse.RuleItem;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import miner.parse.DataType;
@@ -66,8 +65,10 @@ public class Packer {
                 String tag=ri.get_name();
                 if(type.equals(DataType.STR)){
                     String value = (String) data_object.get(tag);
-                    single_property_obj.put(tag, value);
-                    flag=1;
+                    if(!value.equals("none")){
+                        single_property_obj.put(tag, value);
+                        flag=1;
+                    }
                 }
             }
             single_obj.put("property",single_property_obj);
@@ -119,7 +120,9 @@ public class Packer {
                         if(count==-65535){
                             count=values.length;
                         }
-                        array_property_obj.put(tag,values[count-1]);
+                        if(!values[count-1].equals("none")){
+                            array_property_obj.put(tag,values[count-1]);
+                        }
                     }
                 }
                 count--;

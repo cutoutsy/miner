@@ -8,8 +8,7 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import miner.spider.httpclient.Crawl4HttpClient;
-import miner.spider.utils.MyLogger;
-import miner.spider.utils.MySysLogger;
+import miner.utils.MySysLogger;
 
 import java.util.Map;
 
@@ -21,21 +20,27 @@ public class FetchBolt extends BaseRichBolt {
     private static MySysLogger logger = new MySysLogger(FetchBolt.class);
     private OutputCollector _collector;
 
-    public void execute(Tuple input) {
-        String downloadUrl = "";
-        try{
-            String globalInfo = input.getString(0);
-            downloadUrl = input.getString(1);
-            logger.info("downloadurl:"+downloadUrl);
+    public void execute(Tuple tuple) {
 
-            String resource = Crawl4HttpClient.downLoadPage(downloadUrl);
-            _collector.emit(new Values(globalInfo, resource));
-            _collector.ack(input);
+        String globalInfo = tuple.getString(0);
+        String downloadUrl = tuple.getString(1);
+        String proxy = tuple.getString(2);
+
+        try{
+            String resource = "";
+            resource = Crawl4HttpClient.downLoadPage(downloadUrl, proxy);
+
+            if(!resource.equals("")) {
+                _collector.emit(tuple, new Values(globalInfo, resource));
+                _collector.ack(tuple);
+            }else{
+                logger.warn(downloadUrl + " return null");
+                _collector.fail(tuple);
+            }
         } catch (Exception ex) {
             logger.error("Download page:" +downloadUrl+" error!"+ex);
-            _collector.fail(input);
+            _collector.fail(tuple);
         }
-
     }
 
     public void prepare(Map conf,TopologyContext context,OutputCollector collector){

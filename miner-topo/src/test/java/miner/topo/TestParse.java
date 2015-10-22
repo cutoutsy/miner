@@ -23,7 +23,7 @@ public class TestParse {
 
     public static void main(String[] args){
         try {
-            for (int i = 64; i < 66; i++) {
+            for (int i = 1; i < 2; i++) {
                 Thread.sleep(1000);
                 String url = "http://dealer.xcar.com.cn/d1_475/?type=1&page=" + String.valueOf(i);
                 System.out.println(url);

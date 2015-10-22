@@ -5,7 +5,7 @@ import miner.spider.pojo.ContentPojo;
 import miner.spider.utils.HtmlParserUtil;
 import miner.spider.utils.ObjectAndByteArrayConvertUtil;
 import miner.spider.utils.RegexPaserUtil;
-import miner.spider.utils.StaticValue;
+import miner.utils.StaticValue;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;

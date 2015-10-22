@@ -1,5 +1,7 @@
 package miner.spider.utils;
 
+import miner.utils.MySysLogger;
+import miner.utils.RedisUtil;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -19,9 +21,10 @@ import java.util.List;
 
 public class XmlUtil {
 
-    private static MyLogger logger = new MyLogger(XmlUtil.class);
-
-    public static Jedis redis;
+//    private static MyLogger logger = new MyLogger(XmlUtil.class);
+    private static MySysLogger logger = new MySysLogger(XmlUtil.class);
+    private static RedisUtil ru;
+    private static Jedis redis;
 
     //This method is for read XML
     public static void readDocument(String file) throws DocumentException {
@@ -67,7 +70,8 @@ public class XmlUtil {
             projectValue += datainfo[i]+"$";
         }
         projectValue = projectValue.substring(0,projectValue.length()-1);
-        redis = RedisUtil.GetRedis();
+        ru = new RedisUtil();
+        redis = ru.getJedisInstance();
         redis.hset(redisKey, projectKey, projectValue);
         System.out.println("sucess!!");
     }
@@ -89,7 +93,8 @@ public class XmlUtil {
             projectValue += datainfo[i]+"$";
         }
         projectValue = projectValue.substring(0,projectValue.length()-1);
-        redis = RedisUtil.GetRedis();
+        ru = new RedisUtil();
+        redis = ru.getJedisInstance();
         redis.hset(redisKey, projectKey, projectValue);
         System.out.println("sucess!!");
     }
@@ -140,7 +145,8 @@ public class XmlUtil {
                 .execute("insert into project (wid, pid, name, description, datasource, schedule, precondition) values ('"
                         + wid + "','" + pid + "','"+ name + "','"+ description + "','"+ datasource + "','"+ schedule + "','"+ precondition + "')");
 
-        redis = RedisUtil.GetRedis();
+        ru = new RedisUtil();
+        redis = ru.getJedisInstance();
         redis.hset("project_state", datainfo[0]+"-"+datainfo[1], state);
         redis.hset("project_executenum", datainfo[0]+"-"+datainfo[1], projectExecuteNUm);
         redis.hset("project_cronstate", datainfo[0]+"-"+datainfo[1], "3");
@@ -299,8 +305,8 @@ public class XmlUtil {
 //            readDataToMysql("./conf/data_4s_2_task1.xml");
 //            readDataToMysql("./conf/data_4s_2_task2.xml");
 //
-//            readRegexToMysql("./conf/dataregex_4s.xml");
-//            readRegexToMysql("./conf/dataregex_4s_task2.xml");
+            readRegexToMysql("./conf/dataregex_4s.xml");
+            readRegexToMysql("./conf/dataregex_4s_task2.xml");
 
         }catch (Exception ex){
             ex.printStackTrace();

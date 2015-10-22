@@ -4,28 +4,31 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
 import java.sql.Connection;
 
 
-import com.mysql.jdbc.Driver;
 import miner.spider.utils.MysqlUtil;
+import miner.utils.MySysLogger;
+import miner.utils.StaticValue;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 
 public class CreateTable {
+
+    private static MySysLogger logger = new MySysLogger(CreateTable.class);
+
     private static Configuration configuration = null;
     static{
         configuration = HBaseConfiguration.create();
-        configuration.set("hbase.zookeeper.quorum", "127.0.0.1");
+        configuration.set("hbase.zookeeper.quorum", StaticValue.hbase_zookeeper_host);
         configuration.set("hbase.rootdir","hdfs://master:8020/hbase");
         configuration.set("hbase.master", "hdfs://master:60000");
     }
     public static void main(String args[]) throws SQLException{
 
-        new CreateTable().mysqlCheck("1","1");
-//        new CreateTable().createTable(configuration, "1", true);
+        //new CreateTable().mysqlCheck("1","1");
+        new CreateTable().createTable(configuration, "1", true);
     }
 
     public static void mysqlCheck(String tableWid,String tablePid) throws SQLException{
@@ -40,12 +43,16 @@ public class CreateTable {
             if(wid.equals(tableWid)&&pid.equals(tablePid)){
                 String tid = rs.getString("tid");
                 String dataid = rs.getString("dataid");
+                String processWay = rs.getString("processWay");
                 String foreignkey = rs.getString("foreignkey");
                  if(foreignkey.equals("none")){
                      flag = false;
                     }
-                 String tablename = wid+pid+tid+dataid;
-                 createTable(configuration, tablename, flag);
+                // 在hbase创建data处理方式为s的相应的表
+                if(processWay.equals("s") || processWay.equals("S")) {
+                    String tablename = wid + pid + tid + dataid;
+                    createTable(configuration, tablename, flag);
+                }
             }else{
                 break;
             }
@@ -72,12 +79,15 @@ public class CreateTable {
         } catch (MasterNotRunningException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            logger.error("Master Not Running "+ e.getMessage());
         } catch (ZooKeeperConnectionException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            logger.error("Zookeeper Connect Exception " + e.getMessage());
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            logger.error("IO exception"+ e.getMessage());
         }
     }
 
