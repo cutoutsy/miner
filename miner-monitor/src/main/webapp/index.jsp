@@ -11,6 +11,8 @@
 <%@ page import="java.util.Map"%>
 <%@ page import="com.mysql.jdbc.Driver"%>
 <%@ page import="redis.clients.jedis.Jedis" %>
+<%@ page import="miner.utils.StaticValue" %>
+<%@ page import="miner.utils.RedisUtil" %>
 <html>
 <head>
     <title></title>
@@ -84,7 +86,9 @@
         }
 
         public void insertRedis(String wid,String pid){
-            Jedis redis = new Jedis("192.168.1.211",6379);
+            RedisUtil ru = new RedisUtil();
+            Jedis redis = ru.getJedisInstance();
+
             String state = "die";
             String projectExecuteNum = "0";
             redis.hset("project_state",wid+"-"+pid,state);
@@ -97,16 +101,15 @@
         String SQL= null;
         String property = null;
         public static final Properties info = new Properties();
-        //public static final String url ="jdbc:mysql://127.0.0.1/storm?useUnicode=true&characterEncoding=utf8";
-        public static final String url ="jdbc:mysql://localhost:3307/platform_config?useUnicode=true&characterEncoding=utf8";
+        public static final String url ="jdbc:mysql://"+StaticValue.mysql_host+":"+StaticValue.mysql_port+"/"+StaticValue.mysql_database+"?useUnicode=true&characterEncoding=utf8";
     %>
     <%@include file="getParam.jsp"%>
     <%
     try{
         %>
     <%
-            info.put("user","root");
-            info.put("password", "LNkiller&212");
+            info.put("user",StaticValue.mysql_user);
+            info.put("password", StaticValue.mysql_password);
             String wid = new String(request.getParameter("pwid").getBytes("ISO-8859-1"),"UTF-8");
             String pid = new String(request.getParameter("ppid").getBytes("ISO-8859-1"),"UTF-8");
             insertRedis(wid,pid);
