@@ -218,7 +218,6 @@ public class DocObject {
 		System.out.println("time:"+(double)(end-start)/1000);
 	}
 
-<<<<<<< HEAD
     public String get_test_doc_str(String file_path){
         File file = new File("/Users/white/Desktop/workspace/test.html");
         String doc_str = "";
@@ -249,55 +248,17 @@ public class DocObject {
     }
 
 	public static void main(String[] args) {
-        String doc_str=null;
-        try {
-            Document doc = Jsoup.connect("http://www.baidu.com").get();
-            doc_str=doc.toString();
-            doc_str="{\"success\":true,\"message\":null,\"value\":20}";
-=======
-	public static void main(String[] args) {
-        /*
-         * Document:
-         * 	doc,charset
-         * Data Parse:
-         * 	Item:
-         * 		id->name,path,tag,type
-         * Data Pack:
-         *  Item:
-         *  	data_id,project_id,task_id,workstation_id,row_key,foreign_key,foreign_value,link,id0,id1,id2...
-         * */
-//        File file = new File("/Users/white/Desktop/workspace/test.html");
-//        String doc_str = "";
-//        if (file.isFile() && file.exists()) {
-//            InputStreamReader read;
-//            try {
-//                read = new InputStreamReader(new FileInputStream(file),
-//                        "UTF8");
-//                BufferedReader buffered_reader = new BufferedReader(read);
-//                String line = null;
-//                while ((line = buffered_reader.readLine()) != null) {
-//                    doc_str += line;
-//                }
-//                buffered_reader.close();
-//                read.close();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        System.out.println(doc_str);
 		String doc_str=null;
 		try {
 			Document doc = Jsoup.connect("http://dealer.xcar.com.cn/d1_475/?type=1&page=1").get();
 			doc_str=doc.toString();
->>>>>>> 5e1d21500e4ad35836eb38061f0fada989a5971d
-//            System.out.println(doc_str);
+            doc_str="{\"success\":true,\"message\":null,\"value\":20}";
 		}catch (IOException e){
 			e.printStackTrace();
 		}
 		long start = System.currentTimeMillis();
         /* 抽取单个doc数据的规则库，多个set组成map */
 		Map<String, RuleItem> data_rule_map = new HashMap<String, RuleItem>();
-<<<<<<< HEAD
 
         data_rule_map.put("id_success", new RuleItem("name_success",
                 "success0"));
@@ -315,57 +276,22 @@ public class DocObject {
 //                "none", "none","id_value"));
 
 		/* 数据生成器 */
-=======
-		data_rule_map.put("id_name", new RuleItem("name_name",
-				"html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dt0.a0.title"));
-		data_rule_map.put("id_phone", new RuleItem("name_phone",
-				"html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd0.em0.b0.text"));
-		data_rule_map.put("id_address", new RuleItem("name_address",
-				"html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd1.span1.text"));
-		data_rule_map.put("id_sale", new RuleItem("name_sale",
-				"html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd2.a0.text"));
-		data_rule_map.put("id_page_link", new RuleItem("name_page_link",
-				"html0.body0.div8.div0.div0.div1.div0.a_1_6_.href"));
-        /* 封装数据的规则库map */
-		Set<DataItem> data_item_set = new HashSet<DataItem>();
-		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
-				"none", "none", "id_name","id_phone","id_address","id_sale"));
-		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
-				"none", "none","id_page_link"));
-        /* 数据生成器 */
->>>>>>> 5e1d21500e4ad35836eb38061f0fada989a5971d
 		Generator g = new Generator();
 		g.create_obj(doc_str);
 		for (Map.Entry<String, RuleItem> entry : data_rule_map.entrySet()) {
 			g.set_rule(entry.getValue());
 		}
 		g.generate_data();
-<<<<<<< HEAD
-
-=======
-		System.out.println(g.get_doc_obj().search("/d1_475/?type=1&page=12"));
-//        System.out.println(g.get_doc_obj().search("北京盈之宝汽车销售服务有限公司"));
-//        System.out.println(g.get_doc_obj().search("/d1_475/?type=1&page=4"));
-//        System.out.println(g.get_doc_obj().search("/d1_475/?type=1&page=5"));
-//        System.out.println(g.get_doc_obj().search("/d1_475/?type=1&page=6"));
->>>>>>> 5e1d21500e4ad35836eb38061f0fada989a5971d
 		Map<String, Object> m = g.get_result();// m里封装了所有抽取的数据
 		Iterator<DataItem> data_item_it = data_item_set.iterator();
 
 		while (data_item_it.hasNext()) {
 			Packer packer = new Packer(data_item_it.next(), m, data_rule_map);
-<<<<<<< HEAD
             String[] result_str=packer.pack();
             for(int i=0;i<result_str.length;i++){
 
                 System.out.println(result_str[i]);
             }
-=======
-			String[] result_str=packer.pack();
-			for(int i=0;i<result_str.length;i++){
-				System.out.println(result_str[i]);
-			}
->>>>>>> 5e1d21500e4ad35836eb38061f0fada989a5971d
 		}
 		long end = System.currentTimeMillis();
 		System.out.println("time:"+(double)(end-start)/1000);
