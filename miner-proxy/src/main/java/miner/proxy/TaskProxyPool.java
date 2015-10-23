@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
+import miner.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
 /**
@@ -31,7 +32,7 @@ public class TaskProxyPool implements Runnable {
 		this.delay_time = setting.get_delay_time();
 		this.dead_time = setting.get_dead_time();
 		this.ru = ru;
-		this.jedis = ru.get_jedis_instance();
+		this.jedis = ru.getJedisInstance();
 		this.init_set();
 	}
 

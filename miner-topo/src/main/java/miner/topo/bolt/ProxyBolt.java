@@ -4,24 +4,24 @@ import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.BasicOutputCollector;
 import backtype.storm.topology.OutputFieldsDeclarer;
-import backtype.storm.topology.base.BaseBasicBolt;
+import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
-import miner.proxy.RedisUtil;
 import miner.proxy.ProxySetting;
-import miner.spider.utils.MySysLogger;
+import miner.utils.MySysLogger;
+import miner.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Created by white on 15/9/30.
+ * Proxy Bolt:Manage the proxy
  */
-public class ProxyBolt extends BaseBasicBolt {
+public class ProxyBolt extends BaseRichBolt {
     private static MySysLogger logger = new MySysLogger(ProxyBolt.class);
-    private OutputCollector collector;
+    private OutputCollector _collector;
     private Jedis jedis;
     private RedisUtil ru;
     private Map<String,ProxySetting> workspace_setting=new HashMap<String, ProxySetting>();
@@ -49,71 +49,79 @@ public class ProxyBolt extends BaseBasicBolt {
         return global_info.split("-")[0];
     }
 
-    public void execute(Tuple tuple, BasicOutputCollector collector) {
-        ru = new RedisUtil("127.0.0.1",6379,"xidian123");
-        jedis = ru.get_jedis_instance();
-        String global_info = (String) tuple.getValue(0);
-        String download_url= (String) tuple.getValue(1);
+    public void execute(Tuple tuple) {
+        try {
+            ru = new RedisUtil();
+            jedis = ru.getJedisInstance();
+
+            String global_info = (String) tuple.getValue(0);
+            String download_url = (String) tuple.getValue(1);
         /* delay_time需要从上一个得到 */
-        int delay_time=2*1000;
-        String workspace_id= get_workspace_id(global_info);
+            int delay_time = 2 * 1000;
+            String workspace_id = get_workspace_id(global_info);
 //        System.err.println("WID "+workspace_id);
 
         /* ------加入workspace的setting------ */
-        if(!workspace_setting.containsKey(workspace_id)){
-            workspace_setting.put(workspace_id,new ProxySetting(delay_time));
-        }
-        ProxySetting current_workspace_setting=workspace_setting.get(workspace_id);
+            if (!workspace_setting.containsKey(workspace_id)) {
+                workspace_setting.put(workspace_id, new ProxySetting(delay_time));
+            }
+            ProxySetting current_workspace_setting = workspace_setting.get(workspace_id);
 //        System.err.println(current_workspace_setting==null);
         /* ----更新当前workspace的IP pool---- */
-        Long last_update_time = current_workspace_setting.get_last_update_time();
+            Long last_update_time = current_workspace_setting.get_last_update_time();
         /* 暂且设置成10秒更新一次 */
-        if(System.currentTimeMillis()-last_update_time>1000*10){
-            refresh_workspace_proxy_pool(workspace_id);
-            current_workspace_setting.set_last_update_time(System.currentTimeMillis());
-        }
+            if (System.currentTimeMillis() - last_update_time > 1000 * 10) {
+                refresh_workspace_proxy_pool(workspace_id);
+                current_workspace_setting.set_last_update_time(System.currentTimeMillis());
+            }
 
-        String proxy=null;
-        do{
+            String proxy = null;
+            do {
             /* ----------更新黑白名单------------ */
-            Set<String> black_set = jedis.smembers(workspace_id+"_black_set");
-            Iterator<String> it=black_set.iterator();
-            while (it.hasNext()){
-                String tmp_ele=it.next();
-                String[] tmp=tmp_ele.split("_");
-                Long now=System.currentTimeMillis();
-                if(now-Long.parseLong(tmp[1])>current_workspace_setting.get_delay_time()) {
-                    jedis.srem(workspace_id+"_black_set", tmp_ele);
-                    jedis.sadd(workspace_id+"_white_set",tmp[0]);
+                Set<String> black_set = jedis.smembers(workspace_id + "_black_set");
+                Iterator<String> it = black_set.iterator();
+                while (it.hasNext()) {
+                    String tmp_ele = it.next();
+                    String[] tmp = tmp_ele.split("_");
+                    Long now = System.currentTimeMillis();
+                    if (now - Long.parseLong(tmp[1]) > current_workspace_setting.get_delay_time()) {
+                        jedis.srem(workspace_id + "_black_set", tmp_ele);
+                        jedis.sadd(workspace_id + "_white_set", tmp[0]);
+                    }
+                }
+            /* -------------查询--------------- */
+                proxy = ru.pick(jedis, workspace_id + "_white_set");
+            } while (proxy == null || proxy.equals(""));
+            ru.add(jedis, workspace_id + "_black_set", proxy + "_" + System.currentTimeMillis());
+            current_workspace_setting.set_last_action_time(System.currentTimeMillis());
+        /* -------------回收--------------- */
+            for (Map.Entry<String, ProxySetting> entry : workspace_setting.entrySet()) {
+                String key = entry.getKey();
+                ProxySetting tps = entry.getValue();
+                Long last_action_time = tps.get_last_action_time();
+                Long elapse_time = System.currentTimeMillis() - last_action_time;
+                int dead_time = tps.get_dead_time();
+                if (elapse_time > dead_time) {
+                /* 在Redis中删除这个set */
+                    ru.clean_set(jedis, workspace_id + "_white_set");
+                    ru.clean_set(jedis, workspace_id + "_black_set");
+                    workspace_setting.remove(key);
                 }
             }
-            /* -------------查询--------------- */
-            proxy=ru.pick(jedis,workspace_id+"_white_set");
-        } while(proxy==null||proxy.equals(""));
-        ru.add(jedis, workspace_id + "_black_set", proxy + "_" + System.currentTimeMillis());
-        current_workspace_setting.set_last_action_time(System.currentTimeMillis());
-        /* -------------回收--------------- */
-        for(Map.Entry<String,ProxySetting> entry:workspace_setting.entrySet()) {
-            String key=entry.getKey();
-            ProxySetting tps=entry.getValue();
-            Long last_action_time = tps.get_last_action_time();
-            Long elapse_time = System.currentTimeMillis() - last_action_time;
-            int dead_time = tps.get_dead_time();
-            if (elapse_time > dead_time) {
-                /* 在Redis中删除这个set */
-                ru.clean_set(jedis, workspace_id + "_white_set");
-                ru.clean_set(jedis, workspace_id + "_black_set");
-                workspace_setting.remove(key);
-            }
+            _collector.emit(tuple, new Values(global_info, download_url, proxy));
+            _collector.ack(tuple);
+        }catch (Exception e){
+            _collector.fail(tuple);
+            logger.error("Generate Url error:"+e);
+            e.printStackTrace();
         }
-        collector.emit(new Values(global_info, download_url, proxy));
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
         declarer.declare(new Fields("global_info","download_url","proxy"));
     }
 
-    public void prepare(Map conf,TopologyContext context,OutputCollector collector){
-        this.collector = collector;
+    public void prepare(Map stormConf, TopologyContext context, OutputCollector collector){
+        this._collector = collector;
     }
 }

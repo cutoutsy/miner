@@ -4,22 +4,20 @@ import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.BasicOutputCollector;
 import backtype.storm.topology.OutputFieldsDeclarer;
-import backtype.storm.topology.base.BaseBasicBolt;
+import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
-import miner.spider.utils.MyLogger;
-import miner.spider.utils.MySysLogger;
-import miner.spider.utils.RedisUtil;
 import miner.topo.platform.PlatformUtils;
 import miner.topo.platform.Task;
+import miner.utils.MySysLogger;
+import miner.utils.RedisUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import redis.clients.jedis.Jedis;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,27 +25,29 @@ import java.util.regex.Pattern;
 /**
  * The Bolt is Url Generator
  */
-public class GenerateUrlBolt extends BaseBasicBolt {
+public class GenerateUrlBolt extends BaseRichBolt {
 
     private static MySysLogger logger = new MySysLogger(GenerateUrlBolt.class);
 
     private OutputCollector _collector;
+    private RedisUtil ru;
     private Jedis _redis;
 
-    public void execute(Tuple input, BasicOutputCollector collector) {
-
+    public void execute(Tuple input) {
         try {
             String taskInfo = input.getString(0);
             String message = input.getString(1);
             Task ta = new Task(taskInfo);
+
             if(ta.getIsloop().equals("false")) {
                 String emitUrl = PlatformUtils.getEmitUrl(taskInfo, message);
                 UUID uuid = UUID.randomUUID();
                 String globalInfo = taskInfo + "-" + uuid;
                 if (!emitUrl.isEmpty()) {
-                    collector.emit(new Values(globalInfo, emitUrl));
+                    _collector.emit(input, new Values(globalInfo, emitUrl));
                     logger.info(globalInfo + "---" + emitUrl);
                 }
+                _collector.ack(input);
                 //loop process
             }else if(ta.getIsloop().equals("true")){
                 if(_redis.exists(taskInfo)){
@@ -73,7 +73,7 @@ public class GenerateUrlBolt extends BaseBasicBolt {
                                 UUID uuidLoop = UUID.randomUUID();
                                 String globalInfo = taskInfo+"-"+uuidLoop;
                                 if (!emitUrlLoop.isEmpty()) {
-                                    collector.emit(new Values(globalInfo, emitUrlLoop));
+                                    _collector.emit(input, new Values(globalInfo, emitUrlLoop));
                                     _redis.sadd(taskInfo, loopMessage);
                               }
                             }
@@ -85,23 +85,28 @@ public class GenerateUrlBolt extends BaseBasicBolt {
                             UUID uuidLoop = UUID.randomUUID();
                             String globalInfo = taskInfo + "-" + uuidLoop;
                             if (!emitUrlLoop.isEmpty()) {
-                                collector.emit(new Values(globalInfo, emitUrlLoop));
+                                _collector.emit(input, new Values(globalInfo, emitUrlLoop));
                                 _redis.sadd(taskInfo, loopMessage);
                             }
                         }
                     }
                 }
+                _collector.ack(input);
             }else{
                 logger.warn("task loop config wrong.");
+                _collector.fail(input);
             }
         }catch (Exception ex){
+            _collector.fail(input);
             logger.error("Generate Url error:"+ex);
             ex.printStackTrace();
         }
     }
 
-    public void prepare(Map stormConf, TopologyContext context) {
-        _redis = RedisUtil.GetRedis();
+    public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
+        this._collector = collector;
+        ru = new RedisUtil();
+        _redis = ru.getJedisInstance();
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {

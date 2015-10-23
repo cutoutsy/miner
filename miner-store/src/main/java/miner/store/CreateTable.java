@@ -4,14 +4,12 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
 import java.sql.Connection;
 
 
-import com.mysql.jdbc.Driver;
-import miner.spider.utils.MySysLogger;
 import miner.spider.utils.MysqlUtil;
-import miner.spider.utils.StaticValue;
+import miner.utils.MySysLogger;
+import miner.utils.StaticValue;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.HBaseAdmin;

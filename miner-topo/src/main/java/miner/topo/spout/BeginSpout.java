@@ -6,15 +6,14 @@ import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseRichSpout;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
-import miner.spider.utils.MyLogger;
-import miner.spider.utils.MySysLogger;
-import miner.spider.utils.RedisUtil;
 import miner.store.CreateTable;
 import miner.topo.enumeration.ProjectState;
 import miner.topo.platform.PlatformUtils;
 import miner.topo.platform.Project;
 import miner.topo.platform.QuartzManager;
 import miner.topo.platform.Task;
+import miner.utils.MySysLogger;
+import miner.utils.RedisUtil;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
@@ -30,6 +29,7 @@ public class BeginSpout extends BaseRichSpout{
 	private SpoutOutputCollector _collector;
 	private HashMap<String, String> _runningProject = new HashMap<String, String>();
 	private QuartzManager _qManager;
+	private RedisUtil ru;
 	private Jedis redis;
 	
 	public void ack(Object msgId){
@@ -41,7 +41,7 @@ public class BeginSpout extends BaseRichSpout{
 		logger.info("消息处理失败:"+msgId+";正在重新发送......");
 		String message = redis.hget("message", msgId.toString());
 		String globalInfo = msgId.toString().split("-")[0]+"-"+msgId.toString().split("-")[1]+"-"+msgId.toString().split("-")[2];
-		_collector.emit(new Values(globalInfo, message), globalInfo);
+		_collector.emit(new Values(globalInfo, message), msgId);
 	}
 
 	public void nextTuple() {
@@ -122,7 +122,10 @@ public class BeginSpout extends BaseRichSpout{
 	public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
 		try {
 			_collector = collector;
-			redis = RedisUtil.GetRedis();
+
+			ru = new RedisUtil();
+			redis = ru.getJedisInstance();
+
 			SchedulerFactory schedulerFactory = new StdSchedulerFactory();
 			Scheduler scheduler = schedulerFactory.getScheduler();
 			_qManager = new QuartzManager();

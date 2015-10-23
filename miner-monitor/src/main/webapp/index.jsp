@@ -8,8 +8,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.Properties" %>
+<%@ page import="java.util.Map"%>
 <%@ page import="com.mysql.jdbc.Driver"%>
-<%@ page import="java.util.regex.Pattern" %>
+<%@ page import="redis.clients.jedis.Jedis" %>
+<%@ page import="miner.utils.StaticValue" %>
+<%@ page import="miner.utils.RedisUtil" %>
 <html>
 <head>
     <title></title>
@@ -70,7 +73,7 @@
                 valuesql = valuesql+","+"'"+value+"'";
                 }else {
                     if(!value.equals("")){
-                    property = property+"+"+value;
+                    property = property+"$"+value;
                     }
                 }
             }
@@ -81,23 +84,35 @@
             System.out.print(sql);
             return sql;
         }
+
+        public void insertRedis(String wid,String pid){
+            RedisUtil ru = new RedisUtil();
+            Jedis redis = ru.getJedisInstance();
+
+            String state = "die";
+            String projectExecuteNum = "0";
+            redis.hset("project_state",wid+"-"+pid,state);
+            redis.hset("project_executenum",wid+"-"+pid,projectExecuteNum);
+            redis.hset("project_cronstate",wid+"-"+pid,"3");
+        }
     %>
     <%!
         public static Statement statement = null;
         String SQL= null;
         String property = null;
         public static final Properties info = new Properties();
-        //public static final String url ="jdbc:mysql://127.0.0.1/storm?useUnicode=true&characterEncoding=utf8";
-        public static final String url ="jdbc:mysql://localhost:3307/platform_config?useUnicode=true&characterEncoding=utf8";
+        public static final String url ="jdbc:mysql://"+StaticValue.mysql_host+":"+StaticValue.mysql_port+"/"+StaticValue.mysql_database+"?useUnicode=true&characterEncoding=utf8";
     %>
     <%@include file="getParam.jsp"%>
     <%
     try{
         %>
     <%
-            info.put("user","root");
-            info.put("password", "simple");
-            //String string = request.getParameter("wid");
+            info.put("user",StaticValue.mysql_user);
+            info.put("password", StaticValue.mysql_password);
+            String wid = new String(request.getParameter("pwid").getBytes("ISO-8859-1"),"UTF-8");
+            String pid = new String(request.getParameter("ppid").getBytes("ISO-8859-1"),"UTF-8");
+            insertRedis(wid,pid);
             Driver driver = new Driver();
             Connection con = driver.connect(url, info);
             statement=con.createStatement();

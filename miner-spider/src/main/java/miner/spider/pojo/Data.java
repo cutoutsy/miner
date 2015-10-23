@@ -1,10 +1,8 @@
 package miner.spider.pojo;
 
 import miner.spider.utils.MysqlUtil;
-import miner.spider.utils.RedisUtil;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Data object

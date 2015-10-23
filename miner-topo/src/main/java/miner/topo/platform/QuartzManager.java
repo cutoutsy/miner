@@ -32,7 +32,6 @@ public class QuartzManager {
         System.out.println("向任务调度中添加定时任务");
 
         try{
-
             JobDetail jobDetail = JobBuilder.newJob(cls).withIdentity(job.getJobName(), job.getJobGroup()).build();
             jobDetail.getJobDataMap().put(job.getJobName(), job);
             CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression());

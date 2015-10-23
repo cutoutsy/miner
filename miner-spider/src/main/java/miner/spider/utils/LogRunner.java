@@ -1,5 +1,7 @@
 package miner.spider.utils;
 
+import miner.utils.StaticValue;
+
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.ObjectInputStream;

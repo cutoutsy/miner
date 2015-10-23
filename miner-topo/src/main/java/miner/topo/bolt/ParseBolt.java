@@ -2,9 +2,7 @@ package miner.topo.bolt;
 
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
-import backtype.storm.topology.BasicOutputCollector;
 import backtype.storm.topology.OutputFieldsDeclarer;
-import backtype.storm.topology.base.BaseBasicBolt;
 import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
@@ -13,10 +11,10 @@ import miner.parse.*;
 import miner.parse.data.DataItem;
 import miner.parse.data.Packer;
 import miner.spider.pojo.Data;
-import miner.spider.utils.MyLogger;
-import miner.spider.utils.MySysLogger;
 import miner.spider.utils.MysqlUtil;
-import miner.spider.utils.RedisUtil;
+import miner.topo.platform.PlatformUtils;
+import miner.utils.MySysLogger;
+import miner.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
 import java.util.*;
@@ -28,12 +26,13 @@ public class ParseBolt extends BaseRichBolt {
 	private OutputCollector _collector;
 	private HashMap<String, Data> _dataScheme;
 	private HashMap<String, String> _regex;
+	private RedisUtil _ru;
 	private Jedis _redis;
 
-	public void execute(Tuple input) {
+	public void execute(Tuple tuple) {
 		try {
-			String globalInfo = input.getString(0);
-			String resource = input.getString(1);
+			String globalInfo = tuple.getString(0);
+			String resource = tuple.getString(1);
 			String projectInfo = globalInfo.split("-")[0]+globalInfo.split("-")[1]+globalInfo.split("-")[2];
 
 			HashMap<String, Data> parseData = new HashMap<String, Data>();
@@ -84,12 +83,10 @@ public class ParseBolt extends BaseRichBolt {
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
 						String[] result_str=packerData.pack();
 						for(int i=0;i<result_str.length;i++){
-							emit("store", input, globalInfo, result_str[i]);
-//							logger.info(result_str[i]);
+							emit("store", tuple, globalInfo, result_str[i]);
 						}
-//						emit("store", input, globalInfo, packerData.pack().toString());
-//						logger.info(packerData.pack());
 					}
+
 				}else if(data.getProcessWay().equals("e") || data.getProcessWay().equals("E")){
 					while (data_item_it.hasNext()) {
 						String loopTaskId = data.getLcondition();
@@ -97,26 +94,39 @@ public class ParseBolt extends BaseRichBolt {
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
 						String[] result_str=packerData.pack();
 						for(int i=0;i<result_str.length;i++){
-							emit("generate-loop", input, loopTaskInfo, result_str[i]);
-//							logger.info(result_str[i]);
+							emit("generate-loop", tuple, loopTaskInfo, result_str[i]);
+							//set url to redis for LoopSpout get
+							//_redis.hset("message_loop", loopTaskInfo, result_str[i]);
 						}
-//						emit("generate-loop", input, loopTaskInfo, packerData.pack());
-//						logger.info(packerData.pack());
+					}
+				}else if(data.getProcessWay().equals("l") || data.getProcessWay().equals("L")){
+					while (data_item_it.hasNext()) {
+						String loopTaskId = data.getLcondition();
+						String loopTaskInfo = taskInfo.split("-")[0]+"-"+dataInfo.split("-")[1]+"-"+loopTaskId;
+						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
+						String[] result_str=packerData.pack();
+						for(int i=0;i<result_str.length;i++){
+							//set url to redis for LoopSpout get
+							String uuid = PlatformUtils.getUUID();
+							String tempEmitInfo = loopTaskInfo+"-"+uuid;
+							_redis.hset("message_loop", tempEmitInfo, result_str[i]);
+							logger.info(tempEmitInfo + "--" + result_str[i] + "--store to message_loop.");
+						}
 					}
 				}else{
 					logger.error("there is no valid way to process "+taskInfo+" data");
 				}
 			}
-			_collector.ack(input);
+			_collector.ack(tuple);
 		}catch (Exception ex){
 			logger.error("parse error!"+ex);
 			ex.printStackTrace();
-			_collector.fail(input);
+			_collector.fail(tuple);
 		}
 	}
 
-	private void emit(String streamId, Tuple input,String globalInfo, String message){
-		_collector.emit(streamId, input, new Values(globalInfo, message));
+	private void emit(String streamId, Tuple tuple,String globalInfo, String message){
+		_collector.emit(streamId, tuple, new Values(globalInfo, message));
 		logger.info("Parse, message emitted: globalInfo=" + globalInfo + ", message=" + message);
 	}
 
@@ -124,7 +134,8 @@ public class ParseBolt extends BaseRichBolt {
 		this._collector = collector;
 		_dataScheme = MysqlUtil.getData();
 		_regex = MysqlUtil.getRegex();
-		_redis = RedisUtil.GetRedis();
+		_ru = new RedisUtil();
+		_redis = _ru.getJedisInstance();
 	}
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {

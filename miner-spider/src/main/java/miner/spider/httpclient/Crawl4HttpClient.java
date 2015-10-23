@@ -6,11 +6,16 @@ import miner.spider.manager.HttpClientPojoManager;
 import miner.spider.pojo.ContentPojo;
 import miner.spider.pojo.HttpRequestPojo;
 import miner.spider.utils.ObjectAndByteArrayConvertUtil;
-import miner.spider.utils.StaticValue;
+import miner.utils.StaticValue;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -19,8 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by cutoutsy on 7/24/15.
+ * Httpclient Download Class
  */
+
 public class Crawl4HttpClient {
 
     public static String crawlWebPage(HttpRequestPojo requestPojo){
@@ -33,6 +39,7 @@ public class Crawl4HttpClient {
                 rb = RequestBuilder.post().setUri(new URI(requestPojo.getUrl()));
             }
             Map<String,Object> map = null;
+
             //设置头部信息
             if((map = requestPojo.getHeaderMap()) != null){
                 for(Map.Entry<String,Object> entry:map.entrySet()){
@@ -54,6 +61,8 @@ public class Crawl4HttpClient {
             //查看是否设置代理
             HttpUriRequest requestAll = null;
             HttpClientPojoManager.HttpClientPojo httpClientPojo = HttpClientPojoManager.getHttpClientPojo();
+//            HttpClientPojoManager.HttpClientPojo httpClientPojo = new HttpClientPojoManager.HttpClientPojo();
+
             //执行请求
             if(StaticValue.proxy_open){
                 rb.setConfig(httpClientPojo.getRequestConfig());
@@ -103,6 +112,42 @@ public class Crawl4HttpClient {
         }
         return null;
     }
+
+    public static String downLoadPage(String url, String proxyString){
+
+        String reString = "";
+        String ip = proxyString.split(":")[0];
+        int port = Integer.valueOf(proxyString.split(":")[1]);
+        try{
+            HttpClient httpClient = HttpClients.custom().build();
+            //211.144.72.154:8080
+            HttpHost proxy = new HttpHost(ip, port);
+            //无需验证的
+            DefaultProxyRoutePlanner routePlanner= new DefaultProxyRoutePlanner(proxy);
+            httpClient = HttpClients.custom().setRoutePlanner(routePlanner).build();
+            RequestConfig.Builder config_builder = RequestConfig.custom();
+            config_builder.setProxy(proxy);
+            config_builder.setSocketTimeout(StaticValue.http_connection_timeout);
+            config_builder.setConnectTimeout(StaticValue.http_read_timeout);
+            RequestConfig requestConfig = config_builder.build();
+
+            RequestBuilder rb = null;
+            rb = RequestBuilder.get().setUri(URI.create(url));
+
+            HttpUriRequest requestAll = null;
+            rb.setConfig(requestConfig);
+            requestAll = rb.build();
+            CloseableHttpResponse response = (CloseableHttpResponse)httpClient.execute(requestAll);
+            String re = Crawl4HttpClient.parserResponse_v2(response);
+            reString = re;
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        return reString;
+    }
+
 
     public static String downLoadPage(String url){
 
@@ -177,27 +222,32 @@ public class Crawl4HttpClient {
 
     public static void main(String[] args) throws Exception {
 
-        HttpRequestPojo requestPojo = new HttpRequestPojo();
-        requestPojo.setRequestMethod(HttpRequestMethod.GET);
+//        HttpRequestPojo requestPojo = new HttpRequestPojo();
+//        requestPojo.setRequestMethod(HttpRequestMethod.GET);
+//
+//        String url = "http://www.baidu.com/";
+//        Map<String, Object> headerMap = new HashMap<String, Object>();
+//        Map<String, Object> parasMap = new HashMap<String, Object>();
+//
+//        requestPojo.setUrl(url);
+//        requestPojo.setHeaderMap(headerMap);
+//        requestPojo.setParasMap(parasMap);
+//        for(int i = 0;i < 10;i++){
+//            String source = crawlWebPage(requestPojo);
+//            System.out.println(source);
+//        }
+//
+//        System.out.println("done!");
+//        String url = "http://www.kuaidaili.com/";
+//        String proxy = "115.159.5.247:8080";
+//        String re = downLoadPage(url, proxy);
+//        System.out.println(re);
 
-//		String url = "http://www.oscca.gov.cn/";
-        String url = "http://www.baidu.com/";
-        Map<String, Object> headerMap = new HashMap<String, Object>();
-        Map<String, Object> parasMap = new HashMap<String, Object>();
-        // Map<String, String> formNameValueMap = new HashMap<String, String>();
-
-        requestPojo.setUrl(url);
-        requestPojo.setHeaderMap(headerMap);
-        requestPojo.setParasMap(parasMap);
-        // form name value是为非iso-8859-1编码的value pair而添加,当然是指存在中文的情况
-        // requestPojo.setFormNameValePairMap(formNameValueMap,
-        // CharsetEnum.UTF8);
-        for(int i = 0;i < 10;i++){
-            String source = crawlWebPage(requestPojo);
-            System.out.println(source);
+        String kk = "";
+        if(kk.equals("")){
+            System.out.println("-----");
         }
 
-        System.out.println("done!");
     }
 
 }

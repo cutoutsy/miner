@@ -1,5 +1,6 @@
 package miner.proxy;
 
+import miner.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
 import java.util.HashMap;
@@ -15,11 +16,11 @@ public class ProxyMonitor {
 
     /* 两种构造器 */
     public ProxyMonitor(String ip_address, int port, String password){
-        jedis=new RedisUtil(ip_address, port, password).get_jedis_instance();
+        jedis=new RedisUtil(ip_address, port, password).getJedisInstance();
     }
 
     public ProxyMonitor(RedisUtil ru){
-        jedis=ru.get_jedis_instance();
+        jedis=ru.getJedisInstance();
     }
 
     /* 两个基本方法 */
