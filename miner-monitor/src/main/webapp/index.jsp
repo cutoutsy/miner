@@ -15,7 +15,7 @@
 <%@ page import="miner.utils.RedisUtil" %>
 <html>
 <head>
-    <title></title>
+    <title>task summit</title>
 </head>
 <body>
     <%!

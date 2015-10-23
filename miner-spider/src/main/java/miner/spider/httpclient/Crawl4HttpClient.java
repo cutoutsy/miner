@@ -102,6 +102,10 @@ public class Crawl4HttpClient {
             HttpEntity entity = response.getEntity();
             byte[] byteArray = ObjectAndByteArrayConvertUtil.getByteArrayOutputStream(entity.getContent());
 			ContentPojo contentPojo = encodeUtil.getWebPageCharset(byteArray,entity.getContentType().toString());
+            if(contentPojo.getCharset() == null){
+                //return json,can not find charset
+                return new String(byteArray,"utf-8");
+            }
 			if(contentPojo != null){
 				return new String(byteArray,contentPojo.getCharset());
 			}
@@ -237,16 +241,13 @@ public class Crawl4HttpClient {
 //            System.out.println(source);
 //        }
 //
-//        System.out.println("done!");
-//        String url = "http://www.kuaidaili.com/";
+        System.out.println("done!");
+        String url = "http://hotel.elong.com/isajax/HotelFillOrder/GetOrderCountIn24Hours?hotelId=40101627";
 //        String proxy = "115.159.5.247:8080";
-//        String re = downLoadPage(url, proxy);
-//        System.out.println(re);
+        String re = downLoadPage(url);
+        System.out.println(re);
 
-        String kk = "";
-        if(kk.equals("")){
-            System.out.println("-----");
-        }
+
 
     }
 
