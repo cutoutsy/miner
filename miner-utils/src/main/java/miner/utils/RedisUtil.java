@@ -1,11 +1,12 @@
 package miner.utils;
 
-import java.util.Iterator;
-import java.util.Set;
-
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @name RedisUtil
@@ -16,9 +17,14 @@ public class RedisUtil {
 	private JedisPool pool = null;
 	int jedis_instance_count = 0;
 
+
 	public RedisUtil(String ip_address, int port, String password) {
 		pool = this.init_jedis_pool(ip_address, port, password);
 	}
+
+    public RedisUtil(){
+
+    }
 
 	private JedisPool init_jedis_pool(String ip, int port, String password) {
 		if (pool == null) {
@@ -57,6 +63,24 @@ public class RedisUtil {
 		return null;
 	}
 
+    public Jedis get_jedis_instance_without_pool(){
+        Jedis redis = new Jedis(StaticValue.redis_host,StaticValue.redis_port,10000);
+        redis.auth(StaticValue.redis_auth);
+        return redis;
+    }
+
+    public Jedis get_jedis_instance_without_pool(int database){
+        Jedis redis = new Jedis(StaticValue.redis_host,StaticValue.redis_port,10000);
+        redis.auth(StaticValue.redis_auth);
+        redis.select(database);
+        return redis;
+    }
+
+    public void set_key_expire(Jedis redis,String key,int days){
+        int seconds = days*24*60*60;
+        redis.expire(key, seconds);
+    }
+
 	public void release_jedis(Jedis jedis) {
 		this.pool.returnResource(jedis);
 		jedis_instance_count--;
@@ -88,6 +112,20 @@ public class RedisUtil {
     /* 查询set中的元素数量 */
     public Long num(Jedis jedis,String set_name){
         return jedis.scard(set_name);
+    }
+
+    /* 从miner-spider移过来的几个方法 */
+    public static Jedis GetRedis(){
+        Jedis redis = new Jedis(StaticValue.redis_host,6379,10000);
+        redis.auth(StaticValue.redis_auth);
+        return redis;
+    }
+
+    public static Jedis GetRedis(int database){
+        Jedis redis = new Jedis(StaticValue.redis_host,6379,10000);
+        redis.auth(StaticValue.redis_auth);
+        redis.select(database);
+        return redis;
     }
 
 }
