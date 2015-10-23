@@ -22,6 +22,7 @@ public class RedisUtil {
 		pool = this.init_jedis_pool(ip_address, port, password);
 	}
 
+    /* 保留这个构造器 */
     public RedisUtil(){
 
     }
