@@ -130,7 +130,9 @@ public class Packer {
                 array_single_obj.put("property", array_property_obj);
 //                System.out.println(array_single_obj);
 
-                return_set.add(array_single_obj.toString());
+                if(!array_property_obj.toString().equals("{}")) {
+                    return_set.add(array_single_obj.toString());
+                }
             }catch (JSONException e){
                 e.printStackTrace();
             }
