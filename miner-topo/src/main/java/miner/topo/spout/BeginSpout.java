@@ -33,6 +33,7 @@ public class BeginSpout extends BaseRichSpout{
 	private Jedis redis;
 	
 	public void ack(Object msgId){
+		redis.hdel("message", msgId.toString());
 		logger.info("message:" + msgId + "processd sucess!");
 	}
 	
@@ -56,7 +57,7 @@ public class BeginSpout extends BaseRichSpout{
 					String tempProjectName = newAddProject.get(i);
 					Project pj = new Project(tempProjectName);
 					//create table in hbase
-					CreateTable.mysqlCheck(pj.getWid(), pj.getPid());
+//					CreateTable.mysqlCheck(pj.getWid(), pj.getPid());
 
 					String tempDatasource = pj.getDatasource();
 					if (redis.llen(tempDatasource + "1") == redis.smembers(tempDatasource).size()) {
@@ -130,11 +131,11 @@ public class BeginSpout extends BaseRichSpout{
 			Scheduler scheduler = schedulerFactory.getScheduler();
 			_qManager = new QuartzManager();
 			_qManager.setScheduler(scheduler);
-			PlatformUtils.initRegisterProject(_qManager);
+			//PlatformUtils.initRegisterProject(_qManager);
 			scheduler.start();
 			//init Hbase tables
 
-			CreateTable.initHbaseTable();
+//			CreateTable.initHbaseTable();
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}

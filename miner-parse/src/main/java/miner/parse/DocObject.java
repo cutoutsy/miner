@@ -9,6 +9,7 @@ import java.util.Set;
 
 import miner.parse.util.HtmlUtil;
 import miner.parse.util.JsonUtil;
+import miner.spider.httpclient.Crawl4HttpClient;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Element;
 import miner.parse.data.Packer;
@@ -252,32 +253,33 @@ public class DocObject {
 
         String doc_str=null;
         try {
-            Document doc = Jsoup.connect("http://dealer.xcar.com.cn/d1_475/?type=1&page=1").get();
-             doc_str=doc.toString();
+//            Document doc = Jsoup.connect("http://hotel.elong.com/isajax/HotelFillOrder/GetOrderCountIn24Hours?hotelId=40101627").get();
+//             doc_str=doc.toString();
+			doc_str = Crawl4HttpClient.downLoadPage("http://hotel.elong.com/isajax/HotelFillOrder/GetOrderCountIn24Hours?hotelId=40101627");
 //            System.out.println(doc_str);
-        }catch (IOException e){
+        }catch (Exception e){
             e.printStackTrace();
         }
 
         long start = System.currentTimeMillis();
 		/* 抽取单个doc数据的规则库，多个set组成map */
 		Map<String, RuleItem> data_rule_map = new HashMap<String, RuleItem>();
-		data_rule_map.put("id_name", new RuleItem("name_name",
-				"html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dt0.a0.title"));
-		data_rule_map.put("id_phone", new RuleItem("name_phone",
-				"html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd0.em0.b0.text"));
-        data_rule_map.put("id_address", new RuleItem("name_address",
-                "html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd1.span1.text"));
-        data_rule_map.put("id_sale", new RuleItem("name_sale",
-                "html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd2.a0.text"));
-        data_rule_map.put("id_page_link", new RuleItem("name_page_link",
-                "html0.body0.div8.div0.div0.div1.div0.a_1_6_.href"));
+		data_rule_map.put("success", new RuleItem("success",
+				"success0"));
+		data_rule_map.put("message", new RuleItem("message",
+				"message0"));
+        data_rule_map.put("value", new RuleItem("value",
+                "value0"));
+//        data_rule_map.put("id_sale", new RuleItem("name_sale",
+//                "html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd2.a0.text"));
+//        data_rule_map.put("id_page_link", new RuleItem("name_page_link",
+//                "html0.body0.div8.div0.div0.div1.div0.a_1_6_.href"));
 		/* 封装数据的规则库map */
 		Set<DataItem> data_item_set = new HashSet<DataItem>();
 		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
-                "none", "none", "id_name","id_phone","id_address","id_sale"));
-		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
-				"none", "none","id_page_link"));
+                "none", "none", "success","message","value"));
+//		data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
+//				"none", "none","id_page_link"));
 
 		/* 数据生成器 */
 		Generator g = new Generator();
@@ -286,7 +288,7 @@ public class DocObject {
 			g.set_rule(entry.getValue());
 		}
 		g.generate_data();
-        System.out.println(g.get_doc_obj().search("/d1_475/?type=1&page=12"));
+//        System.out.println(g.get_doc_obj().search("/d1_475/?type=1&page=12"));
 //        System.out.println(g.get_doc_obj().search("北京盈之宝汽车销售服务有限公司"));
 //        System.out.println(g.get_doc_obj().search("/d1_475/?type=1&page=4"));
 //        System.out.println(g.get_doc_obj().search("/d1_475/?type=1&page=5"));
