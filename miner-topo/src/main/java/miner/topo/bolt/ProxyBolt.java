@@ -115,6 +115,7 @@ public class ProxyBolt extends BaseRichBolt {
             logger.error("Generate Url error:"+e);
             e.printStackTrace();
         }
+        ru.release_jedis(jedis);
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {

@@ -270,10 +270,10 @@ public class DocObject {
 		Set<DataItem> data_item_set = new HashSet<DataItem>();
         data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
 				"none", "none","id_success"));
-//        data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
-//				"none", "none","id_message"));
-//        data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
-//                "none", "none","id_value"));
+        data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
+				"none", "none","id_message"));
+        data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none",
+                "none", "none","id_value"));
 
 		/* 数据生成器 */
 		Generator g = new Generator();
