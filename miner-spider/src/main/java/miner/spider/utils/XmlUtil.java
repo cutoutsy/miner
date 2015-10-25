@@ -21,10 +21,14 @@ import java.util.List;
 
 public class XmlUtil {
 
-//    private static MyLogger logger = new MyLogger(XmlUtil.class);
     private static MySysLogger logger = new MySysLogger(XmlUtil.class);
     private static RedisUtil ru;
     private static Jedis redis;
+
+    static {
+        ru = new RedisUtil();
+        redis = ru.getJedisInstance();
+    }
 
     //This method is for read XML
     public static void readDocument(String file) throws DocumentException {
@@ -70,8 +74,6 @@ public class XmlUtil {
             projectValue += datainfo[i]+"$";
         }
         projectValue = projectValue.substring(0,projectValue.length()-1);
-        ru = new RedisUtil();
-        redis = ru.getJedisInstance();
         redis.hset(redisKey, projectKey, projectValue);
         System.out.println("sucess!!");
     }
@@ -93,8 +95,6 @@ public class XmlUtil {
             projectValue += datainfo[i]+"$";
         }
         projectValue = projectValue.substring(0,projectValue.length()-1);
-        ru = new RedisUtil();
-        redis = ru.getJedisInstance();
         redis.hset(redisKey, projectKey, projectValue);
         System.out.println("sucess!!");
     }
@@ -145,8 +145,6 @@ public class XmlUtil {
                 .execute("insert into project (wid, pid, name, description, datasource, schedule, precondition) values ('"
                         + wid + "','" + pid + "','"+ name + "','"+ description + "','"+ datasource + "','"+ schedule + "','"+ precondition + "')");
 
-        ru = new RedisUtil();
-        redis = ru.getJedisInstance();
         redis.hset("project_state", datainfo[0]+"-"+datainfo[1], state);
         redis.hset("project_executenum", datainfo[0]+"-"+datainfo[1], projectExecuteNUm);
         redis.hset("project_cronstate", datainfo[0]+"-"+datainfo[1], "3");
