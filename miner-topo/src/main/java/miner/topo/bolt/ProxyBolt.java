@@ -125,4 +125,8 @@ public class ProxyBolt extends BaseRichBolt {
     public void prepare(Map stormConf, TopologyContext context, OutputCollector collector){
         this._collector = collector;
     }
+
+    public void cleanup() {
+        ru.release_jedis(jedis);
+    }
 }

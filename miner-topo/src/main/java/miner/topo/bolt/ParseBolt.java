@@ -144,4 +144,7 @@ public class ParseBolt extends BaseRichBolt {
 		declarer.declareStream("store", new Fields("p_globalinfo", "p_data"));
 	}
 
+	public void cleanup() {
+		_ru.release_jedis(_redis);
+	}
 }

@@ -39,7 +39,7 @@ public class BeginSpout extends BaseRichSpout{
 	
 	//ensure the message processed
 	public void fail(Object msgId){
-		logger.info("消息处理失败:"+msgId+";正在重新发送......");
+		logger.info("消息处理失败:" + msgId + ";正在重新发送......");
 		String message = redis.hget("message", msgId.toString());
 		String globalInfo = msgId.toString().split("-")[0]+"-"+msgId.toString().split("-")[1]+"-"+msgId.toString().split("-")[2];
 		_collector.emit(new Values(globalInfo, message), msgId);
@@ -144,7 +144,10 @@ public class BeginSpout extends BaseRichSpout{
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		declarer.declare(new Fields("globalInfo","message"));
 	}
-	
+
+	public void close() {
+		ru.release_jedis(redis);
+	}
 	
 }
 

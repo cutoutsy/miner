@@ -114,5 +114,6 @@ public class GenerateUrlBolt extends BaseRichBolt {
     }
 
     public void cleanup() {
+        ru.release_jedis(_redis);
     }
 }

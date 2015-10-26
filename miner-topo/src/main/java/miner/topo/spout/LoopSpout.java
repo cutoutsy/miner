@@ -109,4 +109,8 @@ public class LoopSpout extends BaseRichSpout{
         declarer.declare(new Fields("loopSpoutGlobalInfo","loopSpoutMessage"));
     }
 
+    public void close() {
+        ru.release_jedis(_redis);
+    }
+
 }
