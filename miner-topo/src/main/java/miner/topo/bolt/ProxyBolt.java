@@ -2,7 +2,6 @@ package miner.topo.bolt;
 
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
-import backtype.storm.topology.BasicOutputCollector;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
@@ -51,8 +50,6 @@ public class ProxyBolt extends BaseRichBolt {
 
     public void execute(Tuple tuple) {
         try {
-            ru = new RedisUtil();
-            jedis = ru.getJedisInstance();
 
             String global_info = (String) tuple.getValue(0);
             String download_url = (String) tuple.getValue(1);
@@ -115,7 +112,6 @@ public class ProxyBolt extends BaseRichBolt {
             logger.error("Generate Url error:"+e);
             e.printStackTrace();
         }
-//        ru.release_jedis(jedis);
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
@@ -124,6 +120,8 @@ public class ProxyBolt extends BaseRichBolt {
 
     public void prepare(Map stormConf, TopologyContext context, OutputCollector collector){
         this._collector = collector;
+        ru = new RedisUtil();
+        jedis = ru.getJedisInstance();
     }
 
     public void cleanup() {
