@@ -47,7 +47,7 @@ public class BeginSpout extends BaseRichSpout{
 
 	public void nextTuple() {
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(20);
 			PlatformUtils.registerProject(_qManager);
 
 			List<String> newAddProject = PlatformUtils.getProjectList();

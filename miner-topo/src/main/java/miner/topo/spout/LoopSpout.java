@@ -37,7 +37,7 @@ public class LoopSpout extends BaseRichSpout{
     //once emit one
     public void nextTuple(){
         try {
-            Thread.sleep(100);
+            Thread.sleep(20);
             Set<String> infoKeys = _redis.hkeys("message_loop");
             Iterator it = infoKeys.iterator();
             while (it.hasNext()){

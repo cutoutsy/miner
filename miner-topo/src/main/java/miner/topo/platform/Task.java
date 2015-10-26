@@ -44,9 +44,6 @@ public class Task {
     private String state;
 
     public Task(String taskName) {
-        ru = new RedisUtil();
-        redis = ru.getJedisInstance();
-//        String taskValue = redis.hget("taskInfo", taskName);
         HashMap<String, String> taskMap = MysqlUtil.getTask(taskName);
         this.wid = taskMap.get("wid");
         this.pid = taskMap.get("pid");
