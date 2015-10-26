@@ -6,6 +6,7 @@ import miner.spider.manager.HttpClientPojoManager;
 import miner.spider.pojo.ContentPojo;
 import miner.spider.pojo.HttpRequestPojo;
 import miner.spider.utils.ObjectAndByteArrayConvertUtil;
+import miner.utils.MySysLogger;
 import miner.utils.StaticValue;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -28,6 +29,8 @@ import java.util.Map;
  */
 
 public class Crawl4HttpClient {
+
+    private static MySysLogger logger = new MySysLogger(Crawl4HttpClient.class);
 
     public static String crawlWebPage(HttpRequestPojo requestPojo){
         CloseableHttpResponse response = null;
@@ -124,7 +127,6 @@ public class Crawl4HttpClient {
         int port = Integer.valueOf(proxyString.split(":")[1]);
         try{
             HttpClient httpClient = HttpClients.custom().build();
-            //211.144.72.154:8080
             HttpHost proxy = new HttpHost(ip, port);
             //无需验证的
             DefaultProxyRoutePlanner routePlanner= new DefaultProxyRoutePlanner(proxy);
@@ -146,6 +148,7 @@ public class Crawl4HttpClient {
             reString = re;
 
         }catch (Exception ex){
+            logger.error("Request error: " + ex);
             ex.printStackTrace();
         }
 
@@ -226,28 +229,20 @@ public class Crawl4HttpClient {
 
     public static void main(String[] args) throws Exception {
 
-//        HttpRequestPojo requestPojo = new HttpRequestPojo();
-//        requestPojo.setRequestMethod(HttpRequestMethod.GET);
-//
-//        String url = "http://www.baidu.com/";
-//        Map<String, Object> headerMap = new HashMap<String, Object>();
-//        Map<String, Object> parasMap = new HashMap<String, Object>();
-//
-//        requestPojo.setUrl(url);
-//        requestPojo.setHeaderMap(headerMap);
-//        requestPojo.setParasMap(parasMap);
-//        for(int i = 0;i < 10;i++){
-//            String source = crawlWebPage(requestPojo);
-//            System.out.println(source);
-//        }
-//
-        System.out.println("done!");
-        String url = "http://hotel.elong.com/isajax/HotelFillOrder/GetOrderCountIn24Hours?hotelId=40101627";
-//        String proxy = "115.159.5.247:8080";
-        String re = downLoadPage(url);
-        System.out.println(re);
 
 
+
+//        System.out.println("done!");
+//        String url = "http://hotel.elong.com/isajax/HotelFillOrder/GetOrderCountIn24Hours?hotelId=40101627";
+////        String proxy = "115.159.5.247:8080";
+//        String re = downLoadPage(url);
+//        System.out.println(re);
+
+        try {
+            int k = 3/0;
+        }catch (Exception e){
+            logger.error("error"+e);
+        }
 
     }
 

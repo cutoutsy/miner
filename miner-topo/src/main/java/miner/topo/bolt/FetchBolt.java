@@ -27,8 +27,7 @@ public class FetchBolt extends BaseRichBolt {
         String proxy = tuple.getString(2);
 
         try{
-            String resource = "";
-            resource = Crawl4HttpClient.downLoadPage(downloadUrl, proxy);
+            String resource = Crawl4HttpClient.downLoadPage(downloadUrl, proxy);
 
             if(!resource.equals("")) {
                 _collector.emit(tuple, new Values(globalInfo, resource));

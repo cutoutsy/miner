@@ -15,11 +15,14 @@ public class PlatformUtils {
     private static RedisUtil ru;
     public static Jedis redis;
 
+    static {
+        ru = new RedisUtil();
+        redis = ru.getJedisInstance();
+    }
+
     //monitor the project, return a project can execute
     public static String monitorProject(){
         String reProject = "";
-        ru = new RedisUtil();
-        redis = ru.getJedisInstance();
         Set<String> projectKeys = redis.hkeys("project_state");
         Iterator it = projectKeys.iterator();
         while(it.hasNext()){
@@ -56,8 +59,6 @@ public class PlatformUtils {
 
     public static String getProject(){
         String reProject = "";
-        ru = new RedisUtil();
-        redis = ru.getJedisInstance();
         long executeProjectNums = redis.llen("project_execute");
         if(executeProjectNums > 0) {
             String projectName = redis.rpop("project_execute");
@@ -95,8 +96,6 @@ public class PlatformUtils {
     //return execute task list
     public static List getProjectList(){
         List<String> reList = new ArrayList<String>();
-        ru = new RedisUtil();
-        redis = ru.getJedisInstance();
         List<String> projectList = redis.lrange("project_execute", 0, -1);
         if(projectList.size() > 0) {
 
@@ -161,8 +160,6 @@ public class PlatformUtils {
 
     //register project to schedule
     public static void registerProject(QuartzManager qManager){
-        ru = new RedisUtil();
-        redis = ru.getJedisInstance();
         Set<String> projectKeys = redis.hkeys("project_cronstate");
         Iterator it = projectKeys.iterator();
         while(it.hasNext()) {
@@ -177,8 +174,6 @@ public class PlatformUtils {
     }
 
     public static void initRegisterProject(QuartzManager qManager){
-        ru = new RedisUtil();
-        redis = ru.getJedisInstance();
         Set<String> projectKeys = redis.hkeys("project_cronstate");
         Iterator it = projectKeys.iterator();
         while(it.hasNext()) {
