@@ -21,7 +21,7 @@ public class MysqlUtil {
     // 返回mysql连接
     public static Connection getConnection() {
         String url = "jdbc:mysql://"+ StaticValue.mysql_host+":"+StaticValue.mysql_port+"/"+StaticValue.mysql_database+"?useUnicode=true&characterEncoding=utf8";
-        logger.info("Mysql Info: "+url);
+//        logger.info("Mysql Info: "+url);
         Properties info = new Properties();
         info.put("user", StaticValue.mysql_user);
         info.put("password", StaticValue.mysql_password);
