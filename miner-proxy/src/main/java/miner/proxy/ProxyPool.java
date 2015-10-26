@@ -130,7 +130,7 @@ public class ProxyPool extends Thread {
 		/* 订单号 */
 		String orderid = "904228416555060";
 		/* 提取数量 */
-		String num = "1000";
+		String num = "5000";
 		/* 质量2，SVIP非常稳定 */
 		String quality = "2";
 		/* 代理协议 */

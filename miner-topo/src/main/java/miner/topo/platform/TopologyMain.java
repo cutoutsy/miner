@@ -14,8 +14,8 @@ public class TopologyMain {
 		try{
 			TopologyBuilder topologyBuilder = new TopologyBuilder();
 
-			topologyBuilder.setSpout("beginspout", new BeginSpout(), 1).setMaxSpoutPending(100);//1,500
-			topologyBuilder.setSpout("loopspout", new LoopSpout(), 1).setMaxSpoutPending(100);
+			topologyBuilder.setSpout("beginspout", new BeginSpout(), 1).setMaxSpoutPending(200);//1,500
+			topologyBuilder.setSpout("loopspout", new LoopSpout(), 1).setMaxSpoutPending(200);
 
 			topologyBuilder.setBolt("generateurl", new GenerateUrlBolt(), 2)//2
 					.shuffleGrouping("beginspout")
@@ -39,6 +39,8 @@ public class TopologyMain {
 			
 			Config config = new Config();
 			config.setDebug(false);
+			//default:30s
+			config.setMessageTimeoutSecs(240);
 			//config.setMaxSpoutPending(2000);
 			
 			if(args != null && args.length>0){
