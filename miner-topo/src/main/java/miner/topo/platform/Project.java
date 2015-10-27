@@ -35,9 +35,12 @@ public class Project {
 
     private String condition;
 
-    public Project(String projectName) {
+    static {
         ru = new RedisUtil();
         redis = ru.getJedisInstance();
+    }
+
+    public Project(String projectName) {
 
         List<String> projectList = MysqlUtil.getProject(projectName);
         String projectState = redis.hget("project_state", projectName);
@@ -122,8 +125,6 @@ public class Project {
     public static void writeProjectToRedis(Project pj){
         String projectKey = pj.wid+"-"+pj.pid;
         String projectValue = pj.state;
-        ru = new RedisUtil();
-        redis = ru.getJedisInstance();
         redis.hset("project_state", projectKey, projectValue);
         redis.hincrBy("project_executenum", projectKey, 1);
     }
@@ -131,8 +132,6 @@ public class Project {
     public static void addProjectExecuteNum(Project pj){
         String projectKey = pj.wid+"-"+pj.pid;
         String projectValue = pj.state;
-        ru = new RedisUtil();
-        redis = ru.getJedisInstance();
         redis.hincrBy("project_executenum", projectKey, 1);
     }
 

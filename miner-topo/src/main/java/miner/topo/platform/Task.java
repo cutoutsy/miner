@@ -108,9 +108,9 @@ public class Task {
         String taskKey = ta.wid+"-"+ta.pid+"-"+ta.tid;
         String taskValue = ta.description+"$"+ta.urlpattern+"$"+ta.urlgenerate+"$"+ta.state;
 //        redis = RedisUtil.GetRedis();
-        ru = new RedisUtil();
-        redis = ru.getJedisInstance();
-        redis.hset("taskInfo", taskKey, taskValue);
+//        ru = new RedisUtil();
+//        redis = ru.getJedisInstance();
+//        redis.hset("taskInfo", taskKey, taskValue);
     }
 
     public static void main(String[] args){
