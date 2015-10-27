@@ -40,8 +40,7 @@ public class ProxyBolt extends BaseRichBolt {
                 ru.add(jedis,workspace_id+"_white_set",tmp);
             }
         }
-        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-                .format(new Date()) + " refresh wid:" + workspace_id + " workspace proxy pool");
+        logger.info("refresh wid:" + workspace_id + " workspace proxy pool");
     }
 
     private String get_workspace_id(String global_info){
@@ -106,6 +105,7 @@ public class ProxyBolt extends BaseRichBolt {
                 }
             }
             _collector.emit(tuple, new Values(global_info, download_url, proxy));
+            logger.info("manage proxy:"+proxy+" to "+global_info+":"+download_url);
             _collector.ack(tuple);
         }catch (Exception e){
             _collector.fail(tuple);

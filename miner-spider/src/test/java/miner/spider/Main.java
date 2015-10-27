@@ -10,15 +10,21 @@ import java.util.Map;
 public class Main {
 
     public static void main(String args[]){
-        Main main = new Main();
-        main.test();
+        try {
+            Main main = new Main();
+            main.test();
+        }catch (Exception e){
+            System.out.println("==========");
+            e.printStackTrace();
+        }
+
     }
 
     public void test(){
         Map<String, String> bb = new HashMap();
         bb.put("1", "1111");
         bb.put("2", "2222");
-        
+
         for(Map.Entry<String, String> entry : bb.entrySet()){
             String key = entry.getKey();
             bb.remove(key);
