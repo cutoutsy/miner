@@ -139,7 +139,6 @@ public class ParseBolt extends BaseRichBolt {
 	}
 
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
-//		declarer.declare(new Fields("p_globaleinfo","p_resouce"));
 		declarer.declareStream("generate-loop", new Fields("p_globalinfo", "p_data"));
 		declarer.declareStream("store", new Fields("p_globalinfo", "p_data"));
 	}

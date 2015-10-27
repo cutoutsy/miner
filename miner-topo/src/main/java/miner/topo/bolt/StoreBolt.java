@@ -25,11 +25,9 @@ public class StoreBolt extends BaseRichBolt {
 			String globalInfo  = tuple.getString(0);
 			String data = tuple.getString(1);
 
-			logger.info("globalINfo:"+globalInfo);
-			logger.info("data:" + data);
-
 			ImportData.importData(data);
 
+			logger.info(globalInfo+":save into hbase succeed!");
 			_collector.ack(tuple);
 		} catch (Exception ex) {
 			_collector.fail(tuple);
