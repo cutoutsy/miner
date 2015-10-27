@@ -31,6 +31,7 @@ public class FetchBolt extends BaseRichBolt {
 
             if(!resource.equals("")) {
                 _collector.emit(tuple, new Values(globalInfo, resource));
+                logger.info(downloadUrl+":fetch succeed!");
                 _collector.ack(tuple);
             }else{
                 logger.warn(downloadUrl + " return null");
