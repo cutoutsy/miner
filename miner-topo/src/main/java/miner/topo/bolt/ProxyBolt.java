@@ -109,13 +109,13 @@ public class ProxyBolt extends BaseRichBolt {
             _collector.ack(tuple);
         }catch (Exception e){
             _collector.fail(tuple);
-            logger.error("Generate Url error:"+e);
+            logger.error("manage proxy error:"+e);
             e.printStackTrace();
         }
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-        declarer.declare(new Fields("global_info","download_url","proxy"));
+        declarer.declare(new Fields("proxy_globalinfo","proxy_downloadurl","proxy"));
     }
 
     public void prepare(Map stormConf, TopologyContext context, OutputCollector collector){
