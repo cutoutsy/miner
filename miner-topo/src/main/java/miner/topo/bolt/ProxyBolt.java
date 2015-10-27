@@ -110,7 +110,6 @@ public class ProxyBolt extends BaseRichBolt {
                 String tmp_key=remove_it.next();
                 workspace_setting.remove(tmp_key);
             }
-
             _collector.emit(tuple, new Values(global_info, download_url, proxy));
             logger.info("manage proxy:" + proxy + " to " + global_info + ":" + download_url);
             _collector.ack(tuple);

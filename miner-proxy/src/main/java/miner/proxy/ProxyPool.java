@@ -130,9 +130,11 @@ public class ProxyPool extends Thread {
 		/* 订单号 */
 		String orderid = "904228416555060";
 		/* 提取数量 */
-		String num = "5000";
+		String num = "1000";
 		/* 质量2，SVIP非常稳定 */
 		String quality = "2";
+        /* 地区限制 */
+        String area="中国";
 		/* 代理协议 */
 		String protocol = "1";
 		/* 按照支持GET/POST筛选，1为支持GET */
@@ -157,7 +159,7 @@ public class ProxyPool extends Thread {
 		proxy_param_map.put("protocol", protocol);
 		proxy_param_map.put("method", method);
 		proxy_param_map.put("browser", browser);
-		proxy_param_map.put("an_ha", an_ha);
+		proxy_param_map.put("an_na", an_ha);
 		proxy_param_map.put("sp1", sp1);
 		proxy_param_map.put("sp2", sp2);
 		proxy_param_map.put("sort", sort);
@@ -166,7 +168,7 @@ public class ProxyPool extends Thread {
 		/* 刷新时间设置成5分钟 */
 //		ProxyPool pp = new ProxyPool(0, 0, 30, "127.0.0.1", 6379, "xidian123",
 //				proxy_param_map);
-		ProxyPool pp = new ProxyPool(0, 0, 30, proxy_param_map);
+		ProxyPool pp = new ProxyPool(0, 0, 10, proxy_param_map);
 		pp.start();
 
 		// /* 从配置文件读入的task参数 */
