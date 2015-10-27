@@ -7,10 +7,10 @@ public class StaticValue {
     /**
      * redis host定义和密码认证
      */
-    public static String redis_host = "127.0.0.1";
-//    public static String redis_host = "192.168.1.211";
+//    public static String redis_host = "127.0.0.1";
+    public static String redis_host = "192.168.1.211";
     public static int redis_port=6379;
-    public static String redis_auth = "password";
+    public static String redis_auth = "xidian123";
 
     /**
      * mysql:host, username, password, port, database
