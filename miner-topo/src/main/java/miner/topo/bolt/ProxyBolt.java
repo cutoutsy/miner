@@ -90,7 +90,8 @@ public class ProxyBolt extends BaseRichBolt {
             } while (proxy == null || proxy.equals(""));
             ru.add(jedis, workspace_id + "_black_set", proxy + "_" + System.currentTimeMillis());
             current_workspace_setting.set_last_action_time(System.currentTimeMillis());
-        /* -------------回收--------------- */
+            /* -------------回收--------------- */
+            Set<String> remove_set=new HashSet<String>();
             for (Map.Entry<String, ProxySetting> entry : workspace_setting.entrySet()) {
                 String key = entry.getKey();
                 ProxySetting tps = entry.getValue();
@@ -101,11 +102,17 @@ public class ProxyBolt extends BaseRichBolt {
                 /* 在Redis中删除这个set */
                     ru.clean_set(jedis, workspace_id + "_white_set");
                     ru.clean_set(jedis, workspace_id + "_black_set");
-                    workspace_setting.remove(key);
+                    remove_set.add(key);
                 }
             }
+            Iterator<String> remove_it=remove_set.iterator();
+            while(remove_it.hasNext()){
+                String tmp_key=remove_it.next();
+                workspace_setting.remove(tmp_key);
+            }
+
             _collector.emit(tuple, new Values(global_info, download_url, proxy));
-            logger.info("manage proxy:"+proxy+" to "+global_info+":"+download_url);
+            logger.info("manage proxy:" + proxy + " to " + global_info + ":" + download_url);
             _collector.ack(tuple);
         }catch (Exception e){
             _collector.fail(tuple);
