@@ -28,13 +28,13 @@ public class StoreBolt extends BaseRichBolt {
 			ImportData.importData(data);
 
 			logger.info(globalInfo+":save into hbase succeed!");
+//			logger.info(data); //集群上注释
 			_collector.ack(tuple);
 		} catch (Exception ex) {
 			_collector.fail(tuple);
 			logger.error("store error!"+ex);
 			ex.printStackTrace();
 		}
-
 	}
 
 	public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {

@@ -47,7 +47,7 @@ public class BeginSpout extends BaseRichSpout{
 
 	public void nextTuple() {
 		try {
-			Thread.sleep(20);
+			Thread.sleep(1000);
 			PlatformUtils.registerProject(_qManager);
 
 			List<String> newAddProject = PlatformUtils.getProjectList();
@@ -57,7 +57,7 @@ public class BeginSpout extends BaseRichSpout{
 					String tempProjectName = newAddProject.get(i);
 					Project pj = new Project(tempProjectName);
 					//create table in hbase
-					CreateTable.mysqlCheck(pj.getWid(), pj.getPid());
+//					CreateTable.mysqlCheck(pj.getWid(), pj.getPid());
 
 					String tempDatasource = pj.getDatasource();
 					if (redis.llen(tempDatasource + "1") == redis.smembers(tempDatasource).size()) {
@@ -135,7 +135,7 @@ public class BeginSpout extends BaseRichSpout{
 			scheduler.start();
 			//init Hbase tables
 
-			CreateTable.initHbaseTable();
+//			CreateTable.initHbaseTable();
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}

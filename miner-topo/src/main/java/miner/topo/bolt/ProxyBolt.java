@@ -87,6 +87,7 @@ public class ProxyBolt extends BaseRichBolt {
                 }
             /* -------------查询--------------- */
                 proxy = ru.pick(jedis, workspace_id + "_white_set");
+                logger.info("更新黑白名单,"+workspace_id+"_white_set:取得代理"+proxy);
             } while (proxy == null || proxy.equals(""));
             ru.add(jedis, workspace_id + "_black_set", proxy + "_" + System.currentTimeMillis());
             current_workspace_setting.set_last_action_time(System.currentTimeMillis());

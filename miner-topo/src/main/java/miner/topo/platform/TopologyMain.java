@@ -17,24 +17,24 @@ public class TopologyMain {
 			topologyBuilder.setSpout("beginspout", new BeginSpout(), 1).setMaxSpoutPending(200);//1,500
 			topologyBuilder.setSpout("loopspout", new LoopSpout(), 1).setMaxSpoutPending(200);
 
-			topologyBuilder.setBolt("generateurl", new GenerateUrlBolt(), 2)//2
+			topologyBuilder.setBolt("generateurl", new GenerateUrlBolt(), 1)//2
 					.shuffleGrouping("beginspout")
 					.shuffleGrouping("loopspout");
-			topologyBuilder.setBolt("generateurl-loop-bolt", new GenerateUrlBolt(), 2)//2
+			topologyBuilder.setBolt("generateurl-loop-bolt", new GenerateUrlBolt(), 1)//2
 					.shuffleGrouping("parse", "generate-loop");
 
-			topologyBuilder.setBolt("proxy", new ProxyBolt(), 2)//2
+			topologyBuilder.setBolt("proxy", new ProxyBolt(), 1)//2
 					.shuffleGrouping("generateurl")
 					.shuffleGrouping("generateurl-loop-bolt");
 
-			topologyBuilder.setBolt("fetch", new FetchBolt(), 10)//10
+			topologyBuilder.setBolt("fetch", new FetchBolt(), 1)//30
 					.shuffleGrouping("proxy");
 
-			topologyBuilder.setBolt("parse", new ParseBolt(), 10)//10
+			topologyBuilder.setBolt("parse", new ParseBolt(), 1)//10
 					.shuffleGrouping("fetch");
 
 
-			topologyBuilder.setBolt("store", new StoreBolt(), 10)//5
+			topologyBuilder.setBolt("store", new StoreBolt(), 1)//10
 					.shuffleGrouping("parse", "store");
 			
 			Config config = new Config();
