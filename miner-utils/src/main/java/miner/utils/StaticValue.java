@@ -4,38 +4,6 @@ package miner.utils;
  * Created by cutoutsy on 7/24/15.
  */
 public class StaticValue {
-    /**
-     * redis host定义和密码认证
-     */
-    public static String redis_host = "127.0.0.1";
-//    public static String redis_host = "192.168.1.211";
-    public static int redis_port=6379;
-    public static String redis_auth = "xidian123";
-
-    /**
-     * mysql:host, username, password, port, database
-     */
-    public static String mysql_host = "127.0.0.1";
-    public static String mysql_user = "root";
-    public static String mysql_port = "3307";
-    public static String mysql_password = "simple";
-    public static String mysql_database = "platform_config";
-
-//    public static String mysql_host = "192.168.1.212";
-//    public static String mysql_user = "root";
-//    public static String mysql_port = "3306";
-//    public static String mysql_password = "LNkiller&212";
-//    public static String mysql_database = "platform_config";
-
-    /**
-     * hbase:host
-     */
-//    public static String hbase_zookeeper_host = "192.168.1.230";
-    public static String hbase_zookeeper_host = "127.0.0.1";
-
-    // 集群日志存放目录
-//    public static String logPathDir = "/usr/local/storm/logs/";
-    public static String logPathDir = "/Users/cutoutsy/";
 
     //设置请求和传输超时时间,单位ms
     public static int http_connection_timeout = 5000; //请求超时时间
@@ -43,7 +11,7 @@ public class StaticValue {
 
     //设置代理是否开启
     public static boolean proxy_open = false;
-    //是否使用本机ip
+//    是否使用本机ip
     public static boolean proxy_self = false;
 
     public static String default_encoding = "utf-8";
@@ -69,7 +37,7 @@ public class StaticValue {
      * 专为解决网页编码提取而添加
      */
     // 单点定义
-    public static final char point = '.';
+//    public static final char point = '.';
 
     //网页最短定义
     public static int url_data_min_byte_length = 500;

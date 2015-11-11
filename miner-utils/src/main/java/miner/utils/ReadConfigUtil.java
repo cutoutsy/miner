@@ -1,9 +1,6 @@
 package miner.utils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Properties;
 
 /**
@@ -27,9 +24,9 @@ public class ReadConfigUtil {
 
     //configFilePath若是非普通文件,即properties文件的话,要另行处理
     public ReadConfigUtil(String configFilePath, boolean isConfig){
-        in = ReadConfigUtil.class.getClassLoader().getResourceAsStream(configFilePath);
-
+//        in = ReadConfigUtil.class.getClassLoader().getResourceAsStream(configFilePath);
         try{
+        in = new FileInputStream(new File(configFilePath));
             if(isConfig){
                 config = new Properties();
                 config.load(in);

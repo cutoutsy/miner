@@ -1,5 +1,6 @@
 package miner.spider.utils;
 
+import miner.utils.PlatformParas;
 import miner.utils.StaticValue;
 
 import java.io.IOException;
@@ -36,11 +37,11 @@ public class LogRunner implements Runnable{
                 logStringBuilder.append(" " + obj.toString()+"\n");
 
                 String todayDate = DateUtil.GetTodayDate();
-                String logPath = StaticValue.logPathDir+"miner-"+todayDate+".log";
+                String logPath = PlatformParas.log_path_dir+"miner-"+todayDate+".log";
 
                 if(FileOperatorUtil.existFile(logPath)){
                     if(FileOperatorUtil.getFileSize(logPath) >= 100){
-                        String logRenamePath = StaticValue.logPathDir+"miner-"+ logTime + ".log";
+                        String logRenamePath = PlatformParas.log_path_dir+"miner-"+ logTime + ".log";
                         if(FileOperatorUtil.renameFile(logPath, logRenamePath)) {
                             FileOperatorUtil.createFile(logPath);
                             IOUtil.writeFile(logPath, logStringBuilder.toString(), true, StaticValue.default_encoding);

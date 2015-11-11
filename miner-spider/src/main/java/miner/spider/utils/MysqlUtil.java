@@ -3,6 +3,7 @@ package miner.spider.utils;
 import com.mysql.jdbc.Driver;
 import miner.spider.pojo.Data;
 import miner.utils.MySysLogger;
+import miner.utils.PlatformParas;
 import miner.utils.StaticValue;
 
 import java.sql.Connection;
@@ -20,11 +21,11 @@ public class MysqlUtil {
 
     // 返回mysql连接
     public static Connection getConnection() {
-        String url = "jdbc:mysql://"+ StaticValue.mysql_host+":"+StaticValue.mysql_port+"/"+StaticValue.mysql_database+"?useUnicode=true&characterEncoding=utf8";
+        String url = "jdbc:mysql://"+ PlatformParas.mysql_host+":"+PlatformParas.mysql_port+"/"+PlatformParas.mysql_database+"?useUnicode=true&characterEncoding=utf8";
 //        logger.info("Mysql Info: "+url);
         Properties info = new Properties();
-        info.put("user", StaticValue.mysql_user);
-        info.put("password", StaticValue.mysql_password);
+        info.put("user", PlatformParas.mysql_user);
+        info.put("password", PlatformParas.mysql_password);
         Driver driver;
         Connection con = null;
         try {

@@ -2,6 +2,7 @@ package miner.store;
 
 
 
+import miner.utils.PlatformParas;
 import miner.utils.StaticValue;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
@@ -28,7 +29,7 @@ public class ImportData {
     private static Configuration configuration = null;
     static{
         configuration = HBaseConfiguration.create();
-        configuration.set("hbase.zookeeper.quorum", StaticValue.hbase_zookeeper_host);
+        configuration.set("hbase.zookeeper.quorum", PlatformParas.hbase_zookeeper_host);
         configuration.set("hbase.rootdir","hdfs://master:8020/hbase");
         configuration.set("hbase.master", "hdfs://master:60000");
     }
