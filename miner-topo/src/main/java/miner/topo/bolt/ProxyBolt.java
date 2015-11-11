@@ -101,9 +101,9 @@ public class ProxyBolt extends BaseRichBolt {
                 int dead_time = tps.get_dead_time();
                 if (elapse_time > dead_time) {
                 /* 在Redis中删除这个set */
-                    ru.clean_set(jedis, workspace_id + "_white_set");
-                    ru.clean_set(jedis, workspace_id + "_black_set");
-                    remove_set.add(key);
+//                    ru.clean_set(jedis, workspace_id + "_white_set");
+//                    ru.clean_set(jedis, workspace_id + "_black_set");
+//                    remove_set.add(key);
                 }
             }
             Iterator<String> remove_it=remove_set.iterator();
