@@ -1,3 +1,43 @@
+## 平台部署及测试项目运行
+本平台代码托管在coding上，私有项目，项目成员可见
+1、Clone平台代码到220:/opt/build/下,并切换到dev分支
+```shell
+git clone https://git.coding.net/cutoutsy/miner.git
+git checkout dev
+```
+
+2、修改平台配置文件路径，并查看或修改平台配置文件
+在miner-utils/src/main/java/miner/utils/PlatformParas.java文件里面，修改为：
+public static ReadConfigUtil readConfigUtil= new ReadConfigUtil("/opt/build/platform_cluster_.properties", true);
+查看/opt/build/下的platform_cluster_.properties是否正确，或者根据自己的需要修改。
+
+3、编译项目，在项目根目录下，即/opt/build/miner/
+```shell
+mvn install
+```
+出现BUILD SUCCESS即可进入下一步
+
+4、开启日志服务器
+在/opt/build/miner/miner-spider/target/下执行nohup java -jar miner-spider-1.0-SNAPSHOT.jar &，并查看nohup.out中输出是否正常
+正常输出：log server start...
+
+5、开启代理更新程序
+拷贝/opt/build/miner/log4j2/文件夹到/opt/build/miner/miner-proxy/target/下
+运行程序，在/opt/build/miner/miner-proxy/target/下执行nohup java -jar miner-proxy-1.0-SNAPSHOT.jar &，并查看nohup.out中输出是否正常
+进入211中，连接redis数据库，查看proxy_pool中的代理是否更新。
+
+6、修改测试项目在redis里面保存的状态
+测试项目为1-1
+查看是否存在beijing4s1或者beijing4s2,且里面的值和beijing4s的值一样；
+修改project_cronstate里1-1为3
+修改project_state里1-1为die_
+
+## 关于在redis里面的几个数据库的说明
+proxy_pool: 整个集群的代理池
+project_cronstate: 项目的运行设置的状态
+project_state: 保存项目的运行状态（die: 没有运行，running: 正在运行）
+
+
 ## 关于项目配置里面的几个数据库的简介：
 workspace:
 > * wid： workspaceid，项目的整个工作空间id
