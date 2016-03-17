@@ -1,9 +1,60 @@
-##模块
+## 关于项目配置里面的几个数据库的简介：
+workspace:
+> * wid： workspaceid，项目的整个工作空间id
+> * name： 工作空间名称
+> * description： 关于此工作空间的描述
+
+project:
+> * wid: 所属的工作空间Id
+> * pid: 项目ID
+> * name: 项目名字
+> * description： 项目描述
+> * datasource: 项目启动连接redis里面的数据库名称
+> * schedule: 项目的运行策略
+> * precondition: 项目运行的前提条件
+
+task:
+> * wid: 任务所属的工作空间ID
+> * pid: 任务所属的项目ID
+> * tid: 任务ID
+> * name: 任务名称
+> * description: 任务描述
+> * urlpattern: URL配置
+> * urlgenerate: 是否生成URL
+> * isloop: 是否参与循环
+
+regex:
+> * wid: 任务所属的工作空间ID
+> * pid: 任务所属的项目ID
+> * tid: 任务ID
+> * tagname: 标签名称
+> * path: 网页路径
+
+data:
+> * wid: 任务所属的工作空间ID
+> * pid: 任务所属的项目ID
+> * tid: 任务ID
+> * dataid: 数据ID
+> * description: 数据描述
+> * property: 数据的属性
+> * rowKey: Hbase表里面的行键
+> * foreignKey: Hbase表里面的外键
+> * foreignValue: Hbase表里的外键值
+> * link: Hbase里面与之有关系的表
+> * processWay: 数据处理方式（S：表示存储进数据库，l：表示进入循环）
+> * lcondition: 进入循环的任务id
+
+
+
+
+
+## 模块
 
 ####miner-parse：网页解析模块
 ####miner-store：数据存储模块
 ####miner-spider：爬虫公共模块
 ####miner-topo：storm topology模块
+
 
 ###任务定时执行采用开源的Quartz实现
 Quartz使用类似于Linux下的Cron表达式定义时间规则，Cron表达式由6或7个由空格分隔的时间字段组成，如下：
