@@ -32,9 +32,18 @@ mvn install
 修改project_cronstate里1-1为3
 修改project_state里1-1为die_
 
+## 关于平台一些UI地址
+在网关机上进行端口转发，端口不再是默认端口。这种方式需要在网关机/etc/rc.local下进行配置或开启
+storm ui: http://wwww.datafish.wicp.net:1025
+hadoop ui: http://wwww.datafish.wicp.net:1027
+hbase ui: http://wwww.datafish.wicp.net:1027
+
+
 ## 关于在redis里面的几个数据库的说明
 proxy_pool: 整个集群的代理池
+
 project_cronstate: 项目的运行设置的状态
+
 project_state: 保存项目的运行状态（die: 没有运行，running: 正在运行）
 
 
