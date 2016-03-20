@@ -1,5 +1,6 @@
 package miner.parse.util;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
@@ -29,13 +30,19 @@ public class HtmlUtil {
 		this.map = object.get_html_map();
 	}
 
+	/*
+	 *map示例:html0.body0.div6.div1.div0.div2.div0.div1.div1.div0.ul0.li12.p1==<p>帖数:10</p>
+	 */
+
 	public void parse() {
 		Document doc = Jsoup.parse(document);
 		// out.println(doc.html());
-		/* 根节点入队 */
+		/* 根节点入队 html文件:ele等于整个html文档,ele.tagname等于html*/
 		for (Element ele : doc.children()) {
 			ele_queue.offer(ele);
+//			System.out.println(ele + "==");
 			str_queue.offer(ele.tagName() + "0");
+//			System.out.println(ele.tagName());
 			map.put(ele.tagName(), ele);
 		}
 		/* 遍历 */
