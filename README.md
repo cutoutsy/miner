@@ -11,7 +11,7 @@ git checkout dev
 
 在miner-utils/src/main/java/miner/utils/PlatformParas.java文件里面，修改为：
 
-public static ReadConfigUtil readConfigUtil= new ReadConfigUtil("/opt/build/platform_cluster_.properties", true);
+public static ReadConfigUtil readConfigUtil= new ReadConfigUtil("/opt/build/platform_cluster.properties", true);
 
 查看/opt/build/下的platform_cluster_.properties是否正确，或者根据自己的需要修改。
 
