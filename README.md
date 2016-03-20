@@ -47,6 +47,11 @@ mvn install
 7、运行平台Topology
 
 进入/opt/build/miner/miner-topo/target/目录下
+
+删除lib目录下的storm-core-0.9.4.jar依赖包,这个会和集群里面的storm jar包冲突
+
+并把/opt/build/miner/log4j2/目录拷贝到当前目录下
+
 ```shell
 storm jar miner-topo-1.0-SNAPSHOT.jar miner.topo.platform.TopologyMain miner-dev
 ```
