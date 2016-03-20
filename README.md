@@ -1,4 +1,19 @@
-## 平台部署及测试项目运行
+# 关于平台开发者搭建开发环境及导入代码
+本平台代码托管在coding上，私有项目，项目成员可见
+
+1、Clone平台代码到本地工程目录,并切换到dev分支
+```shell
+git clone https://git.coding.net/cutoutsy/miner.git
+git checkout dev
+```
+
+2、导入代码到IDE中
+
+本项目代码采用Maven来解决依赖和项目构建.
+
+本项目采用的IDE是IntelliJ IDEA.打开IDEA,选择导入项目,然后选择Maven项目,项目最开始载入的时候会下载一些依赖jar包,等待时间比较长,下载完成后若整个项目没有错误,则成功搭建好开发环境.
+
+# 平台部署及测试项目运行
 本平台代码托管在coding上，私有项目，项目成员可见
 
 1、Clone平台代码到220:/opt/build/下,并切换到dev分支
@@ -122,10 +137,6 @@ data:
 > * link: Hbase里面与之有关系的表
 > * processWay: 数据处理方式（S：表示存储进数据库，l：表示进入循环）
 > * lcondition: 进入循环的任务id
-
-
-
-
 
 ## 模块
 
