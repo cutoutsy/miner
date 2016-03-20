@@ -22,10 +22,12 @@ mvn install
 出现BUILD SUCCESS即可进入下一步
 
 4、开启日志服务器
+
 在/opt/build/miner/miner-spider/target/下执行nohup java -jar miner-spider-1.0-SNAPSHOT.jar &，并查看nohup.out中输出是否正常
 正常输出：log server start...
 
 5、开启代理更新程序
+
 拷贝/opt/build/miner/log4j2/文件夹到/opt/build/miner/miner-proxy/target/下
 
 运行程序，在/opt/build/miner/miner-proxy/target/下执行nohup java -jar miner-proxy-1.0-SNAPSHOT.jar &，并查看nohup.out中输出是否正常
