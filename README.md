@@ -52,6 +52,8 @@ storm jar miner-topo-1.0-SNAPSHOT.jar miner.topo.platform.TopologyMain miner-dev
 ```
 然后进入/usr/local/storm/logs/查看平台运行状况.
 
+注: 在服务器上日志服务器和代理更新程序是默认开启的,即可以不执行4、5步,若没有开启,则需要执行4、5步.
+
 ## 关于平台一些UI地址
 在网关机上进行端口转发，端口不再是默认端口。这种方式需要在网关机/etc/rc.local下进行配置或开启
 
