@@ -57,7 +57,7 @@ public class BeginSpout extends BaseRichSpout{
 					String tempProjectName = newAddProject.get(i);
 					Project pj = new Project(tempProjectName);
 					//create table in hbase
-//					CreateTable.mysqlCheck(pj.getWid(), pj.getPid());
+					CreateTable.mysqlCheck(pj.getWid(), pj.getPid());
 
 					String tempDatasource = pj.getDatasource();
 					if (redis.llen(tempDatasource + "1") == redis.smembers(tempDatasource).size()) {
@@ -133,9 +133,9 @@ public class BeginSpout extends BaseRichSpout{
 			_qManager.setScheduler(scheduler);
 			PlatformUtils.initRegisterProject(_qManager);
 			scheduler.start();
-			//init Hbase tables
 
-//			CreateTable.initHbaseTable();
+			//init Hbase tables
+			CreateTable.initHbaseTable();
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
