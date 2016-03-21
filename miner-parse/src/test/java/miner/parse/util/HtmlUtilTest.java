@@ -42,4 +42,32 @@ public class HtmlUtilTest {
 
     }
 
+    @Test
+    public void testJsonParse(){
+        File file = new File("/Users/cutoutsy/Desktop/stocks.php");
+        String doc_str = "";
+        if (file.isFile() && file.exists()) {
+            InputStreamReader read;
+            try {
+                read = new InputStreamReader(new FileInputStream(file),
+                        "UTF8");
+                BufferedReader buffered_reader = new BufferedReader(read);
+                String line = null;
+                while ((line = buffered_reader.readLine()) != null) {
+                    doc_str += line;
+                }
+                buffered_reader.close();
+                read.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        DocObject object = new DocObject(doc_str, DocType.HTML);
+        JsonUtil ju = new JsonUtil(doc_str, object);
+
+        ju.parse();
+
+    }
+
 }
