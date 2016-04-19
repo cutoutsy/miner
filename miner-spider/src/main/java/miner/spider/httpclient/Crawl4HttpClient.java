@@ -10,6 +10,7 @@ import miner.utils.MySysLogger;
 import miner.utils.StaticValue;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -120,37 +121,39 @@ public class Crawl4HttpClient {
         return null;
     }
 
-    public static String downLoadPage(String url, String proxyString){
-
+    /**
+     *
+     * @param url   request url
+     * @param proxyString   proxy ip:port
+     * @return  return url page source
+     * @throws IOException
+     * @throws ClientProtocolException
+     */
+    public static String downLoadPage(String url, String proxyString) throws IOException, ClientProtocolException {
         String reString = "";
         String ip = proxyString.split(":")[0];
         int port = Integer.valueOf(proxyString.split(":")[1]);
-        try{
-            HttpClient httpClient = HttpClients.custom().build();
-            HttpHost proxy = new HttpHost(ip, port);
-            //无需验证的
-            DefaultProxyRoutePlanner routePlanner= new DefaultProxyRoutePlanner(proxy);
-            httpClient = HttpClients.custom().setRoutePlanner(routePlanner).build();
-            RequestConfig.Builder config_builder = RequestConfig.custom();
-            config_builder.setProxy(proxy);
-            config_builder.setSocketTimeout(StaticValue.http_connection_timeout);
-            config_builder.setConnectTimeout(StaticValue.http_read_timeout);
-            RequestConfig requestConfig = config_builder.build();
 
-            RequestBuilder rb = null;
-            rb = RequestBuilder.get().setUri(URI.create(url));
+        HttpClient httpClient = HttpClients.custom().build();
+        HttpHost proxy = new HttpHost(ip, port);
+        //无需验证的
+        DefaultProxyRoutePlanner routePlanner= new DefaultProxyRoutePlanner(proxy);
+        httpClient = HttpClients.custom().setRoutePlanner(routePlanner).build();
+        RequestConfig.Builder config_builder = RequestConfig.custom();
+        config_builder.setProxy(proxy);
+        config_builder.setSocketTimeout(StaticValue.http_connection_timeout);
+        config_builder.setConnectTimeout(StaticValue.http_read_timeout);
+        RequestConfig requestConfig = config_builder.build();
 
-            HttpUriRequest requestAll = null;
-            rb.setConfig(requestConfig);
-            requestAll = rb.build();
-            CloseableHttpResponse response = (CloseableHttpResponse)httpClient.execute(requestAll);
-            String re = Crawl4HttpClient.parserResponse_v2(response);
-            reString = re;
+        RequestBuilder rb = null;
+        rb = RequestBuilder.get().setUri(URI.create(url));
 
-        }catch (Exception ex){
-            logger.error("Request error: " + ex);
-            ex.printStackTrace();
-        }
+        HttpUriRequest requestAll = null;
+        rb.setConfig(requestConfig);
+        requestAll = rb.build();
+        CloseableHttpResponse response = (CloseableHttpResponse)httpClient.execute(requestAll);
+        String re = Crawl4HttpClient.parserResponse_v2(response);
+        reString = re;
 
         return reString;
     }
