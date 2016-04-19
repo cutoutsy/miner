@@ -129,7 +129,7 @@ public class Crawl4HttpClient {
      * @throws IOException
      * @throws ClientProtocolException
      */
-    public static String downLoadPage(String url, String proxyString) throws IOException, ClientProtocolException {
+    public static String downLoadPage(String url, String proxyString) throws IOException {
         String reString = "";
         String ip = proxyString.split(":")[0];
         int port = Integer.valueOf(proxyString.split(":")[1]);
