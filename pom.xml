@@ -87,6 +87,7 @@
     <module>miner-proxy</module>
     <module>miner-monitor</module>
     <module>miner-utils</module>
+    <module>miner-projects</module>
   </modules>
 
   <build>
