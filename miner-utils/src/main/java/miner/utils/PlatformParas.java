@@ -5,7 +5,7 @@ package miner.utils;
  */
 public class PlatformParas {
 
-    public static ReadConfigUtil readConfigUtil= new ReadConfigUtil("/Users/cutoutsy/IdeaProjects/miner/conf/platform.properties", true);
+    public static ReadConfigUtil readConfigUtil= new ReadConfigUtil("C:\\idea\\miner\\conf\\platform.properties", true);
 
     //redis配置信息
     public static String redis_host = readConfigUtil.getValue("redis_host");

@@ -35,7 +35,6 @@ public class ReadConfigUtil {
                 br = new BufferedReader(new InputStreamReader(in));
                 this.lineConfigTxt = getTextLines();
             }
-
         }catch (IOException e){
             logger.error("加载配置文件时,出现问题");
         }

@@ -1,9 +1,10 @@
 package miner.utils;
-import java.util.Iterator;
-import java.util.Set;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+
+import java.util.Iterator;
+import java.util.Set;
 /**
  * @name RedisUtil
  * @author white
@@ -13,7 +14,7 @@ public class RedisUtil {
     private JedisPool pool = null;
     int jedis_instance_count = 0;
     public RedisUtil(){
-        pool = this.initJedisPool(PlatformParas.redis_host, 6379, PlatformParas.redis_auth);
+        pool = this.initJedisPool(PlatformParas.redis_host, Integer.valueOf(PlatformParas.redis_port), PlatformParas.redis_auth);
     }
     public RedisUtil(String ip_address, int port, String password) {
         pool = this.initJedisPool(ip_address, port, password);

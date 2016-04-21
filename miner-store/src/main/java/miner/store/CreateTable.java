@@ -1,19 +1,16 @@
 package miner.store;
 
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Connection;
-
-
 import miner.spider.utils.MysqlUtil;
 import miner.utils.MySysLogger;
-import miner.utils.PlatformParas;
-import miner.utils.StaticValue;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class CreateTable {
 
@@ -22,14 +19,19 @@ public class CreateTable {
     private static Configuration configuration = null;
     static{
         configuration = HBaseConfiguration.create();
-        configuration.set("hbase.zookeeper.quorum", PlatformParas.hbase_zookeeper_host);
-        configuration.set("hbase.rootdir","hdfs://master:8020/hbase");
-        configuration.set("hbase.master", "hdfs://master:60000");
+//        configuration.set("hbase.zookeeper.quorum", PlatformParas.hbase_zookeeper_host);
+//        configuration.set("hbase.rootdir","hdfs://master:8020/hbase");
+//        configuration.set("hbase.master", "hdfs://master:60000");
+        configuration.set("hbase.zookeeper.quorum", "cutoutsy.cn");
+        configuration.set("hbase.zookeeper.property.clientPort", "2181");
+        configuration.set("hbase.rootdir","hdfs://cutoutsy.cn:8020/hbase");
+        configuration.set("hbase.master", "hdfs://cutoutsy.cn:60000");
     }
     public static void main(String args[]) throws SQLException{
 
         //new CreateTable().mysqlCheck("1","1");
-        new CreateTable().createTable(configuration, "1", true);
+        new CreateTable().createTable(configuration, "cutoutsy", true);
+
     }
 
     public static void mysqlCheck(String tableWid,String tablePid) throws SQLException{

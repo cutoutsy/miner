@@ -7,12 +7,26 @@
     <artifactId>miner</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <groupId>xd</groupId>
+
   <artifactId>miner-projects</artifactId>
-  <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
   <name>miner-projects</name>
   <url>http://maven.apache.org</url>
+
   <dependencies>
+
+      <dependency>
+          <groupId>xd</groupId>
+          <artifactId>miner-utils</artifactId>
+          <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+          <groupId>xd</groupId>
+          <artifactId>miner-spider</artifactId>
+          <version>${project.version}</version>
+      </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
