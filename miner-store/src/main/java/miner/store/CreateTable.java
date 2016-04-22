@@ -2,6 +2,7 @@ package miner.store;
 
 import miner.spider.utils.MysqlUtil;
 import miner.utils.MySysLogger;
+import miner.utils.PlatformParas;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
@@ -19,13 +20,10 @@ public class CreateTable {
     private static Configuration configuration = null;
     static{
         configuration = HBaseConfiguration.create();
-//        configuration.set("hbase.zookeeper.quorum", PlatformParas.hbase_zookeeper_host);
-//        configuration.set("hbase.rootdir","hdfs://master:8020/hbase");
-//        configuration.set("hbase.master", "hdfs://master:60000");
-        configuration.set("hbase.zookeeper.quorum", "cutoutsy.cn");
+        configuration.set("hbase.zookeeper.quorum", PlatformParas.hbase_zookeeper_host);
         configuration.set("hbase.zookeeper.property.clientPort", "2181");
-        configuration.set("hbase.rootdir","hdfs://cutoutsy.cn:8020/hbase");
-        configuration.set("hbase.master", "hdfs://cutoutsy.cn:60000");
+        configuration.set("hbase.rootdir","hdfs://master:8020/hbase");
+        configuration.set("hbase.master", "hdfs://master:60000");
     }
     public static void main(String args[]) throws SQLException{
 

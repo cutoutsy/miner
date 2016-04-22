@@ -34,7 +34,7 @@ public class MaiLunTai {
     }
 
     //存储麦轮胎所有品牌下五种属性的所有url, redis里数据库为mailuntai
-    public static void saveAllSortsTireUrl(Set<String> brandSet){
+    public static Set<String> saveAllSortsTireUrl(Set<String> brandSet){
         Set<String> allSortsUrls = new HashSet<>();
         Iterator it = brandSet.iterator();
         while (it.hasNext()){
@@ -52,10 +52,65 @@ public class MaiLunTai {
             redis.sadd("mailuntai", allSorts.next().toString());
         }
         System.out.println("save success");
+        return allSortsUrls;
+    }
+
+    //得到麦轮胎所有的页面链接
+    public static Set<String> allPageUrls(Set<String> allSortsUrls){
+        Set<String> allPagesUrls = new HashSet<>();
+        Iterator allSorts = allSortsUrls.iterator();
+        while (allSorts.hasNext()){
+            String tempUrl = allSorts.next().toString();
+            String tempSource = Crawl4HttpClient.downLoadPage(tempUrl);
+            Document doc = Jsoup.parse(tempSource);
+            Elements paperLinks = doc.getElementsByClass("pager").first().getElementsByTag("a");
+            int maxnum = 1;
+            RedisUtil re = new RedisUtil();
+            Jedis redis = re.getJedisInstance();
+            if(paperLinks.size() <= 2){
+                if(paperLinks.size() != 0){
+                    maxnum = paperLinks.size();
+                }
+            }else {
+                String maxPage = paperLinks.get(paperLinks.size() - 2).select("a[href]").attr("href").toString();
+                maxnum = Integer.valueOf(String.valueOf(maxPage.charAt(maxPage.length() - 1)));
+            }
+
+            for (int i = 1; i <= maxnum; i++){
+                System.out.println(tempUrl+"&page="+i);
+                allPagesUrls.add(tempUrl+"&page="+i);
+                redis.sadd("mailuntaipages", tempUrl+"&page="+i);
+            }
+            try {
+                Thread.sleep(2000);
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
+        return allPagesUrls;
+    }
+
+
+    public static void getAllTiresId(){
+        RedisUtil re = new RedisUtil();
+        Jedis redis = re.getJedisInstance();
+        Set<String> allPages = redis.smembers("mailuntaipages");
+        Iterator it = allPages.iterator();
+        while (it.hasNext()){
+
+            String pageSource = Crawl4HttpClient.downLoadPage(it.next().toString());
+            Document doc = Jsoup.parse(pageSource);
+            Elements onePageTires = doc.select("products").select("clearfix");
+
+
+        }
     }
 
     public static void main(String[] args){
-        saveAllSortsTireUrl(getTireBrandUrl());
+        Set<String> allSortsUrls = new HashSet<>();
+        allSortsUrls = saveAllSortsTireUrl(getTireBrandUrl());
+//        allSortsUrls.add("http://mailuntai.cn/products/?type=2&auto_brand=&vehicle=&emission=&year=&style=&brand=287&order=sales&sort=desc&prop=1");
+        allPageUrls(allSortsUrls);
     }
 }
 
