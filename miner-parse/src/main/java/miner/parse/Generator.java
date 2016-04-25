@@ -2,11 +2,6 @@ package miner.parse;
 
 import java.util.*;
 
-import org.jsoup.nodes.Document;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 public class Generator {
 	private Set<RuleItem> parse_rule_set;
 	private DocObject obj;

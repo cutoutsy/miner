@@ -1,20 +1,16 @@
 package miner.parse;
-import java.io.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import miner.parse.data.DataItem;
+import miner.parse.data.Packer;
 import miner.parse.util.HtmlUtil;
 import miner.parse.util.JsonUtil;
-import miner.spider.httpclient.Crawl4HttpClient;
-import org.jsoup.nodes.Attribute;
-import org.jsoup.nodes.Element;
-import miner.parse.data.Packer;
-import miner.parse.data.DataItem;
-import org.jsoup.nodes.Attributes;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import java.io.*;
+import java.util.*;
 public class DocObject {
 	private String document;
 	private DocType doc_type;
@@ -33,6 +29,8 @@ public class DocObject {
 	public Map<String, Element> get_html_map() {
 		return this.html_map;
 	}
+
+    //根据节点内容返回路径
 	public String search(String content){
 		if(doc_type.equals(DocType.HTML)){
 			for(Map.Entry<String,Element> e:html_map.entrySet()){
