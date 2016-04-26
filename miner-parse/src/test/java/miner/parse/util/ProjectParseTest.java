@@ -48,7 +48,7 @@ public class ProjectParseTest extends TestCase{
         Generator g = new Generator();
         StringBuffer doc_str = new StringBuffer();
         try {
-            URL url = new URL("http://mailuntai.cn/product/4926.html");
+            URL url = new URL("http://mailuntai.cn/product/4791.html");
             URLConnection uc = url.openConnection();
             BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
             String inputLine;

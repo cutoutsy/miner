@@ -115,12 +115,26 @@ public class MaiLunTai {
         }
     }
 
+    //将mailuntaiid里面的数据复制一份到mailuntaiid1里
+
+    public static void copyMaiLunTaiId(){
+        RedisUtil re = new RedisUtil();
+        Jedis redis = re.getJedisInstance();
+        Set<String> allPages = redis.smembers("mailuntaiid");
+        Iterator it = allPages.iterator();
+        while (it.hasNext()){
+            String tempId = it.next().toString();
+            redis.lpush("mailuntaiid1", tempId);
+        }
+
+    }
     public static void main(String[] args){
 //        Set<String> allSortsUrls = new HashSet<String>();
 //        allSortsUrls = saveAllSortsTireUrl(getTireBrandUrl());
 //        allSortsUrls.add("http://mailuntai.cn/products/?type=2&auto_brand=&vehicle=&emission=&year=&style=&brand=287&order=sales&sort=desc&prop=1");
 //        allPageUrls(allSortsUrls);
-        getAllTiresId();
+//        getAllTiresId();
+        copyMaiLunTaiId();
     }
 }
 
