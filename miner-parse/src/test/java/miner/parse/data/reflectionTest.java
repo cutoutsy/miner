@@ -1,11 +1,9 @@
 package miner.parse.data;
 
 import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -17,19 +15,30 @@ public class reflectionTest {
         //控制台输入,类比配置文件。
 //        BufferedReader strbuff = new BufferedReader(new InputStreamReader(System.in));
         String str = "add1";
+        URL xurl = new URL("http://mailuntai.cn/product/4937.html");
+        HttpURLConnection con = (HttpURLConnection) xurl.openConnection();
+        InputStream is = con.getInputStream();
+        InputStreamReader isr = new InputStreamReader(is, "utf-8");
+        String result = "";
+        int read;
+        while ((read = isr.read()) != -1) {
+            result += (char) read;
+        }
+        isr.close();
+
 //        System.out.println(str);
         try {
-            URL url = new File("/Users/cutoutsy/testjar/"+str+".jar").toURI().toURL();
+            URL url = new File("E:\\spedev\\reflect.jar").toURI().toURL();
 //            @SuppressWarnings("resource")
 //            URLClassLoader myClassLoader1 = new URLClassLoader(new URL[] { url1 }, Thread.currentThread().getContextClassLoader());
 //            Class<?> myClass1 = myClassLoader1.loadClass("cn.cutoutsy.Add");
 //
             URLClassLoader ucl = new URLClassLoader(new URL[]{url});
-            Class<?> myClass1 = Class.forName("cn.cutoutsy.Add",true,ucl);
+            Class<?> myClass1 = Class.forName("xd.miner.reflect",true,ucl);
 //            AbstractAction action1 = (AbstractAction) myClass1.newInstance();
-            Method method = myClass1.getMethod("add", int.class, int.class);
+            Method method = myClass1.getMethod("add", String.class);
 //            int str1 = action1.Add(10, 2);
-            Object oc = method.invoke(myClass1.newInstance(), 100, 120);
+            Object oc = method.invoke(myClass1.newInstance(), result);
             System.out.println(oc.toString());
 //            System.out.println(str1);
         } catch (Exception e) {

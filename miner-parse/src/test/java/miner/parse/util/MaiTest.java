@@ -21,7 +21,7 @@ public class MaiTest extends TestCase {
 
 //    Map<String,String> map = new HashMap();
     public  void testMai() throws IOException {
-         JSONObject root_obj = new JSONObject();
+//         JSONObject root_obj = new JSONObject();
 
 
         URL url = new URL("http://mailuntai.cn/product/4937.html");
@@ -34,6 +34,7 @@ public class MaiTest extends TestCase {
             result += (char) read;
         }
         isr.close();
+        String price,sale = "";
         String pattern = "(?<=(price = \\[))\\S+(?=(]))";
         // 创建 Pattern 对象
         Pattern r = Pattern.compile(pattern);
@@ -41,20 +42,20 @@ public class MaiTest extends TestCase {
         // 现在创建 matcher 对象
         Matcher m = r.matcher(result);
         if (m.find( )) {
-//            String price = (String) m.group(0);
-            try {
-                root_obj.put("price",(String) m.group(0));
-            } catch (org.json.JSONException e) {
-                e.printStackTrace();
-            }
+             price = (String) m.group(0);
+//            try {
+//                root_obj.put("price",(String) m.group(0));
+//            } catch (org.json.JSONException e) {
+//                e.printStackTrace();
+//            }
             System.out.println("Found value: " +  m.group(0) );
         } else {
-//            String  price = "none";
-            try {
-                root_obj.put("price","none");
-            } catch (org.json.JSONException e) {
-                e.printStackTrace();
-            }
+             price = "none";
+//            try {
+//                root_obj.put("price","none");
+//            } catch (org.json.JSONException e) {
+//                e.printStackTrace();
+//            }
             System.out.println("NO MATCH");
         }
 
@@ -64,23 +65,23 @@ public class MaiTest extends TestCase {
         // 现在创建 matcher 对象
          m = r.matcher(result);
         if (m.find( )) {
-//            String sale = (String) m.group(0);
-            try {
-                root_obj.put("sale",(String) m.group(0));
-            } catch (org.json.JSONException e) {
-                e.printStackTrace();
-            }
+             sale = (String) m.group(0);
+//            try {
+//                root_obj.put("sale",(String) m.group(0));
+//            } catch (org.json.JSONException e) {
+//                e.printStackTrace();
+//            }
             System.out.println("Found value: " + m.group(0) );
         } else {
-//            String sale = "none";
-            try {
-                root_obj.put("sale",(String) m.group(0));
-            } catch (org.json.JSONException e) {
-                e.printStackTrace();
-            }
+             sale = "none";
+//            try {
+//                root_obj.put("sale",(String) m.group(0));
+//            } catch (org.json.JSONException e) {
+//                e.printStackTrace();
+//            }
             System.out.println("NO MATCH");
         }
 //        System.out.print(result);
-        System.out.print("format to json"+root_obj);
+        System.out.print("{\"price\":\""+price+"\""+","+"\"sale\":"+"\""+sale+"\"}");
     }
 }
