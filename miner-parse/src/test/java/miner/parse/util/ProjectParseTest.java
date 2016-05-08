@@ -7,7 +7,7 @@ import miner.parse.Generator;
 import miner.parse.RuleItem;
 import miner.parse.data.DataItem;
 import miner.parse.data.Packer;
-import org.junit.Test;
+//import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -25,7 +25,6 @@ public class ProjectParseTest extends TestCase{
     /**
      * 针对麦轮胎轮胎基本信息抽取的测试
      */
-    @Test
     public void testMaiLunTaiParse(){
         /* 抽取单个doc数据的规则库，多个set组成map */
         Map<String, RuleItem> data_rule_map = new HashMap<String, RuleItem>();
@@ -73,7 +72,6 @@ public class ProjectParseTest extends TestCase{
         }
     }
 
-    @Test
     public void testPath(){
         StringBuffer doc_str = new StringBuffer();
         try {

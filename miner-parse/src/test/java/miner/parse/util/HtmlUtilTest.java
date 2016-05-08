@@ -7,7 +7,6 @@ import miner.parse.Generator;
 import miner.parse.RuleItem;
 import miner.parse.data.DataItem;
 import miner.parse.data.Packer;
-import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,7 +20,7 @@ import java.util.*;
  * parse junit test case
  */
 public class HtmlUtilTest extends TestCase {
-    @Test
+
     public void testParse(){
         File file = new File("/Users/cutoutsy/Desktop/test.html");
         String doc_str = "";
@@ -49,7 +48,7 @@ public class HtmlUtilTest extends TestCase {
 
     }
 
-    @Test
+
     public void testJsonParse(){
         File file = new File("/Users/cutoutsy/Desktop/stocks.php");
         String doc_str = "";
@@ -79,7 +78,7 @@ public class HtmlUtilTest extends TestCase {
     /**
      * wdj source parse test
      */
-    @Test
+
     public void testWdjParse(){
         /* 抽取单个doc数据的规则库，多个set组成map */
         Map<String, RuleItem> data_rule_map = new HashMap<String, RuleItem>();
@@ -113,6 +112,11 @@ public class HtmlUtilTest extends TestCase {
         }
         g.generate_data();
         Map<String, Object> m = g.get_result();// m里封装了所有抽取的数据
+//        m.put("name_number","my only cat");
+        for(String key : m.keySet()){
+            System.out.print(key+"------>");
+            System.out.print(m.get(key)+"\n");
+        }
         Iterator<DataItem> data_item_it = data_item_set.iterator();
         while (data_item_it.hasNext()) {
             Packer packer = new Packer(data_item_it.next(), m, data_rule_map);
