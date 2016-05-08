@@ -57,6 +57,7 @@ public class ParseBolt extends BaseRichBolt {
 			}
 
 			for (Map.Entry<String, Data> entry : parseData.entrySet()) {
+                String parseResource = resource;
 				String dataInfo = entry.getKey();
 				String taskInfo = dataInfo.split("-")[0]+"-"+dataInfo.split("-")[1]+"-"+dataInfo.split("-")[2];
 				Data data = entry.getValue();
@@ -70,7 +71,7 @@ public class ParseBolt extends BaseRichBolt {
                         int k = i-1;
                         properties[k] = properties[i];
 					}
-					resource = Reflect.GetReflect("/Users/cutoutsy/Downloads/reflect.jar", resource);
+                    parseResource = Reflect.GetReflect("/Users/cutoutsy/Downloads/reflect.jar", parseResource);
 				}else {
 					for (int i = 0; i < properties.length; i++) {
 						String tagName = properties[i];
@@ -83,7 +84,7 @@ public class ParseBolt extends BaseRichBolt {
 						data.getForeignValue(), data.getLink(), properties));
 				/* 数据生成器 */
 				Generator g = new Generator();
-				g.create_obj(resource);
+				g.create_obj(parseResource);
 				for (Map.Entry<String, RuleItem> entry1 : data_rule_map.entrySet()) {
 					g.set_rule(entry1.getValue());
 				}
