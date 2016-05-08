@@ -28,7 +28,7 @@ public class reflectionTest {
 
 //        System.out.println(str);
         try {
-            URL url = new File("E:\\spedev\\reflect.jar").toURI().toURL();
+            URL url = new File("/Users/cutoutsy/Downloads/reflect.jar").toURI().toURL();
 //            @SuppressWarnings("resource")
 //            URLClassLoader myClassLoader1 = new URLClassLoader(new URL[] { url1 }, Thread.currentThread().getContextClassLoader());
 //            Class<?> myClass1 = myClassLoader1.loadClass("cn.cutoutsy.Add");
@@ -36,7 +36,7 @@ public class reflectionTest {
             URLClassLoader ucl = new URLClassLoader(new URL[]{url});
             Class<?> myClass1 = Class.forName("xd.miner.reflect",true,ucl);
 //            AbstractAction action1 = (AbstractAction) myClass1.newInstance();
-            Method method = myClass1.getMethod("add", String.class);
+            Method method = myClass1.getMethod("PaseRef", String.class);
 //            int str1 = action1.Add(10, 2);
             Object oc = method.invoke(myClass1.newInstance(), result);
             System.out.println(oc.toString());

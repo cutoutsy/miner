@@ -12,7 +12,7 @@ public class FileOperatorUtil {
 
     private static MySysLogger logger = new MySysLogger(FileOperatorUtil.class);
 
-    // 创建root_path的所在文件夹的所有路径
+    //创建root_path的所有文件夹的所有路径
     public static boolean createRootDir(String root_path) {
         File f = new File(root_path);
         if (f.exists() && f.isDirectory()) {
@@ -30,7 +30,7 @@ public class FileOperatorUtil {
         return false;
     }
 
-    // 如果父路径不存在的话，创建一个文件的父路径，
+    //如果父路径不存在的话,创建一个文件的父路径
     public static boolean createParentDirFromFile(String file) {
         File f = new File(file);
         if (f.exists()) {// 说明已经存在
@@ -39,7 +39,7 @@ public class FileOperatorUtil {
             try {
                 String parentPath = f.getParent();
                 if (StringOperatorUtil.isBlank(parentPath)) {
-                    // 如果是null,则不需要再创建了，说明是同级目录
+                    // 如果是null,则不需要再创建了,说明是同级目录
                     return false;
                 } else {
                     // 创建父目录

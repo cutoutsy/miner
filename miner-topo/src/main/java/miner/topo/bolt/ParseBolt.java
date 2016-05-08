@@ -10,6 +10,7 @@ import backtype.storm.tuple.Values;
 import miner.parse.*;
 import miner.parse.data.DataItem;
 import miner.parse.data.Packer;
+import miner.parse.util.Reflect;
 import miner.spider.pojo.Data;
 import miner.spider.utils.MysqlUtil;
 import miner.topo.platform.PlatformUtils;
@@ -61,10 +62,21 @@ public class ParseBolt extends BaseRichBolt {
 				Data data = entry.getValue();
 				String[] properties = data.getProperty().split("\\$");
 				Map<String, RuleItem> data_rule_map = new HashMap<String, RuleItem>();
-				for(int i = 0; i < properties.length; i++){
-					String tagName = properties[i];
-					String path = _regex.get(taskInfo+"-"+tagName);
-					data_rule_map.put(tagName, new RuleItem(tagName, path));
+				if(properties[0].equals("reflect")){
+					for(int i = 1; i < properties.length; i++){
+						String tagName = properties[i];
+						String path = _regex.get(taskInfo+"-"+tagName);
+						data_rule_map.put(tagName, new RuleItem(tagName, path));
+                        int k = i-1;
+                        properties[k] = properties[i];
+					}
+					resource = Reflect.GetReflect("/Users/cutoutsy/Downloads/reflect.jar", resource);
+				}else {
+					for (int i = 0; i < properties.length; i++) {
+						String tagName = properties[i];
+						String path = _regex.get(taskInfo + "-" + tagName);
+						data_rule_map.put(tagName, new RuleItem(tagName, path));
+					}
 				}
 				Set<DataItem> data_item_set = new HashSet<DataItem>();
 				data_item_set.add(new DataItem(data.getWid(), data.getPid(), data.getTid(), data.getDid(), data.getRowKey(), data.getForeignKey(),
