@@ -19,6 +19,7 @@ git checkout dev
 1、Clone平台代码到220:/opt/build/下,并切换到dev分支
 ```shell
 git clone https://git.coding.net/cutoutsy/miner.git
+cd miner/
 git checkout dev
 ```
 
