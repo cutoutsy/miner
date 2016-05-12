@@ -33,7 +33,7 @@ public static ReadConfigUtil readConfigUtil= new ReadConfigUtil("/opt/build/plat
 
 3、编译项目，在项目根目录下，即/opt/build/miner/
 ```shell
-mvn install
+mvn package -DskipTests
 ```
 出现BUILD SUCCESS即可进入下一步
 
