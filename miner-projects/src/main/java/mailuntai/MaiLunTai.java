@@ -117,7 +117,7 @@ public class MaiLunTai {
 
     //将mailuntaiid里面的数据复制一份到mailuntaiid1里
 
-    public static void copyMaiLunTaiId(){
+    public static void runMaiLunTaiPrepare(){
         RedisUtil re = new RedisUtil();
         Jedis redis = re.getJedisInstance();
         if(redis.exists("4_white_set")){
@@ -155,7 +155,7 @@ public class MaiLunTai {
 //        allSortsUrls.add("http://mailuntai.cn/products/?type=2&auto_brand=&vehicle=&emission=&year=&style=&brand=287&order=sales&sort=desc&prop=1");
 //        allPageUrls(allSortsUrls);
 //        getAllTiresId();
-        copyMaiLunTaiId();
+        runMaiLunTaiPrepare();
     }
 }
 

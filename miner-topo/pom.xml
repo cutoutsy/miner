@@ -28,6 +28,11 @@
       <version>${project.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>xd</groupId>
+      <artifactId>miner-projects</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>xd</groupId>

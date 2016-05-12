@@ -6,6 +6,7 @@ import backtype.storm.StormSubmitter;
 import backtype.storm.topology.TopologyBuilder;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
+import mailuntai.MaiLunTai;
 import miner.bolt.StoreBoltTest;
 import miner.topo.bolt.*;
 import miner.topo.spout.BeginSpout;
@@ -20,6 +21,7 @@ public class MaiLunTaiTopoTest{
 
 
     public static void main(String[] args){
+        MaiLunTai.runMaiLunTaiPrepare();
         try{
             TopologyBuilder topologyBuilder = new TopologyBuilder();
 

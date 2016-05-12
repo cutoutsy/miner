@@ -12,17 +12,16 @@ import java.util.Set;
 public class TestParse {
 
     public static void main(String[] args){
-        Jedis redis = new Jedis("127.0.0.1",6379);
+        Jedis redis = new Jedis("cutoutsy.cn",16379);
         redis.auth("xidian123");
 
-        Set<String> id = redis.smembers("elongHotelId");
+        Set<String> id = redis.smembers("mailuntaiid");
         Iterator it = id.iterator();
 
         while (it.hasNext()){
             String tempId = it.next().toString();
             System.out.println(tempId + "----");
-            redis.sadd("elong_hotel_id", tempId);
-            redis.rpush("elong_hotel_id1", tempId);
+
         }
 
     }
