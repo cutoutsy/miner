@@ -16,10 +16,12 @@ import miner.spider.utils.MysqlUtil;
 import miner.topo.platform.PlatformUtils;
 import miner.utils.MySysLogger;
 import miner.utils.RedisUtil;
-import miner.utils.Reflect;
 import redis.clients.jedis.Jedis;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ParseBolt extends BaseRichBolt {
 
@@ -75,7 +77,7 @@ public class ParseBolt extends BaseRichBolt {
 //					logger.info("reflect.jar path:"+PlatformParas.reflect_dir+"reflect.jar");
 //                    parseResource = Reflect.GetReflect(PlatformParas.reflect_dir+"reflect.jar", parseResource);
 //					parseResource = Reflect.GetReflect("/opt/build/reflect/reflect.jar", parseResource);
-					parseResource = Reflect.PaseRef(parseResource);
+					parseResource = PaseRef(parseResource);
 				}else {
 					for (int i = 0; i < properties.length; i++) {
 						String tagName = properties[i];
@@ -162,5 +164,47 @@ public class ParseBolt extends BaseRichBolt {
 
 	public void cleanup() {
 		_ru.release_jedis(_redis);
+	}
+
+	public String PaseRef(String res) throws IOException {
+
+		String result = res;
+		String price,sale,mydate = "";
+		String pattern = "(?<=(price = \\[))\\S+(?=(]))";
+		Pattern r = Pattern.compile(pattern);
+
+		Matcher m = r.matcher(result);
+		if (m.find( )) {
+			price = (String) m.group(0);
+//            System.out.println("Found value: " +  m.group(0) );
+		} else {
+			price = "none";
+//            System.out.println("NO MATCH");
+		}
+
+		pattern =  "(?<=(sale = \\\"))\\S+(?=(\\\"))";
+		r = Pattern.compile(pattern);
+
+		m = r.matcher(result);
+		if (m.find( )) {
+			sale = (String) m.group(0);
+
+//            System.out.println("Found value: " + m.group(0) );
+		} else {
+			sale = "none";
+//            System.out.println("NO MATCH");
+		}
+		pattern =  "(?<=(date = \\\"))\\S+(?=(\\\"))";
+		r = Pattern.compile(pattern);
+
+		m = r.matcher(result);
+		if (m.find( )) {
+			mydate = (String) m.group(0);
+//            System.out.println("Found value: " + m.group(0) );
+		} else {
+			mydate = "none";
+//            System.out.println("NO MATCH");
+		}
+		return "{\"price\":\""+price+"\""+","+"\"sale\":"+"\""+sale+"\""+","+"\"date\":"+"\""+mydate+"\""+"}";
 	}
 }
