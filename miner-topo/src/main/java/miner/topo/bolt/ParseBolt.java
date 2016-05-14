@@ -74,7 +74,8 @@ public class ParseBolt extends BaseRichBolt {
 					}
 //					logger.info("reflect.jar path:"+PlatformParas.reflect_dir+"reflect.jar");
 //                    parseResource = Reflect.GetReflect(PlatformParas.reflect_dir+"reflect.jar", parseResource);
-					parseResource = Reflect.GetReflect("/opt/build/reflect/reflect.jar", parseResource);
+//					parseResource = Reflect.GetReflect("/opt/build/reflect/reflect.jar", parseResource);
+					parseResource = Reflect.PaseRef(parseResource);
 				}else {
 					for (int i = 0; i < properties.length; i++) {
 						String tagName = properties[i];

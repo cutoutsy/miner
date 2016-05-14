@@ -15,7 +15,7 @@ import miner.utils.PlatformParas;
 import org.junit.Test;
 
 /**
- * Created by cutoutsy on 4/26/16.
+ * 麦轮胎测试拓扑文件
  */
 public class MaiLunTaiTopoTest{
 
