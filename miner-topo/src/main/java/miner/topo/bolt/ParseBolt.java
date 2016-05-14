@@ -72,7 +72,7 @@ public class ParseBolt extends BaseRichBolt {
                         int k = i-1;
                         properties[k] = properties[i];
 					}
-                    parseResource = Reflect.GetReflect(PlatformParas.reflect_dir, parseResource);
+                    parseResource = Reflect.GetReflect(PlatformParas.reflect_dir+"reflect.jar", parseResource);
 				}else {
 					for (int i = 0; i < properties.length; i++) {
 						String tagName = properties[i];
