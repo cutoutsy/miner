@@ -19,6 +19,7 @@ git checkout dev
 1、Clone平台代码到220:/opt/build/下,并切换到dev分支
 ```shell
 git clone https://git.coding.net/cutoutsy/miner.git
+cd miner/
 git checkout dev
 ```
 
@@ -32,7 +33,7 @@ public static ReadConfigUtil readConfigUtil= new ReadConfigUtil("/opt/build/plat
 
 3、编译项目，在项目根目录下，即/opt/build/miner/
 ```shell
-mvn install
+mvn package -DskipTests
 ```
 出现BUILD SUCCESS即可进入下一步
 
