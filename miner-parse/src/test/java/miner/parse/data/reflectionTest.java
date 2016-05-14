@@ -28,7 +28,7 @@ public class reflectionTest {
 
 //        System.out.println(str);
         try {
-            URL url = new File("/Users/cutoutsy/Downloads/reflect.jar").toURI().toURL();
+            URL url = new File("/Users/cutoutsy/reflect.jar").toURI().toURL();
 //            @SuppressWarnings("resource")
 //            URLClassLoader myClassLoader1 = new URLClassLoader(new URL[] { url1 }, Thread.currentThread().getContextClassLoader());
 //            Class<?> myClass1 = myClassLoader1.loadClass("cn.cutoutsy.Add");

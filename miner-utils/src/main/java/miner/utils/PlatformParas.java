@@ -38,6 +38,9 @@ public class PlatformParas {
     //message timeout
     public static int message_timeout_secs = Integer.parseInt(readConfigUtil.getValue("message_timeout_secs"));
 
+    //反射jar包所在目录
+    public static String reflect_dir = readConfigUtil.getValue("reflect_dir");
+
     public static void main(String[] args) {
         System.out.println(redis_host);
         System.out.println(redis_auth);
