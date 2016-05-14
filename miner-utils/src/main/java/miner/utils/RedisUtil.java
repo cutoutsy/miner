@@ -3,8 +3,12 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @name RedisUtil
  * @author white
@@ -88,5 +92,47 @@ public class RedisUtil {
         while (it.hasNext()){
             System.out.println(it.next());
         }
+    }
+
+    public static String PaseRef(String res) throws IOException {
+
+        String result = res;
+        String price,sale,mydate = "";
+        String pattern = "(?<=(price = \\[))\\S+(?=(]))";
+        Pattern r = Pattern.compile(pattern);
+
+        Matcher m = r.matcher(result);
+        if (m.find( )) {
+            price = (String) m.group(0);
+//            System.out.println("Found value: " +  m.group(0) );
+        } else {
+            price = "none";
+//            System.out.println("NO MATCH");
+        }
+
+        pattern =  "(?<=(sale = \\\"))\\S+(?=(\\\"))";
+        r = Pattern.compile(pattern);
+
+        m = r.matcher(result);
+        if (m.find( )) {
+            sale = (String) m.group(0);
+
+//            System.out.println("Found value: " + m.group(0) );
+        } else {
+            sale = "none";
+//            System.out.println("NO MATCH");
+        }
+        pattern =  "(?<=(date = \\\"))\\S+(?=(\\\"))";
+        r = Pattern.compile(pattern);
+
+        m = r.matcher(result);
+        if (m.find( )) {
+            mydate = (String) m.group(0);
+//            System.out.println("Found value: " + m.group(0) );
+        } else {
+            mydate = "none";
+//            System.out.println("NO MATCH");
+        }
+        return "{\"price\":\""+price+"\""+","+"\"sale\":"+"\""+sale+"\""+","+"\"date\":"+"\""+mydate+"\""+"}";
     }
 }
