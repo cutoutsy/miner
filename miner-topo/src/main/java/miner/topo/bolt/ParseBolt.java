@@ -15,6 +15,7 @@ import miner.spider.pojo.Data;
 import miner.spider.utils.MysqlUtil;
 import miner.topo.platform.PlatformUtils;
 import miner.utils.MySysLogger;
+import miner.utils.PlatformParas;
 import miner.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
@@ -71,7 +72,7 @@ public class ParseBolt extends BaseRichBolt {
                         int k = i-1;
                         properties[k] = properties[i];
 					}
-                    parseResource = Reflect.GetReflect("/opt/build/reflect/reflect.jar", parseResource);
+                    parseResource = Reflect.GetReflect(PlatformParas.reflect_dir, parseResource);
 				}else {
 					for (int i = 0; i < properties.length; i++) {
 						String tagName = properties[i];
