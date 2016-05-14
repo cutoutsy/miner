@@ -5,7 +5,7 @@ package miner.utils;
  */
 public class PlatformParas {
 
-    public static ReadConfigUtil readConfigUtil= new ReadConfigUtil("/opt/build/platform_cluster.properties", true);
+    public static ReadConfigUtil readConfigUtil= new ReadConfigUtil("/opt/build/platform.properties", true);
 
     //redis配置信息
     public static String redis_host = readConfigUtil.getValue("redis_host");
