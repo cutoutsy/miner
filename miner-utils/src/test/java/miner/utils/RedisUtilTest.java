@@ -23,7 +23,7 @@ public class RedisUtilTest extends TestCase {
 
     @Test
     public void testRemoteRedisConnect(){
-        Jedis redis = new Jedis("1.85.180.168", 16379);
+        Jedis redis = new Jedis("cutoutsy.cn", 16379);
         redis.auth("xidian123");
         Set<String> wdjid =  redis.smembers("wdjid");
         Iterator it = wdjid.iterator();

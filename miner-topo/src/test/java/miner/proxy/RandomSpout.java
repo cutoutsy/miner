@@ -19,7 +19,7 @@ public class RandomSpout extends BaseRichSpout {
     private Random rand;
 
     private static String[] global_info = new String[] {"1-1-1-1", "2-2-1-1", "3-2-1-1", "4-1-2-1", "1-2-1-2","3-3-1-3"};
-    private static String[] download_url=new String[]{"baidu.com","qq.com","sohu.com","taobao.com","z.cn","jd.com"};
+    private static String[] download_url=new String[]{"baidu.com","qq.com","sohu.com","taobao.com","z.cn","Jd.com"};
 
     public void open(Map conf, TopologyContext context,
                      SpoutOutputCollector collector) {

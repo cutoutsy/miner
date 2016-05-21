@@ -19,6 +19,7 @@ import java.util.*;
  * Created by MaFu on 2016/5/21.
  */
 public class JsonUtilTest extends TestCase{
+
     public static void testJson()throws IOException {
         URL url = new URL("http://club.jd.com/productpage/p-935349-s-0-t-3-p-2.html?callback=fetchJSON_comment98vv10861");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -31,7 +32,7 @@ public class JsonUtilTest extends TestCase{
         }
         isr.close();
         long start = System.currentTimeMillis();
-        System.out.print(doc_str);
+//        System.out.println(doc_str);
         /* 抽取单个doc数据的规则库，多个set组成map */
         Map<String, RuleItem> data_rule_map = new HashMap<String, RuleItem>();
         data_rule_map.put("comments_success", new RuleItem("comment",

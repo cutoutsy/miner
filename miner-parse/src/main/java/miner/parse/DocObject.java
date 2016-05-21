@@ -66,13 +66,14 @@ public class DocObject {
 			this.document = document.substring(document.indexOf('{'),
 					document.length() - 1);
 			if(this.document.endsWith(")")){
-				this.document = document.substring(document.indexOf('{'),
-						document.length() - 1);
+				this.document = this.document.substring(this.document.indexOf('{'),
+						this.document.length() - 1);
 			}
 		} else {
 			this.document = document;
 		}
 		this.doc_type = doc_type;
+		System.out.println(this.document);
 		this.html_map = new HashMap<String, Element>();
 		this.json_map = new HashMap<String, String>();
 	}
@@ -125,6 +126,8 @@ public class DocObject {
 		if (doc_type.equals(DocType.HTML)) {
 			parse_html();
 		} else if (doc_type.equals(DocType.JSON)) {
+			parse_json();
+		} else if (doc_type.equals(DocType.JSONP)){
 			parse_json();
 		}
 	}
