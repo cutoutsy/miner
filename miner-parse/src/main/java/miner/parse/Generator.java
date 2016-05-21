@@ -33,7 +33,7 @@ public class Generator {
             type=DocType.XML;
         } else if(document.startsWith("{")){
             type=DocType.JSON;
-        }else if(document.endsWith("})")){
+        }else if(document.endsWith("})") || document.endsWith("});")){
             type=DocType.JSONP;
         }else {
             type=DocType.TEXT;

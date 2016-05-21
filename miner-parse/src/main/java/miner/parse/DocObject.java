@@ -65,6 +65,10 @@ public class DocObject {
 		if (doc_type.equals(DocType.JSONP)) {
 			this.document = document.substring(document.indexOf('{'),
 					document.length() - 1);
+			if(this.document.endsWith(")")){
+				this.document = document.substring(document.indexOf('{'),
+						document.length() - 1);
+			}
 		} else {
 			this.document = document;
 		}

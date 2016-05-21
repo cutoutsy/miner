@@ -34,7 +34,7 @@ public class MaiTest extends TestCase {
             result += (char) read;
         }
         isr.close();
-        String price,sale = "";
+        String price,sale,mydate = "";
         String pattern = "(?<=(price = \\[))\\S+(?=(]))";
         // 创建 Pattern 对象
         Pattern r = Pattern.compile(pattern);
@@ -81,7 +81,29 @@ public class MaiTest extends TestCase {
 //            }
             System.out.println("NO MATCH");
         }
+        pattern =  "(?<=(date = \\\"))\\S+(?=(\\\"))";
+        r = Pattern.compile(pattern);
+
+        // 现在创建 matcher 对象
+        m = r.matcher(result);
+        if (m.find( )) {
+            mydate = (String) m.group(0);
+//            try {
+//                root_obj.put("sale",(String) m.group(0));
+//            } catch (org.json.JSONException e) {
+//                e.printStackTrace();
+//            }
+            System.out.println("Found value: " + m.group(0) );
+        } else {
+            mydate = "none";
+//            try {
+//                root_obj.put("sale",(String) m.group(0));
+//            } catch (org.json.JSONException e) {
+//                e.printStackTrace();
+//            }
+            System.out.println("NO MATCH");
+        }
 //        System.out.print(result);
-        System.out.print("{\"price\":\""+price+"\""+","+"\"sale\":"+"\""+sale+"\"}");
+        System.out.print("{\"price\":\""+price+"\""+","+"\"sale\":"+"\""+sale+"\""+","+"\"date\":"+"\""+mydate+"\""+"}");
     }
 }

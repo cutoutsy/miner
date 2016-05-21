@@ -36,7 +36,7 @@ public class reflectionTest {
             URLClassLoader ucl = new URLClassLoader(new URL[]{url});
             Class<?> myClass1 = Class.forName("xd.miner.reflect",true,ucl);
 //            AbstractAction action1 = (AbstractAction) myClass1.newInstance();
-            Method method = myClass1.getMethod("add", String.class);
+            Method method = myClass1.getMethod("PaseRef", String.class);
 //            int str1 = action1.Add(10, 2);
             Object oc = method.invoke(myClass1.newInstance(), result);
             System.out.println(oc.toString());
