@@ -35,6 +35,7 @@ public class ParseBolt extends BaseRichBolt {
 	private Jedis _redis;
 
 	public void execute(Tuple tuple) {
+		logger.info("ParseBolt execute......");
 		try {
 			String globalInfo = tuple.getString(0);
 			String resource = tuple.getString(1);

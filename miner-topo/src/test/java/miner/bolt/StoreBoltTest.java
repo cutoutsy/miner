@@ -8,6 +8,7 @@ import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Tuple;
+import miner.spider.utils.IOUtil;
 import miner.store.ImportData;
 import miner.utils.MySysLogger;
 
@@ -26,7 +27,7 @@ public class StoreBoltTest extends BaseRichBolt {
 //			ImportData.importData(data);
 
 			System.err.println(data);
-
+			IOUtil.writeFile("/Users/cutoutsy/jd.txt", data+"\n", true, "utf-8");
 			logger.info(globalInfo+":save into hbase succeed!");
 //			logger.info(data); //集群上注释
 			_collector.ack(tuple);
