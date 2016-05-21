@@ -117,15 +117,36 @@ public class MaiLunTai {
 
     //将mailuntaiid里面的数据复制一份到mailuntaiid1里
 
-    public static void copyMaiLunTaiId(){
+    public static void runMaiLunTaiPrepare(){
         RedisUtil re = new RedisUtil();
         Jedis redis = re.getJedisInstance();
+        if(redis.exists("4_white_set")){
+            redis.del("4_white_set");
+            System.out.println("4_white_set delete.");
+        }
+        if(redis.exists("4_black_set")){
+            redis.del("4_black_set");
+            System.out.println("4_black_set delete.");
+        }
+        if(redis.exists("mailuntaiid1")){
+            redis.del("mailuntaiid1");
+            System.out.println("mailuntaiid1 delete.");
+        }
+        if(redis.exists("mailuntaiid2")){
+            redis.del("mailuntaiid2");
+            System.out.println("mailuntaiid2 delete.");
+        }
+
+        redis.hset("project_state", "4-1", "die");
+
         Set<String> allPages = redis.smembers("mailuntaiid");
         Iterator it = allPages.iterator();
         while (it.hasNext()){
             String tempId = it.next().toString();
             redis.lpush("mailuntaiid1", tempId);
         }
+
+        redis.lpush("project_execute", "4-1");
 
     }
     public static void main(String[] args){
@@ -134,7 +155,7 @@ public class MaiLunTai {
 //        allSortsUrls.add("http://mailuntai.cn/products/?type=2&auto_brand=&vehicle=&emission=&year=&style=&brand=287&order=sales&sort=desc&prop=1");
 //        allPageUrls(allSortsUrls);
 //        getAllTiresId();
-        copyMaiLunTaiId();
+        runMaiLunTaiPrepare();
     }
 }
 

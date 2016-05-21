@@ -5,6 +5,7 @@ package miner.parse.data;
  */
 public class Add {
     public int add(int a, int b){
+        String str = ":";
         return a+b;
     }
 }

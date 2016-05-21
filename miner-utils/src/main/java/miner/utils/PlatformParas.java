@@ -5,7 +5,7 @@ package miner.utils;
  */
 public class PlatformParas {
 
-    public static ReadConfigUtil readConfigUtil= new ReadConfigUtil("/Users/cutoutsy/IdeaProjects/miner/conf/platform.properties", true);
+    public static ReadConfigUtil readConfigUtil= new ReadConfigUtil("/opt/build/platform.properties", true);
 
     //redis配置信息
     public static String redis_host = readConfigUtil.getValue("redis_host");
@@ -37,6 +37,9 @@ public class PlatformParas {
 
     //message timeout
     public static int message_timeout_secs = Integer.parseInt(readConfigUtil.getValue("message_timeout_secs"));
+
+    //反射jar包所在目录
+    public static String reflect_dir = readConfigUtil.getValue("reflect_dir");
 
     public static void main(String[] args) {
         System.out.println(redis_host);

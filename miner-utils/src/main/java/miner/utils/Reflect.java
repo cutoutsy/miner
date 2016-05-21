@@ -1,6 +1,4 @@
-package miner.parse.util;
-
-import miner.utils.MySysLogger;
+package miner.utils;
 
 import java.io.File;
 import java.io.IOException;
