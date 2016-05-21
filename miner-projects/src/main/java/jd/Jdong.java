@@ -13,8 +13,7 @@ import java.util.regex.Pattern;
 /**
  *  关于京东的类
  */
-public class Jd {
-    //http://club.jd.com/productpage/p-1861111-s-0-t-3-p-0.html?callback=fetchJSON_comment98vv2956
+public class Jdong {
 
     //生成jd某个商品id的所有评论链接接口
     public static Set<String> produceItemIdCommentLiks(String id){

@@ -3,8 +3,7 @@ package miner.topo;
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.topology.TopologyBuilder;
-import jd.Jd;
-import mailuntai.MaiLunTai;
+import jd.Jdong;
 import miner.bolt.StoreBoltTest;
 import miner.topo.bolt.FetchBolt;
 import miner.topo.bolt.ParseBolt;
@@ -20,7 +19,7 @@ public class JdTopoTest {
 
 
     public static void main(String[] args){
-        Jd.runJdPrepare();
+        Jdong.runJdPrepare();
         try{
             TopologyBuilder topologyBuilder = new TopologyBuilder();
 
