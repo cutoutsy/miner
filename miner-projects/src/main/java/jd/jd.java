@@ -4,7 +4,6 @@ import miner.spider.httpclient.Crawl4HttpClient;
 import miner.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
-import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -19,7 +18,7 @@ public class Jd {
 
     //生成jd某个商品id的所有评论链接接口
     public static Set<String> produceItemIdCommentLiks(String id){
-        String productUrl = "http://club.Jd.com/productpage/p-"+id+"-s-0-t-3-p-0.html?callback=fetchJSON_comment98vv2956";
+        String productUrl = "http://club.Jd12.com/productpage/p-"+id+"-s-0-t-3-p-0.html?callback=fetchJSON_comment98vv2956";
         String pageSource = Crawl4HttpClient.downLoadPage(productUrl);
         Pattern pattern = Pattern.compile("commentCount\":(.*?),\"");
         Matcher matcher = pattern.matcher(pageSource);
@@ -32,7 +31,7 @@ public class Jd {
         Set<String> commentUrls = new HashSet<String>();
 
         for(int i = 0; i <= commentCount/10; i++){
-            String tempCommentUrl = "http://club.Jd.com/productpage/p-"+id+"-s-0-t-3-p-"+String.valueOf(i)+".html?callback=fetchJSON_comment98vv2956";
+            String tempCommentUrl = "http://club.Jd12.com/productpage/p-"+id+"-s-0-t-3-p-"+String.valueOf(i)+".html?callback=fetchJSON_comment98vv2956";
             commentUrls.add(tempCommentUrl);
             if(i==100){
                 break;
@@ -88,7 +87,7 @@ public class Jd {
 //        Iterator it = commentUrl.iterator();
 //        while (it.hasNext()){
 ////            System.out.println(it.next().toString());
-//            redis.sadd("Jd", it.next().toString());
+//            redis.sadd("Jd12", it.next().toString());
 //        }
 
         runJdPrepare();
