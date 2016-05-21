@@ -4,6 +4,7 @@ import miner.spider.httpclient.Crawl4HttpClient;
 import miner.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
+import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -63,13 +64,16 @@ public class Jd {
             System.out.println("jd2 delete.");
         }
 
+        System.out.println(redis.hget("project_state","5-1"));
         redis.hset("project_state", "5-1", "die");
+        System.out.println(redis.hget("project_state", "5-1"));
         redis.hset("project_executenum", "5-1", "0");
-
+        redis.hset("project_cronstate", "5-1", "1");
         Set<String> allPages = redis.smembers("jd");
         Iterator it = allPages.iterator();
         while (it.hasNext()){
             String tempId = it.next().toString();
+            System.out.println(tempId);
             redis.lpush("jd1", tempId);
         }
 
