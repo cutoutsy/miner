@@ -106,6 +106,7 @@ public class ParseBolt extends BaseRichBolt {
 						logger.info("进入保存的while中......");
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
 						String[] result_str=packerData.pack();
+						System.out.println("结果result_str的长度:"+result_str.length);
 						for(int i=0;i<result_str.length;i++){
 							emit("store", tuple, globalInfo, result_str[i]);
 							logger.info("存储数据发送......");
