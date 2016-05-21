@@ -100,11 +100,13 @@ public class ParseBolt extends BaseRichBolt {
 				Map<String, Object> m = g.get_result();// m里封装了所有抽取的数据
 				Iterator<DataItem> data_item_it = data_item_set.iterator();
 				if(data.getProcessWay().equals("s")) {
+					logger.info("进入保存的循环中......");
 					while (data_item_it.hasNext()) {
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
 						String[] result_str=packerData.pack();
 						for(int i=0;i<result_str.length;i++){
 							emit("store", tuple, globalInfo, result_str[i]);
+							logger.info("存储数据发送......");
 						}
 					}
 
