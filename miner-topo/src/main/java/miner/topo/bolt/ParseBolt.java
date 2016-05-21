@@ -101,7 +101,9 @@ public class ParseBolt extends BaseRichBolt {
 				Iterator<DataItem> data_item_it = data_item_set.iterator();
 				if(data.getProcessWay().equals("s")) {
 					logger.info("进入保存的循环中......");
+					logger.info("data_item_it的大小:"+data_item_set.size()+"=========");
 					while (data_item_it.hasNext()) {
+						logger.info("进入保存的while中......");
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
 						String[] result_str=packerData.pack();
 						for(int i=0;i<result_str.length;i++){
