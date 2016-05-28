@@ -41,6 +41,9 @@ public class PlatformParas {
     //反射jar包所在目录
     public static String reflect_dir = readConfigUtil.getValue("reflect_dir");
 
+    //日志服务器端口
+    public static String logserver_port = readConfigUtil.getValue("logserver_port");
+
     public static void main(String[] args) {
         System.out.println(redis_host);
         System.out.println(redis_auth);
