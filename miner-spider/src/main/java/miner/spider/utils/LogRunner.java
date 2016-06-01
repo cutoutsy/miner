@@ -15,8 +15,10 @@ import java.util.Date;
 public class LogRunner implements Runnable{
 
     private ObjectInputStream ois;
+    private String logPath;
 
-    public LogRunner(Socket client){
+    public LogRunner(Socket client, String logPath){
+        this.logPath = logPath;
         try{
             this.ois = new ObjectInputStream(client.getInputStream());
         }catch (Exception e){
@@ -37,11 +39,15 @@ public class LogRunner implements Runnable{
                 logStringBuilder.append(" " + obj.toString()+"\n");
 
                 String todayDate = DateUtil.GetTodayDate();
-                String logPath = PlatformParas.log_path_dir+"miner-"+todayDate+".log";
+//                String logPath = PlatformParas.log_path_dir+"miner-"+todayDate+".log";
+                String logPath = this.logPath+"miner-"+todayDate+".log";
+                System.out.println("logRenamePath:"+logPath);
 
                 if(FileOperatorUtil.existFile(logPath)){
                     if(FileOperatorUtil.getFileSize(logPath) >= 100){
-                        String logRenamePath = PlatformParas.log_path_dir+"miner-"+ logTime + ".log";
+//                        String logRenamePath = PlatformParas.log_path_dir+"miner-"+ logTime + ".log";
+                        String logRenamePath = this.logPath+"miner-"+ logTime + ".log";
+
                         if(FileOperatorUtil.renameFile(logPath, logRenamePath)) {
                             FileOperatorUtil.createFile(logPath);
                             IOUtil.writeFile(logPath, logStringBuilder.toString(), true, StaticValue.default_encoding);

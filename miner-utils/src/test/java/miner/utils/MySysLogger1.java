@@ -12,23 +12,23 @@ import java.io.FileInputStream;
  *
  */
 
-public class MySysLogger {
-    private static ConfigurationSource source;
+public class MySysLogger1 {
+    private static ConfigurationSource source1;
     private Logger logger = null;
     static {
         try {
             //source = new ConfigurationSource(new FileInputStream("/usr/local/storm/conf/log4j2.xml"));
 
             String config = System.getProperty("user.dir");
-            source = new ConfigurationSource(new FileInputStream(config + "/log4j2/log4j2.xml"));
+            source1 = new ConfigurationSource(new FileInputStream(config + "/log4j2/log4j2_1.xml"));
 
-            Configurator.initialize(null, source);
+            Configurator.initialize(null, source1);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public MySysLogger(Class logClass) {
+    public MySysLogger1(Class logClass) {
         this.logger = LogManager.getLogger(logClass.getName());
     }
 
@@ -41,6 +41,7 @@ public class MySysLogger {
     }
 
     public void warn(Object obj) {
+        System.err.println("============");
         this.logger.warn(obj);
     }
 
