@@ -3,7 +3,7 @@
     <!-- Appenders 输出目的地 -->
     <Appenders>
         <!-- 配置日志输出文件名字     追加读写     host地址  端口    -->
-        <Socket name="A1" host="127.0.0.1" port="5000">
+        <Socket name="A1" host="192.168.1.233" port="5000">
             <SerializedLayout/>
             <!--<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>-->
         </Socket>
