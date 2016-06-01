@@ -15,8 +15,8 @@ public class ProxyMonitor {
     private Jedis jedis;
 
     /* 两种构造器 */
-    public ProxyMonitor(String ip_address, int port, String password){
-        jedis=new RedisUtil(ip_address, port, password).getJedisInstance();
+    public ProxyMonitor(String ip_address, int port, String password, int database){
+        jedis=new RedisUtil(ip_address, port, password, database).getJedisInstance();
     }
 
     public ProxyMonitor(RedisUtil ru){

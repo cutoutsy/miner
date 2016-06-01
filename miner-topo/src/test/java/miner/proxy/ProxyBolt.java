@@ -49,7 +49,7 @@ public class ProxyBolt extends BaseBasicBolt {
 
     public void execute(Tuple tuple, BasicOutputCollector collector) {
         /* 这个初始化能不能放在prepare方法里面？ */
-        ru = new RedisUtil("127.0.0.1",6379,"password");
+        ru = new RedisUtil("127.0.0.1",6379,"password", 0);
         jedis = ru.getJedisInstance();
         String global_info = (String) tuple.getValue(0);
         String download_url= (String) tuple.getValue(1);
