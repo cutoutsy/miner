@@ -11,6 +11,7 @@ public class PlatformParas {
     public static String redis_host = readConfigUtil.getValue("redis_host");
     public static String redis_port = readConfigUtil.getValue("redis_port");
     public static String redis_auth = readConfigUtil.getValue("redis_auth");
+    public static String redis_database = readConfigUtil.getValue("redis_database");
 
     //mysql信息配置
     public static String mysql_host = readConfigUtil.getValue("mysql_host");

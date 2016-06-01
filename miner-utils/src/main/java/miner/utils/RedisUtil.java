@@ -17,13 +17,16 @@ import java.util.regex.Pattern;
 public class RedisUtil {
     private JedisPool pool = null;
     int jedis_instance_count = 0;
+
     public RedisUtil(){
-        pool = this.initJedisPool(PlatformParas.redis_host, Integer.valueOf(PlatformParas.redis_port), PlatformParas.redis_auth);
+        pool = this.initJedisPool(PlatformParas.redis_host, Integer.valueOf(PlatformParas.redis_port), PlatformParas.redis_auth, Integer.valueOf(PlatformParas.redis_database));
     }
-    public RedisUtil(String ip_address, int port, String password) {
-        pool = this.initJedisPool(ip_address, port, password);
+
+    public RedisUtil(String ip, int port, String password, int database){
+        pool = this.initJedisPool(ip, port, password, database);
     }
-    private JedisPool initJedisPool(String ip, int port, String password) {
+
+    private JedisPool initJedisPool(String ip, int port, String password, int database) {
         if (pool == null) {
             int max_active = 1000;
             int max_total = 1000;
@@ -38,7 +41,7 @@ public class RedisUtil {
             config.setTestOnBorrow(true);
             config.setTestOnReturn(true);
             try {
-                pool = new JedisPool(config, ip, port, 1000 * 2, password);
+                pool = new JedisPool(config, ip, port, 1000 * 2, password, database);
             } catch (Exception e) {
                 e.printStackTrace();
             }

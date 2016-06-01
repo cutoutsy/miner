@@ -43,7 +43,8 @@ public class Jdong {
 
     //爬取前的准备工作
     public static void runJdPrepare(){
-        RedisUtil re = new RedisUtil();
+        RedisUtil re = new RedisUtil("cutoutsy.cn", 16379, "xidian123", 1);
+        RedisUtil re0 = new RedisUtil();
         Jedis redis = re.getJedisInstance();
         if(redis.exists("5_white_set")){
             redis.del("5_white_set");

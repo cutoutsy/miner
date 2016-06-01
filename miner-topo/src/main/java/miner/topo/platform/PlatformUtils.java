@@ -1,6 +1,7 @@
 package miner.topo.platform;
 
 import miner.spider.utils.MysqlUtil;
+import miner.utils.MySysLogger;
 import miner.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
@@ -13,7 +14,8 @@ import java.util.regex.Pattern;
  * some PlatformUtils for the platform
  */
 public class PlatformUtils {
-//    private static MyLogger logger = new MyLogger(PlatformUtils.class);
+
+    private static MySysLogger logger = new MySysLogger(PlatformUtils.class);
 
     private static RedisUtil ru;
     public static Jedis redis;

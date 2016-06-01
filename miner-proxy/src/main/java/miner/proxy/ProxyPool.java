@@ -177,7 +177,7 @@ public class ProxyPool extends Thread {
 		/* 刷新时间设置成5分钟 */
 //		ProxyPool pp = new ProxyPool(0, 0, 30, "127.0.0.1", 6379, "xidian123",
 //				proxy_param_map);
-		ProxyPool pp = new ProxyPool(0, 0, 10, proxy_param_map);
+		ProxyPool pp = new ProxyPool(0, 0, 60, proxy_param_map);
 		pp.start();
 
 		// /* 从配置文件读入的task参数 */

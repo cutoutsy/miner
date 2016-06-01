@@ -8,27 +8,32 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * class function.
+ * redis测试类
  * User: cutoutsy
  * Date: 4/21/2016
  */
 public class RedisUtilTest extends TestCase {
 
-    @Test
-    public void testGetJedisInstance(){
-        RedisUtil ru = new RedisUtil();
-        Jedis re = ru.getJedisInstance();
-        assertNotNull(re);
-    }
-
+    //测试redis选择不同的数据库
     @Test
     public void testRemoteRedisConnect(){
-        Jedis redis = new Jedis("cutoutsy.cn", 16379);
-        redis.auth("xidian123");
-        Set<String> wdjid =  redis.smembers("wdjid");
-        Iterator it = wdjid.iterator();
-        while (it.hasNext()){
-            System.out.println(it.next());
-        }
+        String redis_host = "cutoutsy.cn";
+        int redis_port = 16379;
+        String redis_auth = "xidian123";
+        int redis_database0 = 0;
+        int redis_database1 = 1;
+
+        RedisUtil ru0 = new RedisUtil(redis_host, redis_port, redis_auth, redis_database0);
+        Jedis redis0 = ru0.getJedisInstance();
+        redis0.set("foo", "bar");
+        assertEquals(redis0.get("foo"), "bar");
+
+        RedisUtil ru1 = new RedisUtil(redis_host, redis_port, redis_auth, redis_database1);
+        Jedis redis1 = ru1.getJedisInstance();
+        redis1.set("foo", "bar");
+        assertEquals(redis1.get("foo"), "bar");
+
+        redis0.del("foo");
+        redis1.del("foo");
     }
 }
