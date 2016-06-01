@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import miner.utils.MySysLogger;
 import miner.utils.RedisUtil;
 import miner.utils.StaticValue;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -29,6 +30,9 @@ import redis.clients.jedis.Jedis;
  * @info JUST Manage the proxy pool
  * */
 public class ProxyPool extends Thread {
+
+	private static MySysLogger logger = new MySysLogger(ProxyPool.class);
+
 	private Set<String> current_ip_pool;
 	/* 刷新总IP池的时间 */
 	private int refresh_hour;
@@ -81,6 +85,9 @@ public class ProxyPool extends Thread {
 					.format(new Date())
 					+ " Proxy num:"
 					+ current_ip_pool.size());
+
+			logger.info("Proxy num:" + current_ip_pool.size());
+
 			response.close();
 			http_get.abort();
 			http_client.close();
@@ -103,6 +110,8 @@ public class ProxyPool extends Thread {
 		ru.save_set(jedis, "proxy_pool", current_ip_pool);
 		System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 				.format(new Date()) + " Save proxy pool...");
+
+		logger.info("Save proxy pool...");
 	}
 
 	public void run() {
