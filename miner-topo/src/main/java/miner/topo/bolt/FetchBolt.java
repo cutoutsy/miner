@@ -25,21 +25,25 @@ public class FetchBolt extends BaseRichBolt {
         String globalInfo = tuple.getString(0);
         String downloadUrl = tuple.getString(1);
         String proxy = tuple.getString(2);
-
+        String resource = "";
         try{
-            String resource = Crawl4HttpClient.downLoadPage(downloadUrl, proxy);
+            resource = Crawl4HttpClient.downLoadPage(downloadUrl, proxy);
+        } catch (Exception ex) {
+            logger.error("Download page:" +downloadUrl+" error!"+MySysLogger.formatException(ex));
+            //请求发生异常时,令resource=null,防止进入后面的处理
+            resource = null;
+            _collector.fail(tuple);
+        }
 
-            if(!resource.equals("")) {
+        if(resource != null) {
+            if (!resource.equals("")) {
                 _collector.emit(tuple, new Values(globalInfo, resource));
-                logger.info(downloadUrl+":fetch succeed!");
+                logger.info(downloadUrl + ":fetch succeed!");
                 _collector.ack(tuple);
-            }else{
+            } else {
                 logger.warn(downloadUrl + " return null");
                 _collector.fail(tuple);
             }
-        } catch (Exception ex) {
-            logger.error("Download page:" +downloadUrl+" error!"+MySysLogger.formatException(ex));
-            _collector.fail(tuple);
         }
     }
 

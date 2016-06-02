@@ -8,6 +8,7 @@ import miner.spider.pojo.HttpRequestPojo;
 import miner.spider.utils.ObjectAndByteArrayConvertUtil;
 import miner.utils.MySysLogger;
 import miner.utils.StaticValue;
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.client.ClientProtocolException;
@@ -151,9 +152,15 @@ public class Crawl4HttpClient {
         HttpUriRequest requestAll = null;
         rb.setConfig(requestConfig);
         requestAll = rb.build();
+
         CloseableHttpResponse response = (CloseableHttpResponse)httpClient.execute(requestAll);
-        String re = Crawl4HttpClient.parserResponse_v2(response);
-        reString = re;
+        int statusCode = response.getStatusLine().getStatusCode();
+
+        if(statusCode == HttpStatus.SC_OK){
+            reString = Crawl4HttpClient.parserResponse_v2(response);
+        }else{
+            logger.error(response.getStatusLine());
+        }
 
         return reString;
     }
