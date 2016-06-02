@@ -9,11 +9,16 @@ public class LogTest extends TestCase{
 
     public void testWriteLog2TowLogServers(){
         MySysLogger logger = new MySysLogger(LogTest.class);
+        StringBuffer sb = new StringBuffer();
+        try{
 
-        MySysLogger1 logger1 = new MySysLogger1(LogTest.class);
+            int k = 2/0;
+        }catch (Exception ex){
 
-        logger.info("11111111111111");
-        logger1.warn("2222222222");
+
+            logger.error("error:"+MySysLogger.formatException(ex));
+        }
+
     }
 
 }

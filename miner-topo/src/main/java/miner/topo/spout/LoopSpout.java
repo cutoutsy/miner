@@ -100,7 +100,7 @@ public class LoopSpout extends BaseRichSpout{
                 }
             }
         }catch (Exception e){
-            logger.error("loopspout remove loopmessage error"+e);
+            logger.error("loopspout remove loopmessage error:"+e);
             e.printStackTrace();
         }
     }

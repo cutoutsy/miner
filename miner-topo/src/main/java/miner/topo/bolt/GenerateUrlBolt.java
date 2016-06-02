@@ -98,7 +98,7 @@ public class GenerateUrlBolt extends BaseRichBolt {
             }
         }catch (Exception ex){
             _collector.fail(input);
-            logger.error("Generate Url error:"+ex);
+            logger.error("Generate Url error:"+MySysLogger.formatException(ex));
             ex.printStackTrace();
         }
     }

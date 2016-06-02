@@ -1,6 +1,7 @@
 package miner.topo;
 
 
+import miner.utils.MySysLogger;
 import redis.clients.jedis.Jedis;
 
 import java.util.Iterator;
@@ -12,17 +13,15 @@ import java.util.Set;
 public class TestParse {
 
     public static void main(String[] args){
-        Jedis redis = new Jedis("cutoutsy.cn",16379);
-        redis.auth("xidian123");
+       try{
 
-        Set<String> id = redis.smembers("mailuntaiid");
-        Iterator it = id.iterator();
-
-        while (it.hasNext()){
-            String tempId = it.next().toString();
-            System.out.println(tempId + "----");
-
-        }
+           int k = 2/0;
+       }catch (Exception ex){
+           StackTraceElement[] aa = ex.getStackTrace();
+           for(int i = 0;  i < aa.length; i++){
+               System.out.println(aa[i].toString());
+           }
+       }
 
     }
 }

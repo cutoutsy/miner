@@ -38,7 +38,7 @@ public class FetchBolt extends BaseRichBolt {
                 _collector.fail(tuple);
             }
         } catch (Exception ex) {
-            logger.error("Download page:" +downloadUrl+" error!"+ex);
+            logger.error("Download page:" +downloadUrl+" error!"+MySysLogger.formatException(ex));
             _collector.fail(tuple);
         }
     }

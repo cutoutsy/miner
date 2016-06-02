@@ -32,7 +32,7 @@ public class StoreBolt extends BaseRichBolt {
 			_collector.ack(tuple);
 		} catch (Exception ex) {
 			_collector.fail(tuple);
-			logger.error("store error!"+ex);
+			logger.error("store error!"+MySysLogger.formatException(ex));
 			ex.printStackTrace();
 		}
 	}

@@ -27,7 +27,7 @@ public class Reflect {
             Method method = myClass1.getMethod("PaseRef", String.class);
             oc = method.invoke(myClass1.newInstance(), resource);
         } catch (Exception ex) {
-            logger.error("parse error!"+ex);
+            logger.error("parse error!"+MySysLogger.formatException(ex));
             ex.printStackTrace();
         }
         return oc.toString();

@@ -52,4 +52,14 @@ public class MySysLogger {
         this.logger.debug(obj);
     }
 
+    //格式化异常,以便在日志里面输入堆栈信息
+    public static StringBuffer formatException(Exception ex){
+        StringBuffer sb = new StringBuffer();
+        StackTraceElement[] stackTrace = ex.getStackTrace();
+        for(int i = 0;  i < stackTrace.length; i++){
+            sb.append(stackTrace[i].toString()+"\n\t\t");
+        }
+
+        return sb;
+    }
 }

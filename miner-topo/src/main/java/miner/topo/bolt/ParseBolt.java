@@ -145,7 +145,7 @@ public class ParseBolt extends BaseRichBolt {
 			}
 			_collector.ack(tuple);
 		}catch (Exception ex){
-			logger.error("parse error!"+ex);
+			logger.error("parse error!"+MySysLogger.formatException(ex));
 			ex.printStackTrace();
 			_collector.fail(tuple);
 		}
@@ -173,45 +173,4 @@ public class ParseBolt extends BaseRichBolt {
 		_ru.release_jedis(_redis);
 	}
 
-	public String PaseRef(String res) throws IOException {
-
-		String result = res;
-		String price,sale,mydate = "";
-		String pattern = "(?<=(price = \\[))\\S+(?=(]))";
-		Pattern r = Pattern.compile(pattern);
-
-		Matcher m = r.matcher(result);
-		if (m.find( )) {
-			price = (String) m.group(0);
-//            System.out.println("Found value: " +  m.group(0) );
-		} else {
-			price = "none";
-//            System.out.println("NO MATCH");
-		}
-
-		pattern =  "(?<=(sale = \\\"))\\S+(?=(\\\"))";
-		r = Pattern.compile(pattern);
-
-		m = r.matcher(result);
-		if (m.find( )) {
-			sale = (String) m.group(0);
-
-//            System.out.println("Found value: " + m.group(0) );
-		} else {
-			sale = "none";
-//            System.out.println("NO MATCH");
-		}
-		pattern =  "(?<=(date = \\\"))\\S+(?=(\\\"))";
-		r = Pattern.compile(pattern);
-
-		m = r.matcher(result);
-		if (m.find( )) {
-			mydate = (String) m.group(0);
-//            System.out.println("Found value: " + m.group(0) );
-		} else {
-			mydate = "none";
-//            System.out.println("NO MATCH");
-		}
-		return "{\"price\":\""+price+"\""+","+"\"sale\":"+"\""+sale+"\""+","+"\"date\":"+"\""+mydate+"\""+"}";
-	}
 }

@@ -116,7 +116,7 @@ public class ProxyBolt extends BaseRichBolt {
             _collector.ack(tuple);
         }catch (Exception e){
             _collector.fail(tuple);
-            logger.error("manage proxy error:"+e);
+            logger.error("manage proxy error:"+MySysLogger.formatException(e));
             e.printStackTrace();
         }
     }

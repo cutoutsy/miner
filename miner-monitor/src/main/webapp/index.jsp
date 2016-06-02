@@ -13,6 +13,7 @@
 <%@ page import="redis.clients.jedis.Jedis" %>
 <%@ page import="miner.utils.StaticValue" %>
 <%@ page import="miner.utils.RedisUtil" %>
+<%@ page import="miner.utils.PlatformParas" %>
 <html>
 <head>
     <title>task summit</title>
@@ -101,15 +102,15 @@
         String SQL= null;
         String property = null;
         public static final Properties info = new Properties();
-        public static final String url ="jdbc:mysql://"+StaticValue.mysql_host+":"+StaticValue.mysql_port+"/"+StaticValue.mysql_database+"?useUnicode=true&characterEncoding=utf8";
+        public static final String url ="jdbc:mysql://"+ PlatformParas.mysql_host+":"+PlatformParas.mysql_port+"/"+PlatformParas.mysql_database+"?useUnicode=true&characterEncoding=utf8";
     %>
     <%@include file="getParam.jsp"%>
     <%
     try{
         %>
     <%
-            info.put("user",StaticValue.mysql_user);
-            info.put("password", StaticValue.mysql_password);
+            info.put("user",PlatformParas.mysql_user);
+            info.put("password", PlatformParas.mysql_password);
             String wid = new String(request.getParameter("pwid").getBytes("ISO-8859-1"),"UTF-8");
             String pid = new String(request.getParameter("ppid").getBytes("ISO-8859-1"),"UTF-8");
             insertRedis(wid,pid);

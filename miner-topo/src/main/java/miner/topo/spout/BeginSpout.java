@@ -116,6 +116,7 @@ public class BeginSpout extends BaseRichSpout{
 			logger.info("No project need to execute!");
 		}
 		}catch(Exception e){
+			logger.error("error:"+MySysLogger.formatException(e));
 			e.printStackTrace();
 		}
 	}
@@ -137,6 +138,7 @@ public class BeginSpout extends BaseRichSpout{
 			//init Hbase tables
 			CreateTable.initHbaseTable();
 		}catch(Exception ex){
+			logger.error("error:"+MySysLogger.formatException(ex));
 			ex.printStackTrace();
 		}
 	}
