@@ -2,6 +2,7 @@ package miner.store;
 
 
 
+import miner.utils.MySysLogger;
 import miner.utils.PlatformParas;
 import miner.utils.StaticValue;
 import org.apache.hadoop.conf.Configuration;
@@ -25,6 +26,8 @@ import java.util.regex.Pattern;
  * ImportData Class
  */
 public class ImportData {
+
+    private static MySysLogger logger = new MySysLogger(CreateTable.class);
 
     private static Configuration configuration = null;
     static{
@@ -111,6 +114,7 @@ public class ImportData {
 
             System.out.println("data save succeed.");
         }catch(Exception e){
+            logger.error("error:"+MySysLogger.formatException(e));
             e.printStackTrace();
         }
 
@@ -129,17 +133,25 @@ public class ImportData {
                 table.put(put);
                 //System.out.println("add success!");
             }else{
-                System.out.println(tableName+"Table does not exist!");
+                /*
+                 * 当表不存在的时候,新建表
+                 * 暂时设置flag为false,不设置表的外键
+                 */
+                CreateTable.createTable(tableName, false);
+                HTable table=new HTable(configuration, tableName);
+                Put put=new Put(Bytes.toBytes(Rowkey));
+                put.add(Bytes.toBytes(family), Bytes.toBytes(column), Bytes.toBytes(value));
+                table.put(put);
             }
         } catch (MasterNotRunningException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logger.error("error:"+MySysLogger.formatException(e));
         } catch (ZooKeeperConnectionException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logger.error("error:" + MySysLogger.formatException(e));
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logger.error("error:" + MySysLogger.formatException(e));
         }
     }
 }

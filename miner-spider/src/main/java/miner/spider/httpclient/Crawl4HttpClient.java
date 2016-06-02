@@ -91,6 +91,7 @@ public class Crawl4HttpClient {
                 try{
                     response.close();
                 }catch(IOException e){
+                    logger.error("error:"+MySysLogger.formatException(e));
                     e.printStackTrace();
                 }
             }
@@ -118,6 +119,14 @@ public class Crawl4HttpClient {
         }catch(Exception e){
             e.printStackTrace();
         }finally{
+            if(response != null){
+                try{
+                    response.close();
+                }catch(IOException e){
+                    logger.error("error:"+MySysLogger.formatException(e));
+                    e.printStackTrace();
+                }
+            }
         }
         return null;
     }
@@ -232,15 +241,13 @@ public class Crawl4HttpClient {
             // 此种情况将会认为可能是代理异常失效，但暂不处理这种异常对代理替换策略的影响的!
             timeOutException.printStackTrace();
         } catch (Exception e) {
+            logger.error("error:"+MySysLogger.formatException(e));
             e.printStackTrace();
         }
         return null;
     }
 
     public static void main(String[] args) throws Exception {
-
-
-
 
 //        System.out.println("done!");
 //        String url = "http://hotel.elong.com/isajax/HotelFillOrder/GetOrderCountIn24Hours?hotelId=40101627";

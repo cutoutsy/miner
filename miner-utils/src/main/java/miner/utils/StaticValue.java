@@ -8,6 +8,7 @@ public class StaticValue {
     //设置请求和传输超时时间,单位ms
     public static int http_connection_timeout = 5000; //请求超时时间
     public static int http_read_timeout = 5000;	//传输超时时间
+    public static int http_getconnection_timeout = 5000; //请求连接超时时间
 
     //设置代理是否开启
     public static boolean proxy_open = false;

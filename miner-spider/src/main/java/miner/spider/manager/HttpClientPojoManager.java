@@ -52,6 +52,8 @@ public class HttpClientPojoManager {
         RequestConfig.Builder config_builder = RequestConfig.custom();
         config_builder.setSocketTimeout(StaticValue.http_connection_timeout);
         config_builder.setConnectTimeout(StaticValue.http_read_timeout);
+        //设置请求连接的超时时间
+        config_builder.setConnectionRequestTimeout(StaticValue.http_getconnection_timeout);
         config_builder.setRedirectsEnabled(false);
         default_requestConfig = config_builder.build();
     }

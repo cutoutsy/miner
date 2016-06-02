@@ -37,7 +37,7 @@ public class Wdj {
         System.out.println(redis.hget("project_state", "2-1"));
         redis.hset("project_executenum", "2-1", "0");
         redis.hset("project_cronstate", "2-1", "1");
-        for(int i = 22; i < 130; i++){
+        for(int i = 22; i < 30; i++){
             redis.sadd("wdjid", String.valueOf(i));
         }
         Set<String> allPages = redis.smembers("wdjid");

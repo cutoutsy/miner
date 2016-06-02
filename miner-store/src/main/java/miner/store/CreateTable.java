@@ -78,17 +78,43 @@ public class CreateTable {
                 System.out.println("end create table");
             }
         } catch (MasterNotRunningException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
-            logger.error("Master Not Running "+ e.getMessage());
+            logger.error("Master Not Running "+ MySysLogger.formatException(e));
         } catch (ZooKeeperConnectionException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
-            logger.error("Zookeeper Connect Exception " + e.getMessage());
+            logger.error("Zookeeper Connect Exception " + MySysLogger.formatException(e));
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
-            logger.error("IO exception"+ e.getMessage());
+            logger.error("IO exception"+ MySysLogger.formatException(e));
+        }
+    }
+
+    public static void createTable(String tableName,boolean flag){
+        HBaseAdmin admin;
+        try {
+            admin = new HBaseAdmin(configuration);
+            if(admin.tableExists(tableName)){
+                System.err.println(tableName+"is exist and please check it");
+            }else{
+                HTableDescriptor tableDescriptor=new HTableDescriptor(TableName.valueOf(tableName));
+                tableDescriptor.addFamily(new HColumnDescriptor("info"));
+                tableDescriptor.addFamily(new HColumnDescriptor("property"));
+                tableDescriptor.addFamily(new HColumnDescriptor("link"));
+                if(flag){
+                    tableDescriptor.addFamily(new HColumnDescriptor("foreign"));
+                }
+                admin.createTable(tableDescriptor);
+                System.out.println("end create table");
+            }
+        } catch (MasterNotRunningException e) {
+            e.printStackTrace();
+            logger.error("Master Not Running "+ MySysLogger.formatException(e));
+        } catch (ZooKeeperConnectionException e) {
+            e.printStackTrace();
+            logger.error("Zookeeper Connect Exception " + MySysLogger.formatException(e));
+        } catch (IOException e) {
+            e.printStackTrace();
+            logger.error("IO exception"+ MySysLogger.formatException(e));
         }
     }
 
