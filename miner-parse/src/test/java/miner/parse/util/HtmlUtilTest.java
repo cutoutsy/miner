@@ -97,7 +97,8 @@ public class HtmlUtilTest extends TestCase {
         Generator g = new Generator();
         StringBuffer doc_str = new StringBuffer();
         try {
-            URL url = new URL("https://account.wandoujia.com/v4/api/simple/profile?uid=23");
+//            URL url = new URL("https://account.wandoujia.com/v4/api/simple/profile?uid=23");
+            URL url = new URL("http://storm.apache.org/releases/0.9.6/index.html");
             URLConnection uc = url.openConnection();
             BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
             String inputLine;
@@ -121,8 +122,12 @@ public class HtmlUtilTest extends TestCase {
         while (data_item_it.hasNext()) {
             Packer packer = new Packer(data_item_it.next(), m, data_rule_map);
             String[] result_str=packer.pack();
-            System.out.println(result_str[0]);
+//            System.out.println(result_str[0]);
 //            assertEquals(321, result_str[0].length());
+
+            for(int i=0;i<result_str.length;i++){
+                System.out.println(result_str[i]);
+            }
         }
     }
 

@@ -107,10 +107,15 @@ public class ParseBolt extends BaseRichBolt {
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
 						String[] result_str=packerData.pack();
 						System.out.println("结果result_str的长度:"+result_str.length);
-						for(int i=0;i<result_str.length;i++){
-							emit("store", tuple, globalInfo, result_str[i]);
-							logger.info("存储数据发送......");
-						}
+						//如果没有数据集,将不会发送数据给下一个bolt,消息将得不到处理直至消息超时设置
+                        if(result_str.length > 0) {
+                            for (int i = 0; i < result_str.length; i++) {
+                                emit("store", tuple, globalInfo, result_str[i]);
+                                logger.info("存储数据发送......");
+                            }
+                        }else{
+                            logger.info("没有解析到数据");
+                        }
 					}
 
 				}else if(data.getProcessWay().equals("e") || data.getProcessWay().equals("E")){
@@ -119,11 +124,15 @@ public class ParseBolt extends BaseRichBolt {
 						String loopTaskInfo = taskInfo.split("-")[0]+"-"+dataInfo.split("-")[1]+"-"+loopTaskId;
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
 						String[] result_str=packerData.pack();
-						for(int i=0;i<result_str.length;i++){
-							emit("generate-loop", tuple, loopTaskInfo, result_str[i]);
-							//set url to redis for LoopSpout get
-							//_redis.hset("message_loop", loopTaskInfo, result_str[i]);
-						}
+                        if(result_str.length > 0) {
+                            for (int i = 0; i < result_str.length; i++) {
+                                emit("generate-loop", tuple, loopTaskInfo, result_str[i]);
+                                //set url to redis for LoopSpout get
+                                //_redis.hset("message_loop", loopTaskInfo, result_str[i]);
+                            }
+                        }else{
+                            logger.info("没有解析到数据");
+                        }
 					}
 				}else if(data.getProcessWay().equals("l") || data.getProcessWay().equals("L")){
 					while (data_item_it.hasNext()) {
@@ -131,13 +140,17 @@ public class ParseBolt extends BaseRichBolt {
 						String loopTaskInfo = taskInfo.split("-")[0]+"-"+dataInfo.split("-")[1]+"-"+loopTaskId;
 						Packer packerData = new Packer(data_item_it.next(), m, data_rule_map);
 						String[] result_str=packerData.pack();
-						for(int i=0;i<result_str.length;i++){
-							//set url to redis for LoopSpout get
-							String uuid = PlatformUtils.getUUID();
-							String tempEmitInfo = loopTaskInfo+"-"+uuid;
-							_redis.hset("message_loop", tempEmitInfo, result_str[i]);
-							logger.info(tempEmitInfo + "--" + result_str[i] + "--store to message_loop.");
-						}
+                        if(result_str.length > 0) {
+                            for (int i = 0; i < result_str.length; i++) {
+                                //set url to redis for LoopSpout get
+                                String uuid = PlatformUtils.getUUID();
+                                String tempEmitInfo = loopTaskInfo + "-" + uuid;
+                                _redis.hset("message_loop", tempEmitInfo, result_str[i]);
+                                logger.info(tempEmitInfo + "--" + result_str[i] + "--store to message_loop.");
+                            }
+                        }else{
+                            logger.info("没有解析到数据");
+                        }
 					}
 				}else{
 					logger.error("there is no valid way to process "+taskInfo+" data");

@@ -28,23 +28,26 @@ public class FetchBolt extends BaseRichBolt {
         String resource = "";
         try{
             resource = Crawl4HttpClient.downLoadPage(downloadUrl, proxy);
-        } catch (Exception ex) {
-            logger.error("Download page:" +downloadUrl+" error:"+MySysLogger.formatException(ex));
-            //请求发生异常时,令resource=null,防止进入后面的处理
-            resource = null;
-            _collector.fail(tuple);
-        }
-
-        if(resource != null) {
-            if (!resource.equals("")) {
+            if (resource.equals("exception")) {
+                logger.warn("fetch exception:" + downloadUrl);
+                _collector.fail(tuple);
+            } else if(resource.equals("error")){
+                logger.warn("fetch error" + downloadUrl);
+                _collector.fail(tuple);
+                //返回值一般不会为空
+            }else if(resource.equals("")){
+                logger.error(downloadUrl + "return null.");
+                _collector.fail(tuple);
+            }else {
                 _collector.emit(tuple, new Values(globalInfo, resource));
                 logger.info(downloadUrl + ":fetch succeed!");
                 _collector.ack(tuple);
-            } else {
-                logger.warn(downloadUrl + " return null");
-                _collector.fail(tuple);
             }
+        } catch (Exception ex) {
+            logger.error("fetch error:" +downloadUrl+" error:"+MySysLogger.formatException(ex));
+            _collector.fail(tuple);
         }
+
     }
 
     public void prepare(Map conf,TopologyContext context,OutputCollector collector){

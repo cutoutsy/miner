@@ -135,11 +135,9 @@ public class Crawl4HttpClient {
      *
      * @param url   request url
      * @param proxyString   proxy ip:port
-     * @return  return url page source
-     * @throws IOException
-     * @throws ClientProtocolException
+     * 发生异常返回exception,返回结果错误返回error,成功返回请求网页的源代码
      */
-    public static String downLoadPage(String url, String proxyString) throws IOException {
+    public static String downLoadPage(String url, String proxyString){
         String reString = "";
         String ip = proxyString.split(":")[0];
         int port = Integer.valueOf(proxyString.split(":")[1]);
@@ -161,14 +159,21 @@ public class Crawl4HttpClient {
         HttpUriRequest requestAll = null;
         rb.setConfig(requestConfig);
         requestAll = rb.build();
+        try {
+            CloseableHttpResponse response = (CloseableHttpResponse) httpClient.execute(requestAll);
+            int statusCode = response.getStatusLine().getStatusCode();
 
-        CloseableHttpResponse response = (CloseableHttpResponse)httpClient.execute(requestAll);
-        int statusCode = response.getStatusLine().getStatusCode();
-
-        if(statusCode == HttpStatus.SC_OK){
-            reString = Crawl4HttpClient.parserResponse_v2(response);
-        }else{
-            logger.error(response.getStatusLine());
+            //状态码不是200,不会发生异常,不同返回以区分
+            if (statusCode == HttpStatus.SC_OK) {
+                reString = Crawl4HttpClient.parserResponse_v2(response);
+            } else {
+                logger.error(response.getStatusLine());
+                reString = "error";
+            }
+        }catch (Exception ex){
+            reString = "exception";
+            logger.error("execute request error:"+MySysLogger.formatException(ex));
+            ex.printStackTrace();
         }
 
         return reString;
