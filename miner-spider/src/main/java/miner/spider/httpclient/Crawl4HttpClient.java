@@ -11,7 +11,6 @@ import miner.utils.StaticValue;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -143,6 +142,7 @@ public class Crawl4HttpClient {
         int port = Integer.valueOf(proxyString.split(":")[1]);
 
         HttpClient httpClient = HttpClients.custom().build();
+
         HttpHost proxy = new HttpHost(ip, port);
         //无需验证的
         DefaultProxyRoutePlanner routePlanner= new DefaultProxyRoutePlanner(proxy);
@@ -151,6 +151,7 @@ public class Crawl4HttpClient {
         config_builder.setProxy(proxy);
         config_builder.setSocketTimeout(StaticValue.http_connection_timeout);
         config_builder.setConnectTimeout(StaticValue.http_read_timeout);
+        config_builder.setConnectionRequestTimeout(StaticValue.http_getconnection_timeout);
         RequestConfig requestConfig = config_builder.build();
 
         RequestBuilder rb = null;
@@ -174,8 +175,9 @@ public class Crawl4HttpClient {
             reString = "exception";
             logger.error("execute request error:"+MySysLogger.formatException(ex));
             ex.printStackTrace();
+        }finally {
+            httpClient.getConnectionManager().shutdown();
         }
-
         return reString;
     }
 

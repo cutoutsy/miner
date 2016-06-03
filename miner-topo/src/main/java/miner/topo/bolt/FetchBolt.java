@@ -29,14 +29,14 @@ public class FetchBolt extends BaseRichBolt {
         try{
             resource = Crawl4HttpClient.downLoadPage(downloadUrl, proxy);
             if (resource.equals("exception")) {
-                logger.warn("fetch exception:" + downloadUrl);
+                logger.error("fetch exception:" + downloadUrl);
                 _collector.fail(tuple);
             } else if(resource.equals("error")){
-                logger.warn("fetch error" + downloadUrl);
+                logger.error("fetch error:" + downloadUrl);
                 _collector.fail(tuple);
                 //返回值一般不会为空
             }else if(resource.equals("")){
-                logger.error(downloadUrl + "return null.");
+                logger.warn(downloadUrl + "return null.");
                 _collector.fail(tuple);
             }else {
                 _collector.emit(tuple, new Values(globalInfo, resource));
