@@ -21,10 +21,10 @@ public class StoreBolt extends BaseRichBolt {
 	private OutputCollector _collector;
 
 	public void execute(Tuple tuple) {
+		long startTime=System.currentTimeMillis();
+        String globalInfo  = tuple.getString(0);
+        String data = tuple.getString(1);
 		try {
-			String globalInfo  = tuple.getString(0);
-			String data = tuple.getString(1);
-
 			ImportData.importData(data);
 
 			logger.info(globalInfo+":save into hbase succeed!");
@@ -35,6 +35,9 @@ public class StoreBolt extends BaseRichBolt {
 			logger.error("store error!"+MySysLogger.formatException(ex));
 			ex.printStackTrace();
 		}
+
+        long endTime=System.currentTimeMillis();
+        logger.info(globalInfo+"在StoreBolt的处理时间:"+(endTime-startTime)/1000+"s.");
 	}
 
 	public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {

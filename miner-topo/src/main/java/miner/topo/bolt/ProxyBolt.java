@@ -48,10 +48,10 @@ public class ProxyBolt extends BaseRichBolt {
     }
 
     public void execute(Tuple tuple) {
+        long startTime=System.currentTimeMillis();
+        String global_info = (String) tuple.getValue(0);
+        String download_url = (String) tuple.getValue(1);
         try {
-
-            String global_info = (String) tuple.getValue(0);
-            String download_url = (String) tuple.getValue(1);
         /* delay_time需要从上一个得到 */
             int delay_time = 2 * 1000;
             String workspace_id = get_workspace_id(global_info);
@@ -119,6 +119,9 @@ public class ProxyBolt extends BaseRichBolt {
             logger.error("manage proxy error:"+MySysLogger.formatException(e));
             e.printStackTrace();
         }
+
+        long endTime=System.currentTimeMillis();
+        logger.info(global_info+"在ProxyBolt的处理时间:"+(endTime-startTime)/1000+"s.");
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {

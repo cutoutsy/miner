@@ -34,9 +34,12 @@ public class GenerateUrlBolt extends BaseRichBolt {
     private Jedis _redis;
 
     public void execute(Tuple input) {
+        long startTime=System.currentTimeMillis();
+        String taskInfo = input.getString(0);
+        String message = input.getString(1);
+
         try {
-            String taskInfo = input.getString(0);
-            String message = input.getString(1);
+
             Task ta = new Task(taskInfo);
 
             if(ta.getIsloop().equals("false")) {
@@ -101,6 +104,9 @@ public class GenerateUrlBolt extends BaseRichBolt {
             logger.error("Generate Url error:"+MySysLogger.formatException(ex));
             ex.printStackTrace();
         }
+
+        long endTime=System.currentTimeMillis();
+        logger.info(taskInfo+"在GenerateUrlBolt的处理时间:"+(endTime-startTime)/1000+"s.");
     }
 
     public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {

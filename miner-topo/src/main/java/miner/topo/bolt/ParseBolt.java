@@ -35,12 +35,12 @@ public class ParseBolt extends BaseRichBolt {
 	private Jedis _redis;
 
 	public void execute(Tuple tuple) {
+		long startTime=System.currentTimeMillis();
 		logger.info("ParseBolt execute......");
+        String globalInfo = tuple.getString(0);
+        String resource = tuple.getString(1);
+        String projectInfo = globalInfo.split("-")[0]+globalInfo.split("-")[1]+globalInfo.split("-")[2];
 		try {
-			String globalInfo = tuple.getString(0);
-			String resource = tuple.getString(1);
-			String projectInfo = globalInfo.split("-")[0]+globalInfo.split("-")[1]+globalInfo.split("-")[2];
-
 			HashMap<String, Data> parseData = new HashMap<String, Data>();
 			boolean findDataScheme = true;
 
@@ -162,6 +162,9 @@ public class ParseBolt extends BaseRichBolt {
 			ex.printStackTrace();
 			_collector.fail(tuple);
 		}
+
+        long endTime=System.currentTimeMillis();
+        logger.info(globalInfo+"在ParseBolt的处理时间:"+(endTime-startTime)/1000+"s.");
 	}
 
 	private void emit(String streamId, Tuple tuple,String globalInfo, String message){
