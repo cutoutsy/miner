@@ -40,7 +40,7 @@ public class FetchBolt extends BaseRichBolt {
                 _collector.fail(tuple);
             }else {
                 _collector.emit(tuple, new Values(globalInfo, resource));
-                logger.info(downloadUrl + ":fetch succeed!");
+                logger.info(downloadUrl + ":fetch succeed!" + resource);
                 _collector.ack(tuple);
             }
         } catch (Exception ex) {

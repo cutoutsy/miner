@@ -160,8 +160,9 @@ public class Crawl4HttpClient {
         HttpUriRequest requestAll = null;
         rb.setConfig(requestConfig);
         requestAll = rb.build();
+        CloseableHttpResponse response = null;
         try {
-            CloseableHttpResponse response = (CloseableHttpResponse) httpClient.execute(requestAll);
+            response = (CloseableHttpResponse) httpClient.execute(requestAll);
             int statusCode = response.getStatusLine().getStatusCode();
 
             //状态码不是200,不会发生异常,不同返回以区分
@@ -176,6 +177,14 @@ public class Crawl4HttpClient {
             logger.error("execute request error:"+MySysLogger.formatException(ex));
             ex.printStackTrace();
         }finally {
+            if(response != null){
+                try{
+                    response.close();
+                }catch(IOException e){
+                    logger.error("error:"+MySysLogger.formatException(e));
+                    e.printStackTrace();
+                }
+            }
             httpClient.getConnectionManager().shutdown();
         }
         return reString;

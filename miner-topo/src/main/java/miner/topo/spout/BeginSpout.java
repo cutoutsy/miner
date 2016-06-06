@@ -33,16 +33,25 @@ public class BeginSpout extends BaseRichSpout{
 	private Jedis redis;
 	
 	public void ack(Object msgId){
-		redis.hdel("message", msgId.toString());
-		logger.info("message:" + msgId + "processd sucess!");
+		if(redis.hexists("message", msgId.toString())) {
+            redis.hdel("message", msgId.toString());
+            logger.info("message:" + msgId + "processd sucess!");
+        }else{
+            logger.error("message:" + msgId + " is not in the message");
+        }
 	}
 	
 	//ensure the message processed
 	public void fail(Object msgId){
-		logger.info("消息处理失败:" + msgId + ";正在重新发送......");
-		String message = redis.hget("message", msgId.toString());
-		String globalInfo = msgId.toString().split("-")[0]+"-"+msgId.toString().split("-")[1]+"-"+msgId.toString().split("-")[2];
-		_collector.emit(new Values(globalInfo, message), msgId);
+        //判断在message是否存在,若不存在,输出到日志里,并分析原因
+        if(redis.hexists("message", msgId.toString())) {
+            logger.info("消息处理失败:" + msgId + ";正在重新发送......");
+            String message = redis.hget("message", msgId.toString());
+            String globalInfo = msgId.toString().split("-")[0] + "-" + msgId.toString().split("-")[1] + "-" + msgId.toString().split("-")[2];
+            _collector.emit(new Values(globalInfo, message), msgId);
+        }else{
+            logger.error("消息处理失败:" + msgId + " 删除失败.");
+        }
 	}
 
 	public void nextTuple() {
