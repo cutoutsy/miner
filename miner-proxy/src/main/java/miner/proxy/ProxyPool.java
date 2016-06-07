@@ -144,7 +144,7 @@ public class ProxyPool extends Thread {
 		String quality = "2";
         /* 地区限制 */
         String area="中国";
-		/* 代理协议 */
+		/* 代理协议 1表示http 2表示https*/
 		String protocol = "1";
 		/* 按照支持GET/POST筛选，1为支持GET */
 		String method = "1";

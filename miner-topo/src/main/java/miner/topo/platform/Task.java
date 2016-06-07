@@ -22,6 +22,16 @@ public class Task {
     private String description;
     private String urlpattern;
     private String urlgenerate;
+    //任务是否开启代理
+    private String proxy_open;
+
+    public String getProxy_open() {
+        return proxy_open;
+    }
+
+    public void setProxy_open(String proxy_open) {
+        this.proxy_open = proxy_open;
+    }
 
     public String getIsloop() {
         return isloop;
@@ -53,6 +63,7 @@ public class Task {
         this.urlpattern = taskMap.get("urlpattern");;
         this.urlgenerate = taskMap.get("urlgenerate");
         this.isloop = taskMap.get("isloop");
+        this.proxy_open = taskMap.get("proxy_open");
     }
 
     public String getWid() {
@@ -114,7 +125,7 @@ public class Task {
     }
 
     public static void main(String[] args){
-        Task ta = new Task("3-1-2");
-        System.out.println(ta.urlgenerate+"=="+ta.getUrlpattern()+"--"+ta.getIsloop());
+        Task ta = new Task("2-1-1");
+        System.out.println(ta.urlgenerate+"=="+ta.getUrlpattern()+"--"+ta.getProxy_open());
     }
 }

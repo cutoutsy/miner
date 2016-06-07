@@ -84,6 +84,7 @@ public class Crawl4HttpClient {
         }catch(SocketTimeoutException timeOutException){
             timeOutException.printStackTrace();
         }catch (Exception e) {
+            logger.error("error:"+MySysLogger.formatException(e));
             e.printStackTrace();
         }finally{
             if(response != null){
@@ -149,6 +150,7 @@ public class Crawl4HttpClient {
         httpClient = HttpClients.custom().setRoutePlanner(routePlanner).build();
         RequestConfig.Builder config_builder = RequestConfig.custom();
         config_builder.setProxy(proxy);
+
         config_builder.setSocketTimeout(StaticValue.http_connection_timeout);
         config_builder.setConnectTimeout(StaticValue.http_read_timeout);
         config_builder.setConnectionRequestTimeout(StaticValue.http_getconnection_timeout);
@@ -198,7 +200,6 @@ public class Crawl4HttpClient {
 
         Map<String, Object> headerMap = new HashMap<String, Object>();
         Map<String, Object> parasMap = new HashMap<String, Object>();
-        // Map<String, String> formNameValueMap = new HashMap<String, String>();
 
         requestPojo.setUrl(url);
         requestPojo.setHeaderMap(headerMap);

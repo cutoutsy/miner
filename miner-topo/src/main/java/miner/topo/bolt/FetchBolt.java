@@ -28,7 +28,13 @@ public class FetchBolt extends BaseRichBolt {
         String proxy = tuple.getString(2);
         String resource = "";
         try{
-            resource = Crawl4HttpClient.downLoadPage(downloadUrl, proxy);
+            if(proxy.equals("none")){
+                //不加代理请求
+                resource = Crawl4HttpClient.downLoadPage(downloadUrl);
+            }else {
+                //加上代理请求
+                resource = Crawl4HttpClient.downLoadPage(downloadUrl, proxy);
+            }
             if (resource.equals("exception")) {
                 logger.error("fetch exception:" + downloadUrl);
                 _collector.fail(tuple);
@@ -36,7 +42,7 @@ public class FetchBolt extends BaseRichBolt {
                 logger.error("fetch error:" + downloadUrl);
                 _collector.fail(tuple);
                 //返回值一般不会为空
-            }else if(resource.equals("")){
+            }else if(resource.equals("") || resource == null){
                 logger.warn(downloadUrl + "return null.");
                 _collector.fail(tuple);
             } else {

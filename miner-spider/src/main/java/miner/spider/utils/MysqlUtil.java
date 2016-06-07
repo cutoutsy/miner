@@ -102,6 +102,7 @@ public class MysqlUtil {
             reData.put("urlpattern", rs.getString("urlpattern"));
             reData.put("urlgenerate", rs.getString("urlgenerate"));
             reData.put("isloop", rs.getString("isloop"));
+            reData.put("proxy_open", rs.getString("proxy_open"));
 //            for(int i = 2; i < 10; i++){
 //                String re = rs.getString(i);
 //                reList.add(re);
