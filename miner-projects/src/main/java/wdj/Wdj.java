@@ -13,7 +13,7 @@ public class Wdj {
 
     //爬取前的准备工作
     public static void runJdPrepare(){
-        RedisUtil re = new RedisUtil("cutoutsy.cn", 16379, "xidian123", 1);
+        RedisUtil re = new RedisUtil("cutoutsy.cn", 16379, "xidian123", 0);
         Jedis redis = re.getJedisInstance();
         if(redis.exists("2_white_set")){
             redis.del("2_white_set");
@@ -38,7 +38,8 @@ public class Wdj {
         redis.hset("project_executenum", "2-1", "0");
         redis.hset("project_cronstate", "2-1", "1");
         redis.del("wdjid");
-        for(int i = 22; i < 100; i++){
+        redis.del("message");
+        for(int i = 22; i < 1000; i++){
             redis.sadd("wdjid", String.valueOf(i));
         }
         Set<String> allPages = redis.smembers("wdjid");

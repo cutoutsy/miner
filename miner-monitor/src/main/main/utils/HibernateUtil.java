@@ -1,6 +1,6 @@
 package utils;
 
-import entity.Workplace;
+import entity.Workspace;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -15,12 +15,12 @@ import java.util.List;
  */
 public class HibernateUtil {
 
-    public static boolean saveAndUpdateMemberInfo(List<Workplace> memberseList) {
+    public static boolean saveAndUpdateMemberInfo(List<Workspace> memberseList) {
         Transaction tx = null;
 
         Configuration config = new Configuration().configure();
 
-        config.addClass(Workplace.class);
+        config.addClass(Workspace.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties())
                 .build();
@@ -30,7 +30,7 @@ public class HibernateUtil {
             tx = session.beginTransaction();
 
             for (int i = 0; i < memberseList.size(); i++) {
-                Workplace members = session.get(Workplace.class, memberseList.get(i).getId());
+                Workspace members = session.get(Workspace.class, memberseList.get(i).getId());
 
                 if (members != null) {
                     session.update(members);

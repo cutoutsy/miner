@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-    <class name="entity.Workplace" table="workspace">
+    <class name="entity.Workspace" table="workspace">
     	<id name="id" type="int" column="id">
             <generator class="increment"/>
         </id>

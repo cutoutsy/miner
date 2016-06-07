@@ -1,21 +1,21 @@
 package entity;
 
 /**
- * Workplace class
+ * Workspace class
  *
  * Created by cutoutsy on 8/5/15.
  */
-public class Workplace {
+public class Workspace {
 
     private int id;
     private String wid;
     private String name;
     private String description;
 
-    public Workplace() {
+    public Workspace() {
     }
 
-    public Workplace(int id, String wid, String name, String description) {
+    public Workspace(int id, String wid, String name, String description) {
         this.id = id;
         this.wid = wid;
         this.name = name;
@@ -55,6 +55,13 @@ public class Workplace {
     }
 
 
-
-
+    @Override
+    public String toString() {
+        return "Workspace{" +
+                "id=" + id +
+                ", wid='" + wid + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

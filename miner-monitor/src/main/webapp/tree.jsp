@@ -16,9 +16,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript"> 
 var treeMenu = [
 	{ level:1, name:"项目信息"},
-	{ level:2, name:"已有项目信息", ico:"img/icon_default.gif",link:"database/database_connect.jsp"},
+	{ level:2, name:"已有项目信息", ico:"img/icon_default.gif",link:"workspace/Workspace_query.action"},
 	{ level:2, name:"选择数据库连接", ico:"img/icon_default.gif",link:"database/database_save.jsp"},
-	{ level:2, name:"连接中数据库", ico:"img/icon_default.gif",link:"database/database_connected.jsp"},
+	{ level:2, name:"连接中数据库", ico:"img/icon_default.gif",link:"database/workspace_query_success.jsp"},
 	
 	{ level:1, name:"数据备份"},
 	{ level:2, name:"选择备份", ico:"img/icon_default.gif",link:"backup/Backup_listdatabase.action"},

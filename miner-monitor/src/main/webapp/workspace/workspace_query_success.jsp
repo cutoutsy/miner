@@ -107,31 +107,25 @@
 	<!-- 从session中获取学生集合 -->
 
 	<table class="default" width="100%">
-		<col width="10%">
-		<col width="20%">
-		<col width="5%">
-		<col width="20%">
-		<col width="30%">
-		<col width="15%">
+		<col width="25%">
+		<col width="25%">
+		<col width="25%">
+		<col width="25%">
 		<tr class="title">
-			<td>主机地址</td>
-			<td>端口号</td>
-			<td>用户名</td>
-			<td>密码</td>
-			<td>状态</td>
-			<td>操作</td>
+			<td>id</td>
+			<td>wid</td>
+			<td>name</td>
+			<td>desc</td>
 		</tr>
 
 		<!-- 遍历开始 -->
 
-		<s:iterator value="#session.serverconncted" var="conn">
+		<s:iterator value="#session.workspace_list" var="workspace_list">
 			<tr class="list">
-				<td><s:property value="#conn.hostip"/></td>
-				<td><s:property value="#conn.hostport"/></td>
-				<td><s:property value="#conn.servername"/></td>
-				<td>******</td>
-				<td>On</td>
-				<td><a href="<%=path%>/database/Database_unconnect.action" onclick="javascript: return confirm('真的要断开吗？');">断开</a></td>
+				<td><s:property value="#workspace_list.id"/></td>
+				<td><s:property value="#workspace_list.wid"/></td>
+				<td><s:property value="#workspace_list.name"/></td>
+				<td><s:property value="#workspace_list.description"/></td>
 			</tr>
 		</s:iterator>
 		<!-- 遍历结束 -->
