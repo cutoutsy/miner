@@ -29,7 +29,6 @@ public class StoreBolt extends BaseRichBolt {
         String globalInfo  = tuple.getString(0);
         String data = tuple.getString(1);
 		try {
-
             String workspace_id = get_workspace_id(globalInfo);
             //利用redis来进行数据的去重
             if(!jedis.sismember(workspace_id+"_unique", globalInfo)) {

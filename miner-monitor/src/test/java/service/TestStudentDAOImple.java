@@ -1,12 +1,13 @@
+package service;
+
 import entity.Workspace;
 import junit.framework.TestCase;
-import service.WorkspaceDAO;
 import service.impl.WorkspaceDAOImpl;
 
 import java.util.List;
 
 /**
- * Created by cutoutsy on 6/7/16.
+ * Created by cutoutsy on 6
  */
 public class TestStudentDAOImple extends TestCase{
 
