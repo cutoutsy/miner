@@ -163,7 +163,7 @@ public class PlatformUtils {
         return reGenerateUrl;
     }
 
-    //register project to schedule
+    //每秒刷新,查看是否有新的定时任务
     public static void registerProject(QuartzManager qManager){
         Set<String> projectKeys = redis.hkeys("project_cronstate");
         Iterator it = projectKeys.iterator();
@@ -172,20 +172,31 @@ public class PlatformUtils {
             String projectCronState = redis.hget("project_cronstate", projectKey);
             if(projectCronState.equals("3")){
                 QuartzJob qJob = new QuartzJob(projectKey);
-                qManager.initJob(qJob, ProjectJob.class);
-                redis.hset("project_cronstate", projectKey, "1");
+                if(qJob.getCronExpression().equals("none")){
+                    logger.info("项目"+projectKey+":不参与定时.");
+                }else {
+                    qManager.initJob(qJob, ProjectJob.class);
+                    redis.hset("project_cronstate", projectKey, "1");
+                }
             }
         }
     }
 
+
+    //初始化各个项目的定时
     public static void initRegisterProject(QuartzManager qManager){
         Set<String> projectKeys = redis.hkeys("project_cronstate");
         Iterator it = projectKeys.iterator();
         while(it.hasNext()) {
             String projectKey = it.next().toString();
             QuartzJob qJob = new QuartzJob(projectKey);
-            qManager.initJob(qJob, ProjectJob.class);
-            redis.hset("project_cronstate", projectKey, "1");
+            //如果项目配置的定时策略为none,则项目不参与定时,由手工进行激活
+            if(qJob.getCronExpression().equals("none")){
+                logger.info("项目"+projectKey+":不参与定时.");
+            }else {
+                qManager.initJob(qJob, ProjectJob.class);
+                redis.hset("project_cronstate", projectKey, "1");
+            }
         }
     }
 
