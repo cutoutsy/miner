@@ -39,7 +39,8 @@ public class Wdj {
         redis.hset("project_cronstate", "2-1", "1");
         redis.del("wdjid");
         redis.del("message");
-        for(int i = 22; i < 2000; i++){
+        redis.del("2_unique");
+        for(int i = 22; i < 100000; i++){
             redis.sadd("wdjid", String.valueOf(i));
         }
         Set<String> allPages = redis.smembers("wdjid");

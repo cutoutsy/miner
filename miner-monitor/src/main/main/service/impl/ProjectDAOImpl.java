@@ -1,5 +1,6 @@
 package service.impl;
 
+import entity.Project;
 import entity.Workspace;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -8,23 +9,24 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+import service.ProjectDAO;
 import service.WorkspaceDAO;
 
 import java.util.List;
 
 /**
- * Workspace业务逻辑接口的实现类
+ * Project业务逻辑接口的实现类
  */
-public class WorkspaceDAOImpl implements WorkspaceDAO{
+public class ProjectDAOImpl implements ProjectDAO{
 
     //查询所有workspace信息
-    public List<Workspace> queryAllWorkspace() {
+    public List<Project> queryAllProject() {
         Transaction tx = null;
-        List<Workspace> list = null;
+        List<Project> list = null;
         String hql = "";
         Configuration config = new Configuration().configure();
 
-        config.addClass(Workspace.class);
+        config.addClass(Project.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties())
                 .build();
@@ -32,7 +34,7 @@ public class WorkspaceDAOImpl implements WorkspaceDAO{
         Session session        = sessionFactory.getCurrentSession();
         try{
             tx = session.beginTransaction();
-            hql = "from Workspace";
+            hql = "from Project";
             Query query = session.createQuery(hql);
 
             list = query.list();
@@ -51,13 +53,13 @@ public class WorkspaceDAOImpl implements WorkspaceDAO{
 
     }
 
-    public Workspace queryWorkspaceByWid(int id) {
+    public Project queryProjectByWid(int id) {
         Transaction tx = null;
-        Workspace workspace = null;
+        Project p = null;
         String hql = "";
         Configuration config = new Configuration().configure();
 
-        config.addClass(Workspace.class);
+        config.addClass(Project.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties())
                 .build();
@@ -65,13 +67,13 @@ public class WorkspaceDAOImpl implements WorkspaceDAO{
         Session session        = sessionFactory.getCurrentSession();
         try{
             tx = session.beginTransaction();
-            workspace = session.get(Workspace.class, id);
+            p = session.get(Project.class, id);
             tx.commit();
-            return workspace;
+            return p;
         }catch (Exception ex){
             ex.printStackTrace();
             tx.commit();
-            return workspace;
+            return p;
         }finally {
             if(tx != null){
                 tx = null;
@@ -81,11 +83,11 @@ public class WorkspaceDAOImpl implements WorkspaceDAO{
     }
 
     //增加工作空间
-    public boolean addWorkspace(Workspace wspace) {
+    public boolean addProject(Project p) {
         Transaction tx = null;
         Configuration config = new Configuration().configure();
 
-        config.addClass(Workspace.class);
+        config.addClass(Project.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties())
                 .build();
@@ -93,7 +95,7 @@ public class WorkspaceDAOImpl implements WorkspaceDAO{
         Session session        = sessionFactory.getCurrentSession();
         try{
             tx = session.beginTransaction();
-            session.save(wspace);
+            session.save(p);
             tx.commit();
             return true;
         }catch (Exception ex){
@@ -109,11 +111,11 @@ public class WorkspaceDAOImpl implements WorkspaceDAO{
     }
 
     //更新工作空间
-    public boolean updateWorkspace(Workspace wspace) {
+    public boolean updateProject(Project p) {
         Transaction tx = null;
         Configuration config = new Configuration().configure();
 
-        config.addClass(Workspace.class);
+        config.addClass(Project.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties())
                 .build();
@@ -121,7 +123,7 @@ public class WorkspaceDAOImpl implements WorkspaceDAO{
         Session session        = sessionFactory.getCurrentSession();
         try{
             tx = session.beginTransaction();
-            session.update(wspace);
+            session.update(p);
             tx.commit();
             return true;
         }catch (Exception ex){
@@ -137,11 +139,11 @@ public class WorkspaceDAOImpl implements WorkspaceDAO{
     }
 
     //删除工作空间
-    public boolean deleteWorkspace(int id) {
+    public boolean deleteProject(int id) {
         Transaction tx = null;
         Configuration config = new Configuration().configure();
 
-        config.addClass(Workspace.class);
+        config.addClass(Project.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties())
                 .build();
@@ -149,8 +151,8 @@ public class WorkspaceDAOImpl implements WorkspaceDAO{
         Session session        = sessionFactory.getCurrentSession();
         try {
             tx = session.beginTransaction();
-            Workspace workspace = session.get(Workspace.class, id);
-            session.delete(workspace);
+            Project p = session.get(Project.class, id);
+            session.delete(p);
             tx.commit();
             return true;
         }catch (Exception ex){

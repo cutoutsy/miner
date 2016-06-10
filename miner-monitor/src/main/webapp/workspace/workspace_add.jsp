@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=utf-8" %>
+<%@ taglib prefix="s" uri="/struts-tags"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -10,7 +11,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <style type="text/css">
 * {
     background: none repeat scroll 0 0 transparent;
-    border: 0 none;
+    border: 1 none;
     margin: 0;
     padding: 0;
     vertical-align: baseline;
@@ -47,8 +48,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	height:35px;
 }
 .button{
-	float:left;
-	margin-right:10px;
+	margin-top:20px;
 	padding-left:10px;
 	padding-right:10px;
 	font-size:14px;
@@ -70,25 +70,48 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 #mainContainer{
 	padding-left:10px;
 	padding-right:10px;
-	text-align:center;
+	text-align:left;
 	width:98%;
-	font-size:12px;
+	font-size:16px;
 }
 </style>
 <body>
+<script type="text/javascript" src="../js/Calendar3.js"></script>
+
 <div id="navi">
-	<!-- 导航空白 -->
 	<div id='naviDiv'>
-		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;数据还原<span>&nbsp;</span>
-		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="#">还原状态</a><span>&nbsp;</span>
+		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;学生管理<span>&nbsp;
+		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="<%=path%>/students/Students_query.action">学生列表</a><span>&nbsp;
 	</div>
 </div>
 <div id="tips">
-	<!-- 导航空白 -->
 </div>
 <div id="mainContainer">
-   <strong>备份还原成功</strong>
-   <!--数据表格空白 -->
+<!-- 从session中获取学生集合 -->
+<strong>添加工作空间</strong>
+<br>
+<br>
+<form name="addForm" action="<%=path%>/workspace/Workspace_add.action" method="post">
+<table width="400" >
+  <tr>
+    <td width="30%">wid：</td>
+    <td><input type="text" name="wid" /></td>
+  </tr>
+  <tr>
+    <td>name：</td>
+	  <td><input type="text" name="wname" /></td>
+  </tr>
+  <tr>
+    <td>description：</td>
+    <td><input type="text" name="description" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><input class="button" type="submit" value="添加"></td>
+  </tr>
+</table>
+</form>
+
+
 </div>
 </body>
 </html>

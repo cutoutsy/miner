@@ -76,42 +76,65 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 }
 </style>
 <body>
+<script type="text/javascript" src="../js/Calendar3.js"></script>
 
 <div id="navi">
 	<div id='naviDiv'>
-		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;数据库管理<span>&nbsp;</span>
-		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="<%=path%>/database/database_connect.jsp">配置数据库连接</a><span>&nbsp;</span>
+		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;学生管理<span>&nbsp;
+		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="<%=path%>/students/Students_query.action">学生列表</a><span>&nbsp;
 	</div>
 </div>
 <div id="tips">
 </div>
 <div id="mainContainer">
-
-<strong>配置数据库信息</strong>
+<strong>修改任务</strong>
 <br>
 <br>
 
-<form name="connectForm" action="" method="post">
+<form name="modifyForm" action="<%=path%>/task/Task_save.action" method="post">
 <table width="400" >
   <tr>
-    <td width="30%">主机地址：</td>
-    <td><input type="text" name="hostip"/></td>
+    <td width="30%">id：</td>
+    <td><input type="text" name="id" value='<s:property value="#session.modify_task.id"/>'  readonly="readonly"/></td>
   </tr>
   <tr>
-    <td width="30%">端口号：</td>
-    <td><input type="text" name="hostport"/></td>
+    <td width="30%">wid：</td>
+    <td><input type="text" name="wid" value='<s:property value="#session.modify_task.wid"/>'/></td>
   </tr>
+	<tr>
+		<td>pid：</td>
+		<td><input type="text" name="pid" value='<s:property value="#session.modify_task.pid"/>'/></td>
+	</tr>
+	<tr>
+		<td>tid：</td>
+		<td><input type="text" name="tid" value='<s:property value="#session.modify_task.tid"/>'/></td>
+	</tr>
   <tr>
-    <td>用户名：</td>
-    <td><input type="text" name="servername"/></td>
+    <td>name：</td>
+      <td><input type="text" name="tname" value='<s:property value="#session.modify_task.name"/>'/></td>
   </tr>
-  <tr>
-    <td>密码：</td>
-    <td><input type="password" name="serverpasswd"/></td>
+    <td>description：</td>
+    <td><input type="text" name="description" value='<s:property value="#session.modify_task.description"/>'/></td>
   </tr>
+    </tr>
+	    <td>urlpattern：</td>
+	    <td><input type="text" name="urlpattern" value='<s:property value="#session.modify_task.urlpattern"/>'/></td>
+	</tr>
+	</tr>
+	    <td>urlgenerate：</td>
+	    <td><input type="text" name="urlgenerate" value='<s:property value="#session.modify_task.urlgenerate"/>'/></td>
+	</tr>
+	</tr>
+	    <td>isloop：</td>
+	    <td><input type="text" name="isloop" value='<s:property value="#session.modify_task.isloop"/>'/></td>
+	</tr>
+    </tr>
+    <td>proxy_open：</td>
+    <td><input type="text" name="proxy_open" value='<s:property value="#session.modify_task.proxy_open"/>'/></td>
+    </tr>
+
   <tr>
-      <td><input class="button" onclick="connect();" value="连接"></td>
-      <td><input class="button" onclick="connectSave();" value="连接并保存"></td>
+    <td colspan="2" align="center"><input class="button" type="submit" value="修改"></td>
   </tr>
 </table>
 </form>
@@ -119,16 +142,4 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 </div>
 </body>
-<script type="text/javascript">
-	function connect(){
-		document.connectForm.action="<%=path%>/database/Database_connect.action";
-		document.connectForm.submit();
-	}
-
-	function connectSave(){
-		document.connectForm.action="<%=path%>/database/Database_connectSave.action";
-		document.connectForm.submit();
-	}
-</script>
-
 </html>

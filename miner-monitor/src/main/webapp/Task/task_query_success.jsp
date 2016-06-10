@@ -80,41 +80,53 @@
 <div id="navi">
 	<div id='naviDiv'>
 		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;数据库管理<span>&nbsp;</span>
-		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="<%=path%>/database/database_save.jsp">选择数据库连接</a><span>&nbsp;</span>
+		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="<%=path%>/database/database_connect_success.jsp">连接中数据库</a><span>&nbsp;</span>
 	</div>
 </div>
-<div id="tips">
+	<div id="tips">
+		<div id="buttonGroup">
+			<div class="button" onmouseout="this.style.backgroundColor='';this.style.fontWeight='normal'" onmouseover="this.style.backgroundColor='#77D1F6';this.style.fontWeight='bold'">
+				<a href="<%=path%>/task/task_add.jsp">添加任务</a>
+			</div>
+			<div class="button" onmouseout="this.style.backgroundColor='';this.style.fontWeight='normal'" onmouseover="this.style.backgroundColor='#77D1F6';this.style.fontWeight='bold'">
+				<a>查找任务</a>
+			</div>
+			</div>
+		</div>
+	</div>
 
-	<%
-        //session中保存的时map, 直接==null不行
-		if( ((Map)session.getAttribute("bakfileinfos")).size() == 0 ) {
-    %>
-	<h3>&nbsp;&nbsp;&nbsp;&nbsp;没有保存的备份文件，请先去备份数据库.</h3>
-	<%}
-	%>
-
-</div>
 <div id="mainContainer">
 
 	<table class="default" width="100%">
-		<col width="20%">
-		<col width="30%">
-		<col width="30%">
 		<tr class="title">
-			<td>备份文件</td>
-			<td>备份时间</td>
-			<td>还原</td>
-			<td>删除</td>
+			<td>id</td>
+			<td>wid</td>
+			<td>pid</td>
+			<td>tid</td>
+			<td>name</td>
+			<td>description</td>
+			<td>urlpattern</td>
+			<td>urlgenerate</td>
+			<td>isloop</td>
+			<td>proxy_open</td>
+            <td>操作</td>
 		</tr>
 
 		<!-- 遍历开始 -->
 
-		<s:iterator value="#session.bakfileinfos"  id="bakfileinfo" status="st">
+		<s:iterator value="#session.task_list" var="task_list">
 			<tr class="list">
-				<td><s:property value="key"/></td>
-                <td><s:property value="value"/></td>
-                <td><a href="<%=path%>/recovery/Recovery_bakrecovery.action?filename=<s:property value='key'/>" onclick="javascript: return confirm('确定还原吗？');">还原</a></td>
-                <td><a href="<%=path%>/recovery/Recovery_bakdelete.action?filename=<s:property value='key'/>" onclick="javascript: return confirm('确定删除吗？');">删除</a></td>
+				<td><s:property value="#task_list.id"/></td>
+				<td><s:property value="#task_list.wid"/></td>
+				<td><s:property value="#task_list.pid"/></td>
+				<td><s:property value="#task_list.tid"/></td>
+				<td><a href="<%=path%>>/task/Task_modify.action?id=<s:property value="#task_list.id"/>"><s:property value="#task_list.name"/></a></td>
+				<td><s:property value="#task_list.description"/></td>
+				<td><s:property value="#task_list.urlpattern"/></td>
+				<td><s:property value="#task_list.urlgenerate"/></td>
+				<td><s:property value="#task_list.isloop"/></td>
+                <td><s:property value="#task_list.proxy_open"/></td>
+                <td><a href="<%=path%>/task/Task_delete.action?id=<s:property value="#task_list.id"/>" onclick="javascript: return confirm('真的要删除吗？');">删除</a></td>
 			</tr>
 		</s:iterator>
 		<!-- 遍历结束 -->

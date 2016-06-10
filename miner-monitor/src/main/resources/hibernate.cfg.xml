@@ -16,6 +16,8 @@
         <property name="connection.characterEncoding">utf8</property>
         <property name="hibernate.current_session_context_class">thread</property>
 
-        <mapping resource="entity/Members.hbm.xml"/>
+        <mapping resource="entity/Workspace.hbm.xml"/>
+        <mapping resource="entity/Project.hbm.xml"/>
+        <mapping resource="entity/Task.hbm.xml"/>
 	</session-factory>
 </hibernate-configuration>

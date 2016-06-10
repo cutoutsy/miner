@@ -13,7 +13,7 @@ public interface WorkspaceDAO {
     public List<Workspace> queryAllWorkspace();
 
     //根据workspace id查询信息
-    public Workspace queryWorkspaceByWid(String wid);
+    public Workspace queryWorkspaceByWid(int id);
 
     //添加workspace信息
     public boolean addWorkspace(Workspace wspace);
@@ -22,5 +22,5 @@ public interface WorkspaceDAO {
     public boolean updateWorkspace(Workspace wspace);
 
     //删除workspace信息
-    public boolean deleteWorkspace(String wid);
+    public boolean deleteWorkspace(int id);
 }

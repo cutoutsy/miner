@@ -1,7 +1,6 @@
 package action;
 
 import com.opensymphony.xwork2.ModelDriven;
-import entity.Servers;
 import entity.Users;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import service.UsersDAO;
@@ -20,38 +19,22 @@ public class UsersAction extends SuperAction implements ModelDriven<Users> {
 	
 	
 	private Users user = new Users();
-	
+
 	//用户登录操作
 	public String login(){
 		UsersDAO udao = new UsersDAOImpl();
 		if(udao.usersLogin(user)){
-			
+
 			//在session中保存登录成功的用户名
 			session.setAttribute("loginUserName", user.getUsername());
-			//session.setAttribute("validateCode", user.getGcode());
-
-            String base = System.getProperty("user.dir");
-            Set<String> serversSet = IOUtil.readFileToSet(base + "/servers.txt", "utf-8");
-            Iterator it = serversSet.iterator();
-            List<Servers> serverlist = new ArrayList<Servers>();
-            while (it.hasNext()){
-                String tempStr = it.next().toString();
-                Servers oneServer = new Servers();
-                oneServer.setHostip(tempStr.split(":")[0]);
-                oneServer.setHostport(tempStr.split(":")[1]);
-                oneServer.setServername(tempStr.split(":")[2]);
-                oneServer.setServerpasswd(tempStr.split(":")[3]);
-                serverlist.add(oneServer);
-            }
-            session.setAttribute("serversave", serverlist);
 
 			//返回一个视图
-			return "login_success"; 
+			return "login_success";
 		}else{
 			return "login_failure";
 		}
 	}
-	
+
 	//用户注销方法,执行注销方法时不执行表单验证，使用@SkipValidation注解
 	@SkipValidation
 	public String logout(){

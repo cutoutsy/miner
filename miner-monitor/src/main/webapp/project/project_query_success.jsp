@@ -80,58 +80,56 @@
 <div id="navi">
 	<div id='naviDiv'>
 		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;数据库管理<span>&nbsp;</span>
-		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="<%=path%>/database/database_save.jsp">选择数据库连接</a><span>&nbsp;</span>
+		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="<%=path%>/database/database_connect_success.jsp">连接中数据库</a><span>&nbsp;</span>
 	</div>
 </div>
-<div id="tips">
+	<div id="tips">
+		<div id="buttonGroup">
+			<div class="button" onmouseout="this.style.backgroundColor='';this.style.fontWeight='normal'" onmouseover="this.style.backgroundColor='#77D1F6';this.style.fontWeight='bold'">
+				<a href="<%=path%>/project/project_add.jsp">添加项目</a>
+			</div>
+			<div class="button" onmouseout="this.style.backgroundColor='';this.style.fontWeight='normal'" onmouseover="this.style.backgroundColor='#77D1F6';this.style.fontWeight='bold'">
+				<a>查找项目</a>
+			</div>
+			</div>
+		</div>
+	</div>
 
-	<%
-        //session中保存的时list, 直接==null不行
-		if( ((List)session.getAttribute("serversave")).size() == 0 ) {
-    %>
-	<h3>&nbsp;&nbsp;&nbsp;&nbsp;没有保存的数据库,请先去连接保存.</h3>
-	<%}
-	%>
-	<!--
-	<div id="buttonGroup">
-		<div class="button" onmouseout="this.style.backgroundColor='';this.style.fontWeight='normal'" onmouseover="this.style.backgroundColor='#77D1F6';this.style.fontWeight='bold'">
-			<a href="<%=path%>/students/Students_add.jsp">添加学生</a>
-		</div>
-		<div class="button" onmouseout="this.style.backgroundColor='';this.style.fontWeight='normal'" onmouseover="this.style.backgroundColor='#77D1F6';this.style.fontWeight='bold'">
-			<a>查找学生</a>
-		</div>
-	</div>
-	-->
-</div>
 <div id="mainContainer">
-	<!-- 从session中获取学生集合 -->
 
 	<table class="default" width="100%">
-		<col width="10%">
+		<!--
 		<col width="20%">
-		<col width="5%">
 		<col width="20%">
-		<col width="30%">
-		<col width="15%">
+		<col width="20%">
+		<col width="20%">
+        <col width="20%">
+        -->
 		<tr class="title">
-			<td>主机地址</td>
-			<td>端口号</td>
-			<td>用户名</td>
-			<td>密码</td>
-			<td>连接</td>
-			<td>操作</td>
+			<td>id</td>
+			<td>wid</td>
+			<td>pid</td>
+			<td>name</td>
+			<td>desc</td>
+			<td>datasource</td>
+			<td>schedule</td>
+			<td>precondition</td>
+            <td>操作</td>
 		</tr>
 
 		<!-- 遍历开始 -->
 
-		<s:iterator value="#session.serversave" var="save">
+		<s:iterator value="#session.project_list" var="project_list">
 			<tr class="list">
-				<td><s:property value="#save.hostip"/></td>
-				<td><s:property value="#save.hostport"/></td>
-				<td><s:property value="#save.servername"/></td>
-				<td>******</td>
-				<td><a href="<%=path%>/database/Database_choconnect.action?hostip=<s:property value='#save.hostip'/>&hostport=<s:property value='#save.hostport'/>&servername=<s:property value='#save.servername'/>" onclick="javascript: return confirm('确定连接吗？');">连接</a></td>
-				<td><a href="<%=path%>/database/Database_delsave.action?hostip=<s:property value='#save.hostip'/>&hostport=<s:property value='#save.hostport'/>&servername=<s:property value='#save.servername'/>" onclick="javascript: return confirm('确定删除吗？');">删除</a></td>
+				<td><s:property value="#project_list.id"/></td>
+				<td><s:property value="#project_list.wid"/></td>
+				<td><s:property value="#project_list.pid"/></td>
+				<td><a href="<%=path%>>/project/Project_modify.action?id=<s:property value="#project_list.id"/>"><s:property value="#project_list.name"/></a></td>
+				<td><s:property value="#project_list.description"/></td>
+				<td><s:property value="#project_list.datasource"/></td>
+				<td><s:property value="#project_list.schedule"/></td>
+				<td><s:property value="#project_list.precondition"/></td>
+                <td><a href="<%=path%>/project/Project_delete.action?id=<s:property value="#project_list.id"/>" onclick="javascript: return confirm('真的要删除吗？');">删除</a></td>
 			</tr>
 		</s:iterator>
 		<!-- 遍历结束 -->

@@ -86,10 +86,10 @@
 	<div id="tips">
 		<div id="buttonGroup">
 			<div class="button" onmouseout="this.style.backgroundColor='';this.style.fontWeight='normal'" onmouseover="this.style.backgroundColor='#77D1F6';this.style.fontWeight='bold'">
-				<a href="<%=path%>/workspace/workspace_add.jsp">添加工作空间</a>
+				<a href="<%=path%>/task/task_add.jsp">添加任务</a>
 			</div>
 			<div class="button" onmouseout="this.style.backgroundColor='';this.style.fontWeight='normal'" onmouseover="this.style.backgroundColor='#77D1F6';this.style.fontWeight='bold'">
-				<a>查找工作空间</a>
+				<a>查找任务</a>
 			</div>
 			</div>
 		</div>
@@ -98,28 +98,35 @@
 <div id="mainContainer">
 
 	<table class="default" width="100%">
-		<col width="20%">
-		<col width="20%">
-		<col width="20%">
-		<col width="20%">
-        <col width="20%">
 		<tr class="title">
 			<td>id</td>
 			<td>wid</td>
+			<td>pid</td>
+			<td>tid</td>
 			<td>name</td>
-			<td>desc</td>
+			<td>description</td>
+			<td>urlpattern</td>
+			<td>urlgenerate</td>
+			<td>isloop</td>
+			<td>proxy_open</td>
             <td>操作</td>
 		</tr>
 
 		<!-- 遍历开始 -->
 
-		<s:iterator value="#session.workspace_list" var="workspace_list">
+		<s:iterator value="#session.task_list" var="task_list">
 			<tr class="list">
-				<td><s:property value="#workspace_list.id"/></td>
-				<td><s:property value="#workspace_list.wid"/></td>
-				<td><a href="<%=path%>>/workspace/Workspace_modify.action?id=<s:property value="#workspace_list.id"/>"><s:property value="#workspace_list.name"/></a></td>
-				<td><s:property value="#workspace_list.description"/></td>
-                <td><a href="<%=path%>/workspace/Workspace_delete.action?id=<s:property value="#workspace_list.id"/>" onclick="javascript: return confirm('真的要删除吗？');">删除</a></td>
+				<td><s:property value="#task_list.id"/></td>
+				<td><s:property value="#task_list.wid"/></td>
+				<td><s:property value="#task_list.pid"/></td>
+				<td><s:property value="#task_list.tid"/></td>
+				<td><a href="<%=path%>>/task/Task_modify.action?id=<s:property value="#task_list.id"/>"><s:property value="#task_list.name"/></a></td>
+				<td><s:property value="#task_list.description"/></td>
+				<td><s:property value="#task_list.urlpattern"/></td>
+				<td><s:property value="#task_list.urlgenerate"/></td>
+				<td><s:property value="#task_list.isloop"/></td>
+                <td><s:property value="#task_list.proxy_open"/></td>
+                <td><a href="<%=path%>/task/Task_delete.action?id=<s:property value="#task_list.id"/>" onclick="javascript: return confirm('真的要删除吗？');">删除</a></td>
 			</tr>
 		</s:iterator>
 		<!-- 遍历结束 -->

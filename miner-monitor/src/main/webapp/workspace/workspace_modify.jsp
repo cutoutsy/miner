@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=utf-8" %>
+<%@ taglib prefix="s" uri="/struts-tags"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -10,7 +11,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <style type="text/css">
 * {
     background: none repeat scroll 0 0 transparent;
-    border: 0 none;
+    border: 1 none;
     margin: 0;
     padding: 0;
     vertical-align: baseline;
@@ -47,8 +48,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	height:35px;
 }
 .button{
-	float:left;
-	margin-right:10px;
+	margin-top:20px;
 	padding-left:10px;
 	padding-right:10px;
 	font-size:14px;
@@ -70,25 +70,51 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 #mainContainer{
 	padding-left:10px;
 	padding-right:10px;
-	text-align:center;
+	text-align:left;
 	width:98%;
-	font-size:12px;
+	font-size:16px;
 }
 </style>
 <body>
+<script type="text/javascript" src="../js/Calendar3.js"></script>
+
 <div id="navi">
-	<!-- 导航空白 -->
 	<div id='naviDiv'>
-		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;数据库管理<span>&nbsp;</span>
-		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="<%=path%>/students/Students_query.action">数据库连接</a><span>&nbsp;</span>
+		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;学生管理<span>&nbsp;
+		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="<%=path%>/students/Students_query.action">学生列表</a><span>&nbsp;
 	</div>
 </div>
 <div id="tips">
-	<!-- 导航空白 -->
 </div>
 <div id="mainContainer">
-   <strong>数据库连接成功，<a href="<%=path%>/database/database_connected.jsp">查看连接状态</a></strong>
-   <!--数据表格空白 -->
+<strong>修改工作空间</strong>
+<br>
+<br>
+
+<form name="modifyForm" action="<%=path%>/workspace/Workspace_save.action" method="post">
+<table width="400" >
+  <tr>
+    <td width="30%">id：</td>
+    <td><input type="text" name="id" value='<s:property value="#session.modify_workspace.id"/>'  readonly="readonly"/></td>
+  </tr>
+  <tr>
+    <td width="30%">wid：</td>
+    <td><input type="text" name="wid" value='<s:property value="#session.modify_workspace.wid"/>'/></td>
+  </tr>
+  <tr>
+    <td>name：</td>
+      <td><input type="text" name="wname" value='<s:property value="#session.modify_workspace.name"/>'/></td>
+  </tr>
+    <td>description：</td>
+    <td><input type="text" name="description" value='<s:property value="#session.modify_workspace.description"/>'/></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><input class="button" type="submit" value="修改"></td>
+  </tr>
+</table>
+</form>
+
+
 </div>
 </body>
 </html>
