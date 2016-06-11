@@ -80,57 +80,69 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <div id="navi">
 	<div id='naviDiv'>
-		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;任务列表<span>&nbsp;
-		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="#">修改任务</a><span>&nbsp;
+		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;项目列表<span>&nbsp;
+		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="#">修改数据</a><span>&nbsp;
 	</div>
 </div>
 <div id="tips">
 </div>
 <div id="mainContainer">
-<strong>修改任务</strong>
+<strong>修改数据</strong>
 <br>
 <br>
 
-<form name="modifyForm" action="<%=path%>/task/Task_save.action" method="post">
+<form name="modifyForm" action="<%=path%>/data/Data_save.action" method="post">
 <table width="400" >
   <tr>
     <td width="30%">id：</td>
-    <td><input type="text" name="id" value='<s:property value="#session.modify_task.id"/>'  readonly="readonly"/></td>
+    <td><input type="text" name="id" value='<s:property value="#session.modify_data.id"/>'  readonly="readonly"/></td>
   </tr>
   <tr>
     <td width="30%">wid：</td>
-    <td><input type="text" name="wid" value='<s:property value="#session.modify_task.wid"/>'/></td>
+    <td><input type="text" name="wid" value='<s:property value="#session.modify_data.wid"/>'/></td>
   </tr>
 	<tr>
 		<td>pid：</td>
-		<td><input type="text" name="pid" value='<s:property value="#session.modify_task.pid"/>'/></td>
+		<td><input type="text" name="pid" value='<s:property value="#session.modify_data.pid"/>'/></td>
 	</tr>
 	<tr>
 		<td>tid：</td>
-		<td><input type="text" name="tid" value='<s:property value="#session.modify_task.tid"/>'/></td>
+		<td><input type="text" name="tid" value='<s:property value="#session.modify_data.tid"/>'/></td>
 	</tr>
-  <tr>
-    <td>name：</td>
-      <td><input type="text" name="tname" value='<s:property value="#session.modify_task.name"/>'/></td>
-  </tr>
+	<tr>
+		<td>tid：</td>
+		<td><input type="text" name="dataid" value='<s:property value="#session.modify_data.dataid"/>'/></td>
+	</tr>
     <td>description：</td>
-    <td><input type="text" name="description" value='<s:property value="#session.modify_task.description"/>'/></td>
+    <td><input type="text" name="description" value='<s:property value="#session.modify_data.description"/>'/></td>
   </tr>
     </tr>
-	    <td>urlpattern：</td>
-	    <td><input type="text" name="urlpattern" value='<s:property value="#session.modify_task.urlpattern"/>'/></td>
+	    <td>property：</td>
+	    <td><input type="text" name="property" value='<s:property value="#session.modify_data.property"/>'/></td>
 	</tr>
 	</tr>
-	    <td>urlgenerate：</td>
-	    <td><input type="text" name="urlgenerate" value='<s:property value="#session.modify_task.urlgenerate"/>'/></td>
+	    <td>rowKey：</td>
+	    <td><input type="text" name="rowKey" value='<s:property value="#session.modify_data.rowKey"/>'/></td>
 	</tr>
 	</tr>
-	    <td>isloop：</td>
-	    <td><input type="text" name="isloop" value='<s:property value="#session.modify_task.isloop"/>'/></td>
+	    <td>foreignKey：</td>
+	    <td><input type="text" name="foreignKey" value='<s:property value="#session.modify_data.foreignKey"/>'/></td>
 	</tr>
     </tr>
-    <td>proxy_open：</td>
-    <td><input type="text" name="proxy_open" value='<s:property value="#session.modify_task.proxy_open"/>'/></td>
+        <td>foreignValue：</td>
+        <td><input type="text" name="foreignValue" value='<s:property value="#session.modify_data.foreignValue"/>'/></td>
+    </tr>
+    </tr>
+        <td>link：</td>
+        <td><input type="text" name="link" value='<s:property value="#session.modify_data.link"/>'/></td>
+    </tr>
+    </tr>
+        <td>processWay：</td>
+        <td><input type="text" name="processWay" value='<s:property value="#session.modify_data.processWay"/>'/></td>
+    </tr>
+    </tr>
+        <td>lcondition：</td>
+        <td><input type="text" name="lcondition" value='<s:property value="#session.modify_data.lcondition"/>'/></td>
     </tr>
 
   <tr>

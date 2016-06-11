@@ -80,61 +80,70 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <div id="navi">
 	<div id='naviDiv'>
-		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;任务列表<span>&nbsp;
-		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="#">修改任务</a><span>&nbsp;
+		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;数据列表<span>&nbsp;
+		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="#">增加数据</a><span>&nbsp;
 	</div>
 </div>
 <div id="tips">
 </div>
 <div id="mainContainer">
-<strong>修改任务</strong>
-<br>
-<br>
 
-<form name="modifyForm" action="<%=path%>/task/Task_save.action" method="post">
+<strong>添加数据</strong>
+<br>
+<br>
+<form name="addForm" action="<%=path%>/data/Data_add.action" method="post">
 <table width="400" >
   <tr>
-    <td width="30%">id：</td>
-    <td><input type="text" name="id" value='<s:property value="#session.modify_task.id"/>'  readonly="readonly"/></td>
-  </tr>
-  <tr>
     <td width="30%">wid：</td>
-    <td><input type="text" name="wid" value='<s:property value="#session.modify_task.wid"/>'/></td>
+    <td><input type="text" name="wid" /></td>
   </tr>
-	<tr>
-		<td>pid：</td>
-		<td><input type="text" name="pid" value='<s:property value="#session.modify_task.pid"/>'/></td>
-	</tr>
-	<tr>
-		<td>tid：</td>
-		<td><input type="text" name="tid" value='<s:property value="#session.modify_task.tid"/>'/></td>
-	</tr>
-  <tr>
-    <td>name：</td>
-      <td><input type="text" name="tname" value='<s:property value="#session.modify_task.name"/>'/></td>
-  </tr>
-    <td>description：</td>
-    <td><input type="text" name="description" value='<s:property value="#session.modify_task.description"/>'/></td>
-  </tr>
+    <tr>
+        <td>pid：</td>
+        <td><input type="text" name="pid" /></td>
     </tr>
-	    <td>urlpattern：</td>
-	    <td><input type="text" name="urlpattern" value='<s:property value="#session.modify_task.urlpattern"/>'/></td>
-	</tr>
-	</tr>
-	    <td>urlgenerate：</td>
-	    <td><input type="text" name="urlgenerate" value='<s:property value="#session.modify_task.urlgenerate"/>'/></td>
-	</tr>
-	</tr>
-	    <td>isloop：</td>
-	    <td><input type="text" name="isloop" value='<s:property value="#session.modify_task.isloop"/>'/></td>
-	</tr>
+    <tr>
+        <td>tid：</td>
+        <td><input type="text" name="tid" /></td>
     </tr>
-    <td>proxy_open：</td>
-    <td><input type="text" name="proxy_open" value='<s:property value="#session.modify_task.proxy_open"/>'/></td>
+    <tr>
+        <td>dataid：</td>
+        <td><input type="text" name="dataid" /></td>
     </tr>
 
   <tr>
-    <td colspan="2" align="center"><input class="button" type="submit" value="修改"></td>
+    <td>description：</td>
+    <td><input type="text" name="description" /></td>
+  </tr>
+    <tr>
+        <td>property：</td>
+        <td><input type="text" name="property" /></td>
+    </tr>
+    <tr>
+        <td>rowKey：</td>
+        <td><input type="text" name="rowKey" /></td>
+    </tr>
+    <tr>
+        <td>foreignKey：</td>
+        <td><input type="text" name="foreignKey" /></td>
+    </tr>
+    <tr>
+        <td>foreignValue：</td>
+        <td><input type="text" name="foreignValue" /></td>
+    </tr>
+    <tr>
+        <td>link：</td>
+        <td><input type="text" name="link" /></td>
+    </tr>
+    <tr>
+        <td>processWay：</td>
+        <td><input type="text" name="processWay" /></td>
+    </tr>
+    <tr>
+        <td>lcondition：</td>
+        <td><input type="text" name="lcondition" /></td>
+    </tr>
+  <tr>
+    <td colspan="2" align="center"><input class="button" type="submit" value="添加"></td>
   </tr>
 </table>
 </form>

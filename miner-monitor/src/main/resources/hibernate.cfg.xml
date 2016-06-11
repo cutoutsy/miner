@@ -19,5 +19,7 @@
         <mapping resource="entity/Workspace.hbm.xml"/>
         <mapping resource="entity/Project.hbm.xml"/>
         <mapping resource="entity/Task.hbm.xml"/>
+        <mapping resource="entity/Data.hbm.xml"/>
+        <mapping resource="entity/Regex.hbm.xml"/>
 	</session-factory>
 </hibernate-configuration>

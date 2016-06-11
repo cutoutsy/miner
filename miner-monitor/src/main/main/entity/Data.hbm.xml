@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="entity.Data" table="data">
+    	<id name="id" type="int" column="id">
+            <generator class="increment"/>
+        </id>
+    	<property name="wid" type="java.lang.String"/>
+        <property name="pid" type="java.lang.String"/>
+        <property name="tid" type="java.lang.String"/>
+        <property name="dataid" type="java.lang.String"/>
+        <property name="description" type="java.lang.String"/>
+        <property name="property" type="java.lang.String"/>
+        <property name="rowKey" type="java.lang.String"/>
+        <property name="foreignKey" type="java.lang.String"/>
+        <property name="foreignValue" type="java.lang.String"/>
+        <property name="link" type="java.lang.String"/>
+        <property name="processWay" type="java.lang.String"/>
+        <property name="lcondition" type="java.lang.String"/>
+    </class>
+</hibernate-mapping>

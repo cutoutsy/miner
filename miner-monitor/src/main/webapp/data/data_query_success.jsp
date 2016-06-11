@@ -80,16 +80,16 @@
 <div id="navi">
 	<div id='naviDiv'>
 		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;项目信息<span>&nbsp;</span>
-		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="<%=path%>/task/task_query_success.jsp">任务列表</a><span>&nbsp;</span>
+		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="#">数据列表</a><span>&nbsp;</span>
 	</div>
 </div>
 	<div id="tips">
 		<div id="buttonGroup">
 			<div class="button" onmouseout="this.style.backgroundColor='';this.style.fontWeight='normal'" onmouseover="this.style.backgroundColor='#77D1F6';this.style.fontWeight='bold'">
-				<a href="<%=path%>/task/task_add.jsp">添加任务</a>
+				<a href="<%=path%>/data/data_add.jsp">添加数据</a>
 			</div>
 			<div class="button" onmouseout="this.style.backgroundColor='';this.style.fontWeight='normal'" onmouseover="this.style.backgroundColor='#77D1F6';this.style.fontWeight='bold'">
-				<a>查找任务</a>
+				<a>查找数据</a>
 			</div>
 			</div>
 		</div>
@@ -103,30 +103,36 @@
 			<td>wid</td>
 			<td>pid</td>
 			<td>tid</td>
-			<td>name</td>
+			<td>dataid</td>
 			<td>description</td>
-			<td>urlpattern</td>
-			<td>urlgenerate</td>
-			<td>isloop</td>
-			<td>proxy_open</td>
+			<td>property</td>
+			<td>rowKey</td>
+			<td>foreignKey</td>
+			<td>foreignValue</td>
+            <td>link</td>
+            <td>processWay</td>
+            <td>lcondition</td>
             <td>操作</td>
 		</tr>
 
 		<!-- 遍历开始 -->
 
-		<s:iterator value="#session.task_list" var="task_list">
+		<s:iterator value="#session.data_list" var="data_list">
 			<tr class="list">
-				<td><s:property value="#task_list.id"/></td>
-				<td><s:property value="#task_list.wid"/></td>
-				<td><s:property value="#task_list.pid"/></td>
-				<td><s:property value="#task_list.tid"/></td>
-				<td><a href="<%=path%>>/task/Task_modify.action?id=<s:property value="#task_list.id"/>"><s:property value="#task_list.name"/></a></td>
-				<td><s:property value="#task_list.description"/></td>
-				<td><s:property value="#task_list.urlpattern"/></td>
-				<td><s:property value="#task_list.urlgenerate"/></td>
-				<td><s:property value="#task_list.isloop"/></td>
-                <td><s:property value="#task_list.proxy_open"/></td>
-                <td><a href="<%=path%>/task/Task_delete.action?id=<s:property value="#task_list.id"/>" onclick="javascript: return confirm('真的要删除吗？');">删除</a></td>
+				<td><s:property value="#data_list.id"/></td>
+				<td><s:property value="#data_list.wid"/></td>
+				<td><s:property value="#data_list.pid"/></td>
+				<td><s:property value="#data_list.tid"/></td>
+				<td><a href="<%=path%>>/data/Data_modify.action?id=<s:property value="#data_list.id"/>"><s:property value="#data_list.dataid"/></a></td>
+				<td><s:property value="#data_list.description"/></td>
+				<td><s:property value="#data_list.property"/></td>
+				<td><s:property value="#data_list.rowKey"/></td>
+                <td><s:property value="#data_list.foreignKey"/></td>
+				<td><s:property value="#data_list.foreignValue"/></td>
+                <td><s:property value="#data_list.link"/></td>
+                <td><s:property value="#data_list.processWay"/></td>
+                <td><s:property value="#data_list.lcondition"/></td>
+                <td><a href="<%=path%>/data/Data_delete.action?id=<s:property value="#data_list.id"/>" onclick="javascript: return confirm('真的要删除吗？');">删除</a></td>
 			</tr>
 		</s:iterator>
 		<!-- 遍历结束 -->

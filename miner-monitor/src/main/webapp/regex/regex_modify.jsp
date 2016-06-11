@@ -80,59 +80,42 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <div id="navi">
 	<div id='naviDiv'>
-		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;任务列表<span>&nbsp;
-		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="#">修改任务</a><span>&nbsp;
+		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;正则管理<span>&nbsp;
+		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="#">修改正则</a><span>&nbsp;
 	</div>
 </div>
 <div id="tips">
 </div>
 <div id="mainContainer">
-<strong>修改任务</strong>
+<strong>修改正则</strong>
 <br>
 <br>
 
-<form name="modifyForm" action="<%=path%>/task/Task_save.action" method="post">
+<form name="modifyForm" action="<%=path%>/regex/Regex_save.action" method="post">
 <table width="400" >
   <tr>
     <td width="30%">id：</td>
-    <td><input type="text" name="id" value='<s:property value="#session.modify_task.id"/>'  readonly="readonly"/></td>
+    <td><input type="text" name="id" value='<s:property value="#session.modify_regex.id"/>'  readonly="readonly"/></td>
   </tr>
   <tr>
     <td width="30%">wid：</td>
-    <td><input type="text" name="wid" value='<s:property value="#session.modify_task.wid"/>'/></td>
+    <td><input type="text" name="wid" value='<s:property value="#session.modify_regex.wid"/>'/></td>
   </tr>
-	<tr>
-		<td>pid：</td>
-		<td><input type="text" name="pid" value='<s:property value="#session.modify_task.pid"/>'/></td>
-	</tr>
-	<tr>
-		<td>tid：</td>
-		<td><input type="text" name="tid" value='<s:property value="#session.modify_task.tid"/>'/></td>
-	</tr>
+    <tr>
+        <td width="30%">pid：</td>
+        <td><input type="text" name="pid" value='<s:property value="#session.modify_regex.pid"/>'/></td>
+    </tr>
+    <tr>
+        <td width="30%">tid：</td>
+        <td><input type="text" name="tid" value='<s:property value="#session.modify_regex.tid"/>'/></td>
+    </tr>
   <tr>
-    <td>name：</td>
-      <td><input type="text" name="tname" value='<s:property value="#session.modify_task.name"/>'/></td>
+    <td>tagname：</td>
+      <td><input type="text" name="tagname" value='<s:property value="#session.modify_regex.tagname"/>'/></td>
   </tr>
-    <td>description：</td>
-    <td><input type="text" name="description" value='<s:property value="#session.modify_task.description"/>'/></td>
+    <td>path：</td>
+    <td><input type="text" name="path" value='<s:property value="#session.modify_regex.path"/>'/></td>
   </tr>
-    </tr>
-	    <td>urlpattern：</td>
-	    <td><input type="text" name="urlpattern" value='<s:property value="#session.modify_task.urlpattern"/>'/></td>
-	</tr>
-	</tr>
-	    <td>urlgenerate：</td>
-	    <td><input type="text" name="urlgenerate" value='<s:property value="#session.modify_task.urlgenerate"/>'/></td>
-	</tr>
-	</tr>
-	    <td>isloop：</td>
-	    <td><input type="text" name="isloop" value='<s:property value="#session.modify_task.isloop"/>'/></td>
-	</tr>
-    </tr>
-    <td>proxy_open：</td>
-    <td><input type="text" name="proxy_open" value='<s:property value="#session.modify_task.proxy_open"/>'/></td>
-    </tr>
-
   <tr>
     <td colspan="2" align="center"><input class="button" type="submit" value="修改"></td>
   </tr>
