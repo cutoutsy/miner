@@ -9,14 +9,8 @@
 本项目采用的IDE是IntelliJ IDEA.打开IDEA,选择导入项目,然后选择Maven项目,项目最开始载入的时候会下载一些依赖jar包,等待时间比较长,下载完成后若整个项目没有错误,则成功搭建好开发环境.
 
 # 平台部署及测试项目运行
-本平台代码托管在coding上，私有项目，项目成员可见
 
 1、Clone平台代码到220:/opt/build/下,并切换到dev分支
-```shell
-git clone https://git.coding.net/cutoutsy/miner.git
-cd miner/
-git checkout dev
-```
 
 2、修改平台配置文件路径，并查看或修改平台配置文件
 
@@ -69,15 +63,6 @@ storm jar miner-topo-1.0-SNAPSHOT.jar miner.topo.platform.TopologyMain miner-dev
 然后进入/usr/local/storm/logs/查看平台运行状况.
 
 注: 在服务器上日志服务器和代理更新程序是默认开启的,即可以不执行4、5步,若没有开启,则需要执行4、5步.
-
-## 关于平台一些UI地址
-在网关机上进行端口转发，端口不再是默认端口。这种方式需要在网关机/etc/rc.local下进行配置或开启
-
-storm ui: datafish.wicp.net:1025
-
-hadoop ui: datafish.wicp.net:1027
-
-hbase ui: datafish.wicp.net:1028
 
 
 ## 关于在redis里面的几个数据库的说明
@@ -133,13 +118,6 @@ data:
 > * link: Hbase里面与之有关系的表
 > * processWay: 数据处理方式（S：表示存储进数据库，l：表示进入循环）
 > * lcondition: 进入循环的任务id
-
-## 模块
-
-####miner-parse：网页解析模块
-####miner-store：数据存储模块
-####miner-spider：爬虫公共模块
-####miner-topo：storm topology模块
 
 
 ###任务定时执行采用开源的Quartz实现
