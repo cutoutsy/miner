@@ -1,5 +1,7 @@
 package miner.spider.utils;
 
+import miner.utils.MySysLogger;
+import miner.utils.RedisUtil;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -19,9 +21,14 @@ import java.util.List;
 
 public class XmlUtil {
 
-    private static MyLogger logger = new MyLogger(XmlUtil.class);
+    private static MySysLogger logger = new MySysLogger(XmlUtil.class);
+    private static RedisUtil ru;
+    private static Jedis redis;
 
-    public static Jedis redis;
+    static {
+        ru = new RedisUtil();
+        redis = ru.getJedisInstance();
+    }
 
     //This method is for read XML
     public static void readDocument(String file) throws DocumentException {
@@ -67,7 +74,6 @@ public class XmlUtil {
             projectValue += datainfo[i]+"$";
         }
         projectValue = projectValue.substring(0,projectValue.length()-1);
-        redis = RedisUtil.GetRedis();
         redis.hset(redisKey, projectKey, projectValue);
         System.out.println("sucess!!");
     }
@@ -89,7 +95,6 @@ public class XmlUtil {
             projectValue += datainfo[i]+"$";
         }
         projectValue = projectValue.substring(0,projectValue.length()-1);
-        redis = RedisUtil.GetRedis();
         redis.hset(redisKey, projectKey, projectValue);
         System.out.println("sucess!!");
     }
@@ -140,7 +145,6 @@ public class XmlUtil {
                 .execute("insert into project (wid, pid, name, description, datasource, schedule, precondition) values ('"
                         + wid + "','" + pid + "','"+ name + "','"+ description + "','"+ datasource + "','"+ schedule + "','"+ precondition + "')");
 
-        redis = RedisUtil.GetRedis();
         redis.hset("project_state", datainfo[0]+"-"+datainfo[1], state);
         redis.hset("project_executenum", datainfo[0]+"-"+datainfo[1], projectExecuteNUm);
         redis.hset("project_cronstate", datainfo[0]+"-"+datainfo[1], "3");
@@ -204,12 +208,12 @@ public class XmlUtil {
         String foreignvalue = datainfo[8];
         String link = datainfo[9];
         String processWay = datainfo[10];
-        String docType = datainfo[11];
+        String lcondition = datainfo[11];
         Connection con = MysqlUtil.getConnection();
         Statement stmt = con.createStatement();
         boolean rs = stmt
-                .execute("insert into data (wid, pid, tid, dataid , description, property, rowKey, foreignKey, foreignValue, link, processWay, docType) values ('"
-                        + wid + "','" + pid + "','"+ tid + "','"+ did + "','"+ description + "','"+ property + "','"+ rowKey + "','"+ foreignkey + "','"+ foreignvalue + "','"+ link + "','"+ processWay + "','"+ docType + "')");
+                .execute("insert into data (wid, pid, tid, dataid , description, property, rowKey, foreignKey, foreignValue, link, processWay, lcondition) values ('"
+                        + wid + "','" + pid + "','"+ tid + "','"+ did + "','"+ description + "','"+ property + "','"+ rowKey + "','"+ foreignkey + "','"+ foreignvalue + "','"+ link + "','"+ processWay + "','"+ lcondition + "')");
         System.out.println("sucess!!");
     }
 
@@ -288,6 +292,20 @@ public class XmlUtil {
 //            readTaskToMysql("./conf/task_elong.xml");
 //            readDataToMysql("./conf/data_elong.xml");
 //            readRegexToMysql("./conf/dataregex_elong.xml");
+
+//            readWorkspaceToMysql("./conf/workspace_4s.xml");
+//            readProjectToMysql("./conf/project_4s.xml");
+//            readTaskToMysql("./conf/task_4s_1.xml");
+//            readTaskToMysql("./conf/task_4s_2.xml");
+
+//            readDataToMysql("./conf/data_4s_1_task1.xml");
+//            readDataToMysql("./conf/data_4s_1_task2.xml");
+//            readDataToMysql("./conf/data_4s_2_task1.xml");
+//            readDataToMysql("./conf/data_4s_2_task2.xml");
+//
+            readRegexToMysql("./conf/dataregex_4s.xml");
+            readRegexToMysql("./conf/dataregex_4s_task2.xml");
+
         }catch (Exception ex){
             ex.printStackTrace();
         }

@@ -38,7 +38,6 @@ public class ParseTestBolt extends BaseBasicBolt{
 					parseData.put(dataInfo, entry.getValue());
 				}
 			}
-
 			for (Map.Entry<String, Data> entry : parseData.entrySet()) {
 				String dataInfo = entry.getKey();
 				String taskRegex = dataInfo.split("-")[0]+"-"+dataInfo.split("-")[1]+"-"+dataInfo.split("-")[2];
@@ -48,15 +47,15 @@ public class ParseTestBolt extends BaseBasicBolt{
 				for(int i = 0; i < properties.length; i++){
 					String tagName = properties[i];
 					String path = _regex.get(taskRegex+"-"+tagName);
-					data_rule_map.put(tagName, new RuleItem(tagName,
-							path, "text", DataType.STR));
+//					data_rule_map.put(tagName, new RuleItem(tagName,
+//							path, "text", DataType.STR));
 				}
 				Set<DataItem> data_item_set = new HashSet<DataItem>();
 				data_item_set.add(new DataItem(data.getWid(), data.getPid(), data.getTid(), data.getDid(), data.getRowKey(), data.getForeignKey(),
 						data.getForeignValue(), data.getLink(), properties));
 				/* 数据生成器 */
 				Generator g = new Generator();
-				g.create_obj(resource, Enum.valueOf(DocType.class,data.getDocType().toUpperCase()), CharSet.UTF8);
+				//g.create_obj(resource, Enum.valueOf(DocType.class,data.getDocType().toUpperCase()), CharSet.UTF8);
 				for (Map.Entry<String, RuleItem> entry1 : data_rule_map.entrySet()) {
 					g.set_rule(entry1.getValue());
 				}

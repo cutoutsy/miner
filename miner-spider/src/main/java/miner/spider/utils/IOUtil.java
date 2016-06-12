@@ -1,14 +1,17 @@
 package miner.spider.utils;
 
+import miner.utils.MySysLogger;
+import miner.utils.StaticValue;
+
 import java.io.*;
 import java.util.*;
 
 /**
- * Created by cutoutsy on 7/24/15.
+ * IO操作类
  */
 
 public class IOUtil {
-    private static MyLogger logger = new MyLogger(IOUtil.class);
+    private static MySysLogger logger = new MySysLogger(IOUtil.class);
 
     public static String readDirOrFile(String filePath, String fileEncoding) {
         File f = new File(filePath);
@@ -486,30 +489,11 @@ public class IOUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        // String source=readFile("resource/library.dic",null);
-        // String source = readFile(ReadConfigUtil.getValue("dic.path"), null);
-        // String source = readDirOrFile("d://temp", "gbk");
-        // System.out.println(source);
 
-        String source_string = IOUtil.readFile("d:\\test\\new_words2.txt",
-                "utf-8");
-        StringReader sr = new StringReader(source_string);
-        BufferedReader br = new BufferedReader(sr);
-        String temp = null;
-        StringBuilder sb = new StringBuilder();
 
-        HashSet<String> hashSet = new HashSet<String>();
+//        writeFile("/Users/cutoutsy/test.txt", "1111\n",true,StaticValue.default_encoding);
+//        writeFile("/Users/cutoutsy/test.txt", "2222\n",true,StaticValue.default_encoding);
 
-        while ((temp = br.readLine()) != null) {
-            if (temp.trim().length() > 1 && temp.trim().length() <= 4) {
-                if (!hashSet.contains(temp)) {
-                    sb.append(temp + "\n");
-                } else {
-                    hashSet.add(temp);
-                }
-            }
-        }
-        IOUtil.writeFile("d:\\test\\new_words3.txt", sb.toString(),
-                StaticValue.default_encoding);
+        File f = new File("/Users/cutoutsy/test.txt");
     }
 }

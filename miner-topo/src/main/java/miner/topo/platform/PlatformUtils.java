@@ -1,27 +1,33 @@
 package miner.topo.platform;
 
-import miner.spider.utils.MyLogger;
 import miner.spider.utils.MysqlUtil;
-import miner.spider.utils.RedisUtil;
+import miner.utils.MySysLogger;
+import miner.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * some PlatformUtils for the platform
  */
 public class PlatformUtils {
-    private static MyLogger logger = new MyLogger(PlatformUtils.class);
 
+    private static MySysLogger logger = new MySysLogger(PlatformUtils.class);
+
+    private static RedisUtil ru;
     public static Jedis redis;
+
+    static {
+        ru = new RedisUtil();
+        redis = ru.getJedisInstance();
+    }
 
     //monitor the project, return a project can execute
     public static String monitorProject(){
         String reProject = "";
-        redis = RedisUtil.GetRedis();
         Set<String> projectKeys = redis.hkeys("project_state");
         Iterator it = projectKeys.iterator();
         while(it.hasNext()){
@@ -58,7 +64,6 @@ public class PlatformUtils {
 
     public static String getProject(){
         String reProject = "";
-        redis = RedisUtil.GetRedis();
         long executeProjectNums = redis.llen("project_execute");
         if(executeProjectNums > 0) {
             String projectName = redis.rpop("project_execute");
@@ -95,12 +100,8 @@ public class PlatformUtils {
 
     //return execute task list
     public static List getProjectList(){
-//        String reProject = "";
         List<String> reList = new ArrayList<String>();
-
-        redis = RedisUtil.GetRedis();
         List<String> projectList = redis.lrange("project_execute", 0, -1);
-
         if(projectList.size() > 0) {
 
             for(int i = 0; i < projectList.size(); i++ ){
@@ -111,6 +112,7 @@ public class PlatformUtils {
                 if (pj.getCondition().equals("alone")) {
                     if(redis.hget("project_state", projectName).equals("die")) {
                         reList.add(projectName);
+                        redis.lrem("project_execute", 1, projectName);
                     }
                 } else {
                     boolean projectExecute = true;
@@ -132,6 +134,7 @@ public class PlatformUtils {
                     if (projectExecute) {
                         if(redis.hget("project_state", projectName).equals("die")) {
                             reList.add(projectName);
+                            redis.lrem("project_execute", 1, projectName);
                         }
                     }
 
@@ -141,18 +144,27 @@ public class PlatformUtils {
         return reList;
     }
 
-
     //generate url
     //http://cq.meituan.com/==http://[replace].meituan.com/
     //http://hotel.elong.com/dalian/40801255/==http://hotel.elong.com/dalian/[replace]/
     public static String GenerateUrl(String message,String urlPattern){
-        return urlPattern.replace("[replace]", message);
+        String reGenerateUrl = "";
+        boolean flag = true;
+        String[] sts = urlPattern.split("\\[replace\\]");
+        for(int i = 0; i < sts.length; i++ ){
+            String tempString = sts[i];
+            if(message.contains(tempString)){
+                flag = false;
+            }
+        }
+        if(flag){
+            reGenerateUrl = urlPattern.replace("[replace]", message);
+        }
+        return reGenerateUrl;
     }
 
-    //register project to schedule
+    //每秒刷新,查看是否有新的定时任务
     public static void registerProject(QuartzManager qManager){
-        redis = RedisUtil.GetRedis();
-//        redis.hkeys("project_cronState");
         Set<String> projectKeys = redis.hkeys("project_cronstate");
         Iterator it = projectKeys.iterator();
         while(it.hasNext()) {
@@ -160,22 +172,31 @@ public class PlatformUtils {
             String projectCronState = redis.hget("project_cronstate", projectKey);
             if(projectCronState.equals("3")){
                 QuartzJob qJob = new QuartzJob(projectKey);
-                qManager.initJob(qJob, ProjectJob.class);
-                redis.hset("project_cronstate", projectKey, "1");
+                if(qJob.getCronExpression().equals("none")){
+                    logger.info("项目"+projectKey+":不参与定时.");
+                }else {
+                    qManager.initJob(qJob, ProjectJob.class);
+                    redis.hset("project_cronstate", projectKey, "1");
+                }
             }
         }
     }
 
+
+    //初始化各个项目的定时
     public static void initRegisterProject(QuartzManager qManager){
-        redis = RedisUtil.GetRedis();
-//        redis.hkeys("project_cronState");
         Set<String> projectKeys = redis.hkeys("project_cronstate");
         Iterator it = projectKeys.iterator();
         while(it.hasNext()) {
             String projectKey = it.next().toString();
             QuartzJob qJob = new QuartzJob(projectKey);
-            qManager.initJob(qJob, ProjectJob.class);
-            redis.hset("project_cronstate", projectKey, "1");
+            //如果项目配置的定时策略为none,则项目不参与定时,由手工进行激活
+            if(qJob.getCronExpression().equals("none")){
+                logger.info("项目"+projectKey+":不参与定时.");
+            }else {
+                qManager.initJob(qJob, ProjectJob.class);
+                redis.hset("project_cronstate", projectKey, "1");
+            }
         }
     }
 
@@ -199,6 +220,9 @@ public class PlatformUtils {
     }
     //return emit url in the GenerateUrlBolt
     public static String getEmitUrl(String globalInfo, String message){
+        if(message.equals("none")){
+            return "";
+        }
         String emitUrl = "";
         String taskName = globalInfo;
         Task ta = new Task(taskName);
@@ -215,24 +239,61 @@ public class PlatformUtils {
         return emitUrl;
     }
 
+    public static String getUUID(){
+        String s = UUID.randomUUID().toString();
+        return s.substring(0,8)+s.substring(9,13)+s.substring(14,18)+s.substring(19,23)+s.substring(24);
+    }
+
     public static void main(String[] args){
-//        String reProject = monitorProject();
-//        System.out.println(reProject);
+//        System.out.println(getUUID());
+//        QuartzManager q = new QuartzManager();
+//        registerProject(q);
+        String kk = getEmitUrl("1-1-1", "none");
+        if(kk.isEmpty()){
+            System.out.println("==========");
+        }
+    }
 
-//        String url = GenerateUrl("cq","http://[replace].meituan.com/");
-//        String url = GenerateUrl("40801255", "http://hotel.elong.com/dalian/[replace]/");
-//        System.out.println(url);
+    public static String PaseRef(String res) throws IOException {
 
-        List reList = MysqlUtil.getTaskByProject("1", "1");
+        String result = res;
+        String price,sale,mydate = "";
+        String pattern = "(?<=(price = \\[))\\S+(?=(]))";
+        Pattern r = Pattern.compile(pattern);
 
-        for(int i = 0 ; i < reList.size(); i++){
-            System.out.println(reList.get(i));
+        Matcher m = r.matcher(result);
+        if (m.find( )) {
+            price = (String) m.group(0);
+//            System.out.println("Found value: " +  m.group(0) );
+        } else {
+            price = "none";
+//            System.out.println("NO MATCH");
         }
 
-//        String kk = "";
-//        if(kk.isEmpty()){
-//            System.out.println("11111111111");
-//        }
+        pattern =  "(?<=(sale = \\\"))\\S+(?=(\\\"))";
+        r = Pattern.compile(pattern);
+
+        m = r.matcher(result);
+        if (m.find( )) {
+            sale = (String) m.group(0);
+
+//            System.out.println("Found value: " + m.group(0) );
+        } else {
+            sale = "none";
+//            System.out.println("NO MATCH");
+        }
+        pattern =  "(?<=(date = \\\"))\\S+(?=(\\\"))";
+        r = Pattern.compile(pattern);
+
+        m = r.matcher(result);
+        if (m.find( )) {
+            mydate = (String) m.group(0);
+//            System.out.println("Found value: " + m.group(0) );
+        } else {
+            mydate = "none";
+//            System.out.println("NO MATCH");
+        }
+        return "{\"price\":\""+price+"\""+","+"\"sale\":"+"\""+sale+"\""+","+"\"date\":"+"\""+mydate+"\""+"}";
     }
 
 }

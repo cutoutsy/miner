@@ -1,8 +1,9 @@
 package miner.spider.pojo;
 
 /**
- * Created by cutoutsy on 7/24/15.
+ * Proxy Object Class
  */
+
 public class ProxyPojo {
     private String ip;
     private int port;

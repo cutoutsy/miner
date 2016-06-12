@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<task>
+    <wid>3</wid>
+    <pid>1</pid>
+    <taskid>1</taskid>
+    <name>4s_info</name>
+    <description>4s info</description>
+    <urlpattern></urlpattern>
+    <urlgenerate>false</urlgenerate>
+    <isloop>false</isloop>
+</task>

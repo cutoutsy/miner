@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+    <workspace>3</workspace>
+    <pid>1</pid>
+    <name>4s</name>
+    <description>this project for getting the 4s detail of beijing</description>
+    <datasource>beijing4s</datasource>
+    <schedule>* 0/10 * * * ?</schedule>
+    <state>die</state>
+    <condition>alone</condition>
+    <executenum>0</executenum>
+</project>

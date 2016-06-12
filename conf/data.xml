@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <data>
-    <wid>1</wid>
+    <wid>3</wid>
     <pid>1</pid>
     <tid>1</tid>
     <dataid>1</dataid>
@@ -13,10 +13,9 @@
         <name>registerDays</name>
         <name>uid</name>
     </property>
-    <rowkey>uid</rowkey>
+    <rowkey>none</rowkey>
     <foreignkey>none</foreignkey>
     <foreignvalue>none</foreignvalue>
     <link>none</link>
     <processway>s</processway>
-    <doctype>json</doctype>
 </data>

@@ -28,7 +28,7 @@ public class StoreTestBolt extends BaseBasicBolt {
 			System.out.println("globalINfo:"+globalInfo);
 			System.out.println("data:" + data);
 
-			ImportData.importData(data);
+//			ImportData.importData(data);
 		} catch (Exception ex) {
 			logger.error("store error!"+ex);
 			ex.printStackTrace();

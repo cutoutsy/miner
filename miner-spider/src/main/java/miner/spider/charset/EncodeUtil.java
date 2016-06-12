@@ -5,7 +5,7 @@ import miner.spider.pojo.ContentPojo;
 import miner.spider.utils.HtmlParserUtil;
 import miner.spider.utils.ObjectAndByteArrayConvertUtil;
 import miner.spider.utils.RegexPaserUtil;
-import miner.spider.utils.StaticValue;
+import miner.utils.StaticValue;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -60,8 +60,8 @@ public class EncodeUtil {
                 String oldTitle = contentPojo.getTitle();
 
                 if (!isFoundCharset) {
-                    // 此处的是否全中文判断，用默认的编码得到的是正常的，用探测的反而不行了，很奇怪，在此处做此判断
-
+                    // 此处的是否全中文判断
+                    //detect code
                 } else {
                     // 解决GBK为charset,但实际为UTF-8的情况
                     if (regexUtil.isAllChineseChar(oldTitle)) {

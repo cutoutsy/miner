@@ -1,10 +1,10 @@
 package miner.topo.platform;
 
 import miner.spider.utils.MysqlUtil;
-import miner.spider.utils.RedisUtil;
+import miner.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
-import java.util.List;
+import java.util.HashMap;
 
 /**
  *
@@ -13,14 +13,25 @@ import java.util.List;
  */
 public class Task {
     private static Jedis redis;
+    private static RedisUtil ru;
 
     private String wid;
     private String pid;
     private String tid;
-    private String name;
+//    private String name;
     private String description;
     private String urlpattern;
     private String urlgenerate;
+    //任务是否开启代理
+    private String proxy_open;
+
+    public String getProxy_open() {
+        return proxy_open;
+    }
+
+    public void setProxy_open(String proxy_open) {
+        this.proxy_open = proxy_open;
+    }
 
     public String getIsloop() {
         return isloop;
@@ -43,18 +54,16 @@ public class Task {
     private String state;
 
     public Task(String taskName) {
-        redis = RedisUtil.GetRedis();
-//        String taskValue = redis.hget("taskInfo", taskName);
-        List<String> taskList = MysqlUtil.getTask(taskName);
-        this.wid = taskList.get(0);
-        this.pid = taskList.get(1);
-        this.tid = taskList.get(2);
+        HashMap<String, String> taskMap = MysqlUtil.getTask(taskName);
+        this.wid = taskMap.get("wid");
+        this.pid = taskMap.get("pid");
+        this.tid = taskMap.get("tid");
 
-        this.name = taskList.get(3);;
-        this.description = taskList.get(4);;
-        this.urlpattern = taskList.get(5);;
-        this.urlgenerate = taskList.get(6);
-        this.isloop = taskList.get(7);
+        this.description = taskMap.get("description");;
+        this.urlpattern = taskMap.get("urlpattern");;
+        this.urlgenerate = taskMap.get("urlgenerate");
+        this.isloop = taskMap.get("isloop");
+        this.proxy_open = taskMap.get("proxy_open");
     }
 
     public String getWid() {
@@ -79,14 +88,6 @@ public class Task {
 
     public void setTid(String tid) {
         this.tid = tid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {
@@ -116,13 +117,15 @@ public class Task {
     //write Project info to redis
     public static void writeTaskToRedis(Task ta){
         String taskKey = ta.wid+"-"+ta.pid+"-"+ta.tid;
-        String taskValue = ta.name+"$"+ta.description+"$"+ta.urlpattern+"$"+ta.urlgenerate+"$"+ta.state;
-        redis = RedisUtil.GetRedis();
-        redis.hset("taskInfo", taskKey, taskValue);
+        String taskValue = ta.description+"$"+ta.urlpattern+"$"+ta.urlgenerate+"$"+ta.state;
+//        redis = RedisUtil.GetRedis();
+//        ru = new RedisUtil();
+//        redis = ru.getJedisInstance();
+//        redis.hset("taskInfo", taskKey, taskValue);
     }
 
     public static void main(String[] args){
-        Task ta = new Task("1-1-1");
-        System.out.println(ta.urlgenerate);
+        Task ta = new Task("2-1-1");
+        System.out.println(ta.urlgenerate+"=="+ta.getUrlpattern()+"--"+ta.getProxy_open());
     }
 }

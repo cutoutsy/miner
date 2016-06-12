@@ -2,7 +2,7 @@ package miner.topo.platform;
 
 
 import miner.spider.utils.MysqlUtil;
-import miner.spider.utils.RedisUtil;
+import miner.utils.RedisUtil;
 import redis.clients.jedis.Jedis;
 
 import java.util.List;
@@ -12,6 +12,7 @@ import java.util.List;
  */
 
 public class Project {
+    private static RedisUtil ru;
     private static Jedis redis;
 
     private String wid;
@@ -34,9 +35,12 @@ public class Project {
 
     private String condition;
 
-    public Project(String projectName) {
+    static {
+        ru = new RedisUtil();
+        redis = ru.getJedisInstance();
+    }
 
-        redis = RedisUtil.GetRedis();
+    public Project(String projectName) {
 
         List<String> projectList = MysqlUtil.getProject(projectName);
         String projectState = redis.hget("project_state", projectName);
@@ -121,7 +125,6 @@ public class Project {
     public static void writeProjectToRedis(Project pj){
         String projectKey = pj.wid+"-"+pj.pid;
         String projectValue = pj.state;
-        redis = RedisUtil.GetRedis();
         redis.hset("project_state", projectKey, projectValue);
         redis.hincrBy("project_executenum", projectKey, 1);
     }
@@ -129,7 +132,6 @@ public class Project {
     public static void addProjectExecuteNum(Project pj){
         String projectKey = pj.wid+"-"+pj.pid;
         String projectValue = pj.state;
-        redis = RedisUtil.GetRedis();
         redis.hincrBy("project_executenum", projectKey, 1);
     }
 

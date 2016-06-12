@@ -2,6 +2,9 @@ package miner.spider.utils;
 
 import com.mysql.jdbc.Driver;
 import miner.spider.pojo.Data;
+import miner.utils.MySysLogger;
+import miner.utils.PlatformParas;
+import miner.utils.StaticValue;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -14,12 +17,15 @@ import java.util.*;
  */
 public class MysqlUtil {
 
+    private static MySysLogger logger = new MySysLogger(MysqlUtil.class);
+
     // 返回mysql连接
     public static Connection getConnection() {
-        String url = "jdbc:mysql://"+StaticValue.mysql_host+":"+StaticValue.mysql_port+"/"+StaticValue.mysql_database+"?useUnicode=true&characterEncoding=utf8";
+        String url = "jdbc:mysql://"+ PlatformParas.mysql_host+":"+PlatformParas.mysql_port+"/"+PlatformParas.mysql_database+"?useUnicode=true&characterEncoding=utf8";
+//        logger.info("Mysql Info: "+url);
         Properties info = new Properties();
-        info.put("user", StaticValue.mysql_user);
-        info.put("password", StaticValue.mysql_password);
+        info.put("user", PlatformParas.mysql_user);
+        info.put("password", PlatformParas.mysql_password);
         Driver driver;
         Connection con = null;
         try {
@@ -75,8 +81,9 @@ public class MysqlUtil {
         return reList;
     }
 
-    public static List getTask(String taskName){
-        List reList = new ArrayList();
+    public static HashMap<String, String> getTask(String taskName){
+//        List reList = new ArrayList();
+        HashMap<String, String> reData = new HashMap<String, String>();
         Connection con = getConnection();
         try {
             String wid = taskName.split("-")[0];
@@ -88,10 +95,18 @@ public class MysqlUtil {
                     .executeQuery("select * from task where wid="
                             + wid+" AND pid=" + pid+" AND tid=" + tid);
             rs.next();// 指向有效的一行
-            for(int i = 2; i < 10; i++){
-                String re = rs.getString(i);
-                reList.add(re);
-            }
+            reData.put("wid", rs.getString("wid"));
+            reData.put("pid", rs.getString("pid"));
+            reData.put("tid", rs.getString("tid"));
+            reData.put("description", rs.getString("description"));
+            reData.put("urlpattern", rs.getString("urlpattern"));
+            reData.put("urlgenerate", rs.getString("urlgenerate"));
+            reData.put("isloop", rs.getString("isloop"));
+            reData.put("proxy_open", rs.getString("proxy_open"));
+//            for(int i = 2; i < 10; i++){
+//                String re = rs.getString(i);
+//                reList.add(re);
+//            }
         }catch(Exception ex){
             ex.printStackTrace();
         }finally {
@@ -101,7 +116,7 @@ public class MysqlUtil {
                 ex.printStackTrace();
             }
         }
-        return reList;
+        return reData;
     }
 
     public static List getTaskByProject(String wid, String pid){
@@ -149,10 +164,10 @@ public class MysqlUtil {
                 dt.setForeignValue(rs.getString("foreignValue"));
                 dt.setLink(rs.getString("link"));
                 dt.setProcessWay(rs.getString("processWay"));
-                dt.setDocType(rs.getString("docType"));
+                dt.setLcondition(rs.getString("lcondition"));
                 String hashKey = dt.getWid()+"-"+dt.getPid()+"-"+dt.getTid()+"-"+dt.getDid();
-                System.out.println("hashKey:"+hashKey);
-                System.out.println("property:"+dt.getProperty());
+//                System.out.println("hashKey:"+hashKey);
+//                System.out.println("property:"+dt.getProperty());
                 reData.put(hashKey, dt);
             }
         }catch(Exception ex){
@@ -188,10 +203,10 @@ public class MysqlUtil {
                 dt.setForeignValue(rs.getString("foreignValue"));
                 dt.setLink(rs.getString("link"));
                 dt.setProcessWay(rs.getString("processWay"));
-                dt.setDocType(rs.getString("docType"));
+                dt.setLcondition(rs.getString("lcondition"));
                 String hashKey = dt.getWid()+"-"+dt.getPid()+"-"+dt.getTid()+"-"+dt.getDid();
-                System.out.println("hashKey:"+hashKey);
-                System.out.println("property:"+dt.getProperty());
+//                System.out.println("hashKey:"+hashKey);
+//                System.out.println("property:"+dt.getProperty());
                 reData.put(hashKey, dt);
             }
         }catch(Exception ex){
@@ -231,7 +246,7 @@ public class MysqlUtil {
             reData.put("foreignValue", rs.getString("foreignValue"));
             reData.put("link", rs.getString("link"));
             reData.put("processWay", rs.getString("processWay"));
-            reData.put("docType", rs.getString("docType"));
+            reData.put("lcondition", rs.getString("lcondition"));
         }catch(Exception ex){
             ex.printStackTrace();
         }finally {
@@ -255,8 +270,8 @@ public class MysqlUtil {
                 String tagName = rs.getString("tagname");
                 String path = rs.getString("path");
                 String hashKey = wid+"-"+pid+"-"+tid+"-"+tagName;
-                System.out.println("hashKey:"+hashKey);
-                System.out.println("property:" + path);
+//                System.out.println("hashKey:"+hashKey);
+//                System.out.println("property:" + path);
                 reRegex.put(hashKey, path);
             }
         }catch(Exception ex){
@@ -264,18 +279,10 @@ public class MysqlUtil {
         }finally {
             release(stmt, con);
         }
-
         return reRegex;
     }
 
     public static void main(String[] args){
-//        Connection conn = getConnection();
-//        System.out.println(conn);
-//        getProject("1-1");
-//        getTask("1-1-1");
-//        getData();
-//        getRegex();
-//        getData("1-1-1-1");
         HashMap<String, Data> newData = getDataByDataInfo("1", "1", "1");
         for (Map.Entry<String, Data> entry : newData.entrySet()) {
             System.out.println(entry.getKey()+":"+entry.getValue().getProcessWay());

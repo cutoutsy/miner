@@ -10,7 +10,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
+/*
+ * @ name:      JsonUtil.java
+ * @ author:    white
+ * @ info:      处理JSON文档的类
+ * */
 public class JsonUtil {
 	private JSONObject root_obj;
 	/* 存放JSONObj文本的队列 */
@@ -33,17 +37,20 @@ public class JsonUtil {
 			String root_ele = root_it.next().toString();// tag
 			String root_ele_obj_str = get_Json_Str(root_obj, root_ele);// str
 			if (root_ele_obj_str.startsWith("[")) {
-				try {
-					JSONArray root_array = new JSONArray(root_ele_obj_str);
-					for (int i = 0; i < root_array.length(); i++) {
-						String array_obj_str = root_array.getJSONObject(i)
-								.toString();
-						json_obj_queue.offer(array_obj_str);
-						json_tag_queue.offer(root_ele + i);
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
+				json_obj_queue.offer(root_ele_obj_str);
+				json_tag_queue.offer(root_ele + "0");
+				//注释以下代码,将会在解析json时将数组当作一个值,不会在进入数组里面遍历
+//				try {
+//					JSONArray root_array = new JSONArray(root_ele_obj_str);
+//					for (int i = 0; i < root_array.length(); i++) {
+//						String array_obj_str = root_array.getJSONObject(i)
+//								.toString();
+//						json_obj_queue.offer(array_obj_str);
+//						json_tag_queue.offer(root_ele + i);
+//					}
+//				} catch (JSONException e) {
+//					e.printStackTrace();
+//				}
 			} else {
 				json_obj_queue.offer(root_ele_obj_str);
 				json_tag_queue.offer(root_ele + "0");
@@ -90,6 +97,12 @@ public class JsonUtil {
 				}
 			}
 		}
+
+//		Iterator it = map.keySet().iterator();
+//		while(it.hasNext()){
+//			String key = it.next().toString();
+//			System.out.println(key+"=="+map.get(key));
+//		}
 	}
 
 	/*

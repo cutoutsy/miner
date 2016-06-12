@@ -1,9 +1,8 @@
 package miner.spider.manager;
 
 import miner.spider.pojo.ProxyPojo;
-import miner.spider.utils.MyLogger;
 import miner.spider.utils.ProxyUtil;
-import miner.spider.utils.StaticValue;
+import miner.utils.StaticValue;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -19,10 +18,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by cutoutsy on 7/24/15.
+ * Httpclient Manager Class
  */
+
 public class HttpClientPojoManager {
-    public static MyLogger logger = new MyLogger(HttpClientPojoManager.class);
+//    public static MyLogger logger = new MyLogger(HttpClientPojoManager.class);
     // 连接池管理器，用于多线程调用
     public static PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
     public static int pool_current = 0;
@@ -52,6 +52,8 @@ public class HttpClientPojoManager {
         RequestConfig.Builder config_builder = RequestConfig.custom();
         config_builder.setSocketTimeout(StaticValue.http_connection_timeout);
         config_builder.setConnectTimeout(StaticValue.http_read_timeout);
+        //设置请求连接的超时时间
+        config_builder.setConnectionRequestTimeout(StaticValue.http_getconnection_timeout);
         config_builder.setRedirectsEnabled(false);
         default_requestConfig = config_builder.build();
     }
@@ -139,7 +141,7 @@ public class HttpClientPojoManager {
         private  HttpClientPojo(ProxyPojo proxyPojo) {
             if (proxyPojo == null) {
                 this.proxy = null;
-                logger.info("proxyPojo is null");
+//                logger.info("proxyPojo is null");
                 this.httpClient = HttpClients.custom().build();
             } else {
                 this.proxyPojo = proxyPojo;

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="entity.Regex" table="regex">
+    	<id name="id" type="int" column="id">
+            <generator class="increment"/>
+        </id>
+    	<property name="wid" type="java.lang.String"/>
+        <property name="pid" type="java.lang.String"/>
+        <property name="tid" type="java.lang.String"/>
+        <property name="tagname" type="java.lang.String"/>
+        <property name="path" type="java.lang.String"/>
+
+    </class>
+</hibernate-mapping>

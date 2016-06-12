@@ -6,14 +6,14 @@ import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseRichSpout;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
-import miner.spider.utils.MyLogger;
-import miner.spider.utils.RedisUtil;
 import miner.store.CreateTable;
 import miner.topo.enumeration.ProjectState;
 import miner.topo.platform.PlatformUtils;
 import miner.topo.platform.Project;
 import miner.topo.platform.QuartzManager;
 import miner.topo.platform.Task;
+import miner.utils.MySysLogger;
+import miner.utils.RedisUtil;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
@@ -25,28 +25,36 @@ import java.util.Map;
 
 public class BeginSpout extends BaseRichSpout{
 
-	private static MyLogger logger = new MyLogger(BeginSpout.class);
-
+	private static MySysLogger logger = new MySysLogger(BeginSpout.class);
 	private SpoutOutputCollector _collector;
 	private HashMap<String, String> _runningProject = new HashMap<String, String>();
 	private QuartzManager _qManager;
-	private int length;
+	private RedisUtil ru;
 	private Jedis redis;
 	
-	//消息成功处理
 	public void ack(Object msgId){
-		logger.info("message:" + msgId + "processd sucess!");
+		if(redis.hexists("message", msgId.toString())) {
+            redis.hdel("message", msgId.toString());
+            logger.info("message:" + msgId + "processd sucess!");
+        }else{
+            logger.error("message:" + msgId + " is not in the message");
+        }
 	}
 	
-	//消息失败处理, ensure the message processed
+	//ensure the message processed
 	public void fail(Object msgId){
-		logger.info("消息处理失败:"+msgId+";正在重新发送......");
-		String message = redis.hget("message", msgId.toString());
-		_collector.emit(new Values(msgId, message), msgId);
+        //判断在message是否存在,若不存在,输出到日志里,并分析原因
+        if(redis.hexists("message", msgId.toString())) {
+            logger.info("消息处理失败:" + msgId + ";正在重新发送......");
+            String message = redis.hget("message", msgId.toString());
+            String globalInfo = msgId.toString().split("-")[0] + "-" + msgId.toString().split("-")[1] + "-" + msgId.toString().split("-")[2];
+            _collector.emit(new Values(globalInfo, message), msgId);
+        }else{
+            logger.error("消息处理失败:" + msgId + " 删除失败.");
+        }
 	}
 
 	public void nextTuple() {
-
 		try {
 			Thread.sleep(1000);
 			PlatformUtils.registerProject(_qManager);
@@ -59,11 +67,14 @@ public class BeginSpout extends BaseRichSpout{
 					Project pj = new Project(tempProjectName);
 					//create table in hbase
 					CreateTable.mysqlCheck(pj.getWid(), pj.getPid());
+
 					String tempDatasource = pj.getDatasource();
 					if (redis.llen(tempDatasource + "1") == redis.smembers(tempDatasource).size()) {
 						_runningProject.put(newAddProject.get(i), tempDatasource + "1");
-					} else {
+					} else if(redis.llen(tempDatasource + "2") == redis.smembers(tempDatasource).size()){
 						_runningProject.put(newAddProject.get(i), tempDatasource + "2");
+					}else{
+						logger.error(tempProjectName + " 消息源数据不一致.");
 					}
 					redis.hset("project_state", tempProjectName, ProjectState.running.toString());
 				}
@@ -91,9 +102,10 @@ public class BeginSpout extends BaseRichSpout{
 							emitMessage = redis.lpop(oneProjectDatasource);
 							String taskId = task.getTid();
 							String globalInfo = oneProjectName + "-" + taskId;
-							_collector.emit(new Values(globalInfo, emitMessage), globalInfo);
-							redis.hset("message", globalInfo, emitMessage);
-							System.out.println(globalInfo+"--"+emitMessage + "  sending...");
+							String msgId = globalInfo+"-"+PlatformUtils.getUUID();
+							_collector.emit(new Values(globalInfo, emitMessage), msgId);
+							redis.hset("message", msgId, emitMessage);
+							logger.info(globalInfo+"--"+emitMessage + "  sending...");
 						}
 					}
 				}
@@ -101,16 +113,19 @@ public class BeginSpout extends BaseRichSpout{
 					redis.hset("project_state", oneProjectName, ProjectState.die.toString());
 				}
 				String oneOriginDatasource = oneProjectDatasource.substring(0, oneProjectDatasource.length()-1);
-				if (oneProjectDatasource.contains("1")) {
+				if (oneProjectDatasource.contains("1") && !emitMessage.isEmpty()) {
 					redis.rpush(oneOriginDatasource + "2", emitMessage);
-				} else {
+				} else if(oneProjectDatasource.contains("2") && !emitMessage.isEmpty() ){
 					redis.rpush(oneOriginDatasource + "1", emitMessage);
+				}else{
+					logger.error("message exchange error!");
 				}
 			}
 		if(_runningProject.size() <= 0){
 			logger.info("No project need to execute!");
 		}
 		}catch(Exception e){
+			logger.error("error:"+MySysLogger.formatException(e));
 			e.printStackTrace();
 		}
 	}
@@ -118,16 +133,21 @@ public class BeginSpout extends BaseRichSpout{
 	public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
 		try {
 			_collector = collector;
-			redis = RedisUtil.GetRedis();
+
+			ru = new RedisUtil();
+			redis = ru.getJedisInstance();
+
 			SchedulerFactory schedulerFactory = new StdSchedulerFactory();
 			Scheduler scheduler = schedulerFactory.getScheduler();
 			_qManager = new QuartzManager();
 			_qManager.setScheduler(scheduler);
 			PlatformUtils.initRegisterProject(_qManager);
 			scheduler.start();
+
 			//init Hbase tables
 			CreateTable.initHbaseTable();
 		}catch(Exception ex){
+			logger.error("error:"+MySysLogger.formatException(ex));
 			ex.printStackTrace();
 		}
 	}
@@ -135,7 +155,10 @@ public class BeginSpout extends BaseRichSpout{
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		declarer.declare(new Fields("globalInfo","message"));
 	}
-	
+
+	public void close() {
+		ru.release_jedis(redis);
+	}
 	
 }
 

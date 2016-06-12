@@ -3,13 +3,21 @@ package miner.spider.httpclient;
 import miner.spider.charset.EncodeUtil;
 import miner.spider.enumeration.HttpRequestMethod;
 import miner.spider.manager.HttpClientPojoManager;
+import miner.spider.pojo.ContentPojo;
 import miner.spider.pojo.HttpRequestPojo;
 import miner.spider.utils.ObjectAndByteArrayConvertUtil;
-import miner.spider.utils.StaticValue;
+import miner.utils.MySysLogger;
+import miner.utils.StaticValue;
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -18,9 +26,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by cutoutsy on 7/24/15.
+ * Httpclient Download Class
  */
+
 public class Crawl4HttpClient {
+
+    private static MySysLogger logger = new MySysLogger(Crawl4HttpClient.class);
 
     public static String crawlWebPage(HttpRequestPojo requestPojo){
         CloseableHttpResponse response = null;
@@ -32,6 +43,7 @@ public class Crawl4HttpClient {
                 rb = RequestBuilder.post().setUri(new URI(requestPojo.getUrl()));
             }
             Map<String,Object> map = null;
+
             //设置头部信息
             if((map = requestPojo.getHeaderMap()) != null){
                 for(Map.Entry<String,Object> entry:map.entrySet()){
@@ -53,6 +65,8 @@ public class Crawl4HttpClient {
             //查看是否设置代理
             HttpUriRequest requestAll = null;
             HttpClientPojoManager.HttpClientPojo httpClientPojo = HttpClientPojoManager.getHttpClientPojo();
+//            HttpClientPojoManager.HttpClientPojo httpClientPojo = new HttpClientPojoManager.HttpClientPojo();
+
             //执行请求
             if(StaticValue.proxy_open){
                 rb.setConfig(httpClientPojo.getRequestConfig());
@@ -70,12 +84,14 @@ public class Crawl4HttpClient {
         }catch(SocketTimeoutException timeOutException){
             timeOutException.printStackTrace();
         }catch (Exception e) {
+            logger.error("error:"+MySysLogger.formatException(e));
             e.printStackTrace();
         }finally{
             if(response != null){
                 try{
                     response.close();
                 }catch(IOException e){
+                    logger.error("error:"+MySysLogger.formatException(e));
                     e.printStackTrace();
                 }
             }
@@ -91,17 +107,91 @@ public class Crawl4HttpClient {
         try{
             HttpEntity entity = response.getEntity();
             byte[] byteArray = ObjectAndByteArrayConvertUtil.getByteArrayOutputStream(entity.getContent());
-//			ContentPojo contentPojo = encodeUtil.getWebPageCharset(byteArray,entity.getContentType().toString());
-//			if(contentPojo != null){
-//				return new String(byteArray,contentPojo.getCharset());
-//			}
-            return new String(byteArray,"utf-8");
+			ContentPojo contentPojo = encodeUtil.getWebPageCharset(byteArray,entity.getContentType().toString());
+            if(contentPojo.getCharset() == null){
+                //return json,can not find charset
+                return new String(byteArray,"utf-8");
+            }
+			if(contentPojo != null){
+				return new String(byteArray,contentPojo.getCharset());
+			}
+//            return new String(byteArray,"gb2312");
         }catch(Exception e){
             e.printStackTrace();
         }finally{
+            if(response != null){
+                try{
+                    response.close();
+                }catch(IOException e){
+                    logger.error("error:"+MySysLogger.formatException(e));
+                    e.printStackTrace();
+                }
+            }
         }
         return null;
     }
+
+    /**
+     *
+     * @param url   request url
+     * @param proxyString   proxy ip:port
+     * 发生异常返回exception,返回结果错误返回error,成功返回请求网页的源代码
+     */
+    public static String downLoadPage(String url, String proxyString){
+        String reString = "";
+        String ip = proxyString.split(":")[0];
+        int port = Integer.valueOf(proxyString.split(":")[1]);
+
+        HttpClient httpClient = HttpClients.custom().build();
+
+        HttpHost proxy = new HttpHost(ip, port);
+        //无需验证的
+        DefaultProxyRoutePlanner routePlanner= new DefaultProxyRoutePlanner(proxy);
+        httpClient = HttpClients.custom().setRoutePlanner(routePlanner).build();
+        RequestConfig.Builder config_builder = RequestConfig.custom();
+        config_builder.setProxy(proxy);
+
+        config_builder.setSocketTimeout(StaticValue.http_connection_timeout);
+        config_builder.setConnectTimeout(StaticValue.http_read_timeout);
+        config_builder.setConnectionRequestTimeout(StaticValue.http_getconnection_timeout);
+        RequestConfig requestConfig = config_builder.build();
+
+        RequestBuilder rb = null;
+        rb = RequestBuilder.get().setUri(URI.create(url));
+
+        HttpUriRequest requestAll = null;
+        rb.setConfig(requestConfig);
+        requestAll = rb.build();
+        CloseableHttpResponse response = null;
+        try {
+            response = (CloseableHttpResponse) httpClient.execute(requestAll);
+            int statusCode = response.getStatusLine().getStatusCode();
+
+            //状态码不是200,不会发生异常,不同返回以区分
+            if (statusCode == HttpStatus.SC_OK) {
+                reString = Crawl4HttpClient.parserResponse_v2(response);
+            } else {
+                logger.error(response.getStatusLine());
+                reString = "error";
+            }
+        }catch (Exception ex){
+            reString = "exception";
+            logger.error("execute request error:"+MySysLogger.formatException(ex));
+            ex.printStackTrace();
+        }finally {
+            if(response != null){
+                try{
+                    response.close();
+                }catch(IOException e){
+                    logger.error("error:"+MySysLogger.formatException(e));
+                    e.printStackTrace();
+                }
+            }
+            httpClient.getConnectionManager().shutdown();
+        }
+        return reString;
+    }
+
 
     public static String downLoadPage(String url){
 
@@ -110,7 +200,6 @@ public class Crawl4HttpClient {
 
         Map<String, Object> headerMap = new HashMap<String, Object>();
         Map<String, Object> parasMap = new HashMap<String, Object>();
-        // Map<String, String> formNameValueMap = new HashMap<String, String>();
 
         requestPojo.setUrl(url);
         requestPojo.setHeaderMap(headerMap);
@@ -169,6 +258,7 @@ public class Crawl4HttpClient {
             // 此种情况将会认为可能是代理异常失效，但暂不处理这种异常对代理替换策略的影响的!
             timeOutException.printStackTrace();
         } catch (Exception e) {
+            logger.error("error:"+MySysLogger.formatException(e));
             e.printStackTrace();
         }
         return null;
@@ -176,27 +266,18 @@ public class Crawl4HttpClient {
 
     public static void main(String[] args) throws Exception {
 
-        HttpRequestPojo requestPojo = new HttpRequestPojo();
-        requestPojo.setRequestMethod(HttpRequestMethod.GET);
+//        System.out.println("done!");
+//        String url = "http://hotel.elong.com/isajax/HotelFillOrder/GetOrderCountIn24Hours?hotelId=40101627";
+////        String proxy = "115.159.5.247:8080";
+//        String re = downLoadPage(url);
+//        System.out.println(re);
 
-//		String url = "http://www.oscca.gov.cn/";
-        String url = "http://www.baidu.com/";
-        Map<String, Object> headerMap = new HashMap<String, Object>();
-        Map<String, Object> parasMap = new HashMap<String, Object>();
-        // Map<String, String> formNameValueMap = new HashMap<String, String>();
-
-        requestPojo.setUrl(url);
-        requestPojo.setHeaderMap(headerMap);
-        requestPojo.setParasMap(parasMap);
-        // form name value是为非iso-8859-1编码的value pair而添加,当然是指存在中文的情况
-        // requestPojo.setFormNameValePairMap(formNameValueMap,
-        // CharsetEnum.UTF8);
-        for(int i = 0;i < 10;i++){
-            String source = crawlWebPage(requestPojo);
-            System.out.println(source);
+        try {
+            int k = 3/0;
+        }catch (Exception e){
+            logger.error("error"+e);
         }
 
-        System.out.println("done!");
     }
 
 }

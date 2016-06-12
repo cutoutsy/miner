@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<regex>
+    <wid>3</wid>
+    <pid>1</pid>
+    <tid>1</tid>
+    <rules>
+        <item tagname="name">html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dt0.a0.title</item>
+        <item tagname="phone">html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd0.em0.b0.text</item>
+        <item tagname="address">html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd1.span1.text</item>
+        <item tagname="sale">html0.body0.div8.div0.div0.div1.ul0.li_1_9_.dl0.dd2.a0.text</item>
+        <item tagname="page_link">html0.body0.div8.div0.div0.div1.div0.a_1_6_.href</item>
+    </rules>
+
+</regex>
+
+
+

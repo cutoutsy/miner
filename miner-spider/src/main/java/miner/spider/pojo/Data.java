@@ -1,10 +1,8 @@
 package miner.spider.pojo;
 
 import miner.spider.utils.MysqlUtil;
-import miner.spider.utils.RedisUtil;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Data object
@@ -21,7 +19,7 @@ public class Data {
     private String foreignValue;
     private String link;
     private String processWay;
-    private String docType;
+    private String lcondition;
 
     public Data(String dataName) {
         HashMap<String, String> dataMap = MysqlUtil.getData(dataName);
@@ -36,7 +34,7 @@ public class Data {
         this.foreignValue = dataMap.get("foreignValue");
         this.link = dataMap.get("link");
         this.processWay = dataMap.get("processWay");
-        this.docType = dataMap.get("docType");
+        this.lcondition = dataMap.get("lcondition");
     }
 
     public Data(){
@@ -131,12 +129,12 @@ public class Data {
         this.processWay = processWay;
     }
 
-    public String getDocType() {
-        return docType;
+    public String getLcondition() {
+        return lcondition;
     }
 
-    public void setDocType(String docType) {
-        this.docType = docType;
+    public void setLcondition(String lcondition) {
+        this.lcondition = lcondition;
     }
 
 

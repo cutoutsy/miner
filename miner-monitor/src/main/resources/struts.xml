@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="workspace" namespace="/workspace" extends="struts-default">
+		<action name="*_*" class="action.{1}Action" method="{2}">
+			<result name="workspace_query_success">/workspace/workspace_query_success.jsp</result>
+            <result name="delete_success" type="chain">Workspace_query</result><!--删除成功,跳转到查询动作-->
+            <result name="add_success" type="chain">Workspace_query</result>
+            <result name="modify_success">/workspace/workspace_modify.jsp</result>
+            <result name="update_success" type="chain">Workspace_query</result>
+		</action>
+	</package>
+
+    <package name="project" namespace="/project" extends="struts-default">
+        <action name="*_*" class="action.{1}Action" method="{2}">
+            <result name="project_query_success">/project/project_query_success.jsp</result>
+            <result name="delete_success" type="chain">Project_query</result><!--删除成功,跳转到查询动作-->
+            <result name="add_success" type="chain">Project_query</result>
+            <result name="modify_success">/project/project_modify.jsp</result>
+            <result name="update_success" type="chain">Project_query</result>
+        </action>
+    </package>
+
+    <package name="task" namespace="/task" extends="struts-default">
+        <action name="*_*" class="action.{1}Action" method="{2}">
+            <result name="task_query_success">/task/task_query_success.jsp</result>
+            <result name="delete_success" type="chain">Task_query</result><!--删除成功,跳转到查询动作-->
+            <result name="add_success" type="chain">Task_query</result>
+            <result name="modify_success">/task/task_modify.jsp</result>
+            <result name="update_success" type="chain">Task_query</result>
+        </action>
+    </package>
+
+    <package name="data" namespace="/data" extends="struts-default">
+        <action name="*_*" class="action.{1}Action" method="{2}">
+            <result name="data_query_success">/data/data_query_success.jsp</result>
+            <result name="delete_success" type="chain">Data_query</result><!--删除成功,跳转到查询动作-->
+            <result name="add_success" type="chain">Data_query</result>
+            <result name="modify_success">/data/data_modify.jsp</result>
+            <result name="update_success" type="chain">Data_query</result>
+        </action>
+    </package>
+
+    <package name="regex" namespace="/regex" extends="struts-default">
+        <action name="*_*" class="action.{1}Action" method="{2}">
+            <result name="regex_query_success">/regex/regex_query_success.jsp</result>
+            <result name="delete_success" type="chain">Regex_query</result><!--删除成功,跳转到查询动作-->
+            <result name="add_success" type="chain">Regex_query</result>
+            <result name="modify_success">/regex/regex_modify.jsp</result>
+            <result name="update_success" type="chain">Regex_query</result>
+        </action>
+    </package>
+
+    <package name="users" namespace="/users" extends="struts-default">
+        <action name="*_*" class="action.{1}Action" method="{2}">
+            <result name="login_success">/users/login_success.jsp</result>
+            <result name="login_failure">/users/login.jsp</result>
+            <result name="logout_success">/users/login.jsp</result>
+            <result name="input">/users/login.jsp</result>
+        </action>
+    </package>
+
+</struts>
