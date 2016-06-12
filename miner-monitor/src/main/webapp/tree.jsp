@@ -22,8 +22,8 @@ var treeMenu = [
 	{ level:2, name:"数据列表", ico:"img/icon_default.gif",link:"data/Data_query.action"},
 	{ level:2, name:"正则列表", ico:"img/icon_default.gif",link:"regex/Regex_query.action"},
 	
-	{ level:1, name:"数据备份"},
-	{ level:2, name:"选择备份", ico:"img/icon_default.gif",link:"backup/Backup_listdatabase.action"},
+	{ level:1, name:"集群状态"},
+	{ level:2, name:"任务列表", ico:"img/icon_default.gif",link:"cluster/Cluster_gettask.action"},
 	{ level:2, name:"查询备份", ico:"img/icon_default.gif",link:"backup/database_search.jsp"},
 	
 	{ level:1, name:"数据还原"},

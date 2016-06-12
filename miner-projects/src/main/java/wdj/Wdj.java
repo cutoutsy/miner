@@ -40,7 +40,7 @@ public class Wdj {
         redis.del("wdjid");
         redis.del("message");
         redis.del("2_unique");
-        for(int i = 22; i < 100000; i++){
+        for(int i = 100000; i < 200000; i++){
             redis.sadd("wdjid", String.valueOf(i));
         }
         Set<String> allPages = redis.smembers("wdjid");

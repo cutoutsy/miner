@@ -79,44 +79,47 @@
 <body>
 <div id="navi">
 	<div id='naviDiv'>
-		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;数据备份<span>&nbsp;</span>
-		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="<%=path%>/backup/databas_list.jsp">选择备份</a><span>&nbsp;</span>
+		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;集群状态<span>&nbsp;</span>
+		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="#">任务列表</a><span>&nbsp;</span>
 	</div>
 </div>
-<div id="tips">
+	<div id="tips">
+		<div id="buttonGroup">
+			<div class="button" onmouseout="this.style.backgroundColor='';this.style.fontWeight='normal'" onmouseover="this.style.backgroundColor='#77D1F6';this.style.fontWeight='bold'">
+				<a href="<%=path%>/cluster/task_add.jsp">添加任务</a>
+			</div>
+			<div class="button" onmouseout="this.style.backgroundColor='';this.style.fontWeight='normal'" onmouseover="this.style.backgroundColor='#77D1F6';this.style.fontWeight='bold'">
+				<a>查找任务</a>
+			</div>
+			</div>
+		</div>
+	</div>
 
-	<%
-        //session中保存的时list, 直接==null不行
-		if( ((List)session.getAttribute("serversave")).size() == 0 ) {
-    %>
-	<h3>&nbsp;&nbsp;&nbsp;&nbsp;没有保存的数据库,请先去连接保存.</h3>
-	<%}
-	%>
-
-</div>
 <div id="mainContainer">
 
 	<table class="default" width="100%">
 		<col width="20%">
-		<col width="30%">
-		<col width="30%">
-		<col width="30%">
+		<col width="20%">
+		<col width="20%">
+		<col width="20%">
+        <col width="20%">
 		<tr class="title">
-			<td>数据库名称</td>
-
-			<td>直接备份</td>
-			<td>增量备份</td>
-			<td>策略备份</td>
+			<td>wid</td>
+			<td>pid</td>
+			<td>status</td>
+			<td>运行次数</td>
+            <td>操作</td>
 		</tr>
 
 		<!-- 遍历开始 -->
 
-		<s:iterator value="#session.dblist" var="dblist">
+		<s:iterator value="#session.clustertask_list" var="clustertask_list">
 			<tr class="list">
-				<td><s:property value="#dblist"/></td>
-				<td><a href="<%=path%>/backup/Backup_backup.action?dbname=<s:property value='#dblist'/>" onclick="javascript: return confirm('确定备份吗？');">备份</a></td>
-				<td><a href="<%=path%>/backup/Backup_diffbackup.action?dbname=<s:property value='#dblist'/>" onclick="javascript: return confirm('确定备份吗？');">增量备份</a></td>
-				<td><a href="<%=path%>/backup/backup_cron.jsp?dbname=<s:property value='#dblist'/>">策略备份</a></td>
+				<td><s:property value="#clustertask_list.wid"/></td>
+				<td><s:property value="#clustertask_list.pid"/></td>
+				<td><a href="<%=path%>>/cluster/Cluster_modify.action?id=<s:property value="#clustertask_list.id"/>"><s:property value="#clustertask_list.status"/></a></td>
+				<td><s:property value="#clustertask_list.execnum"/></td>
+                <td><a href="<%=path%>/cluster/Cluster_start.action?id=<s:property value="#workspace_list.id"/>" onclick="javascript: return confirm('真的要启动吗？');">启动</a></td>
 			</tr>
 		</s:iterator>
 		<!-- 遍历结束 -->

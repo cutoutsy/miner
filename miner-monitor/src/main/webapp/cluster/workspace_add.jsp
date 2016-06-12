@@ -76,51 +76,45 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 }
 </style>
 <body>
+<script type="text/javascript" src="../js/Calendar3.js"></script>
 
 <div id="navi">
 	<div id='naviDiv'>
-		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;数据备份<span>&nbsp;</span>
-		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="#">策略备份</a><span>&nbsp;</span>
+		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;集群状态&nbsp;
+		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="#">任务列表</a>&nbsp;
 	</div>
 </div>
 <div id="tips">
 </div>
 <div id="mainContainer">
-
-<strong>数据库备份策略</strong>
+<strong>添加任务</strong>
 <br>
 <br>
-
-<form name="connectForm" action="" method="post">
+<form name="addForm" action="<%=path%>/cluster/Cluster_add.action" method="post">
 <table width="400" >
-	<tr>
-		<td width="30%">数据库名：</td>
-		<td><input type="text" name="dbname" value="<%=request.getParameter("dbname") %>"/></td>
-	</tr>
   <tr>
-    <td width="30%">相隔时间(s)：</td>
-    <td><input type="text" name="crontime"/></td>
+    <td width="30%">wid：</td>
+    <td><input type="text" name="wid" /></td>
   </tr>
-	<tr>
-		<td><input class="button" onclick="connect();" value="备份"></td>
-		<td><input class="button" onclick="connectSave();" value="备份并保存"></td>
-	</tr>
+    <tr>
+        <td>pid：</td>
+        <td><input type="text" name="pid" /></td>
+    </tr>
+  <tr>
+    <td>name：</td>
+	  <td><input type="text" name="wname" /></td>
+  </tr>
+  <tr>
+    <td>description：</td>
+    <td><input type="text" name="description" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><input class="button" type="submit" value="添加"></td>
+  </tr>
 </table>
 </form>
 
 
 </div>
 </body>
-<script type="text/javascript">
-	function connect(){
-		document.connectForm.action="<%=path%>/backup/Backup_cronbackup.action";
-		document.connectForm.submit();
-	}
-
-	function connectSave(){
-		document.connectForm.action="<%=path%>/backup/Backup_cronbackup.action";
-		document.connectForm.submit();
-	}
-</script>
-
 </html>

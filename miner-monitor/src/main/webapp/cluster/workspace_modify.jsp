@@ -76,64 +76,45 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 }
 </style>
 <body>
+<script type="text/javascript" src="../js/Calendar3.js"></script>
 
 <div id="navi">
 	<div id='naviDiv'>
-		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;数据备份<span>&nbsp;</span>
-		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="<%=path%>/backup/database_search.jsp">查询备份</a><span>&nbsp;</span>
+		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;项目空间<span>&nbsp;
+		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="#">修改项目空间</a><span>&nbsp;
 	</div>
 </div>
 <div id="tips">
 </div>
 <div id="mainContainer">
-
-<strong>查询备份</strong>
+<strong>修改工作空间</strong>
 <br>
 <br>
 
-<form name="connectForm" action="" method="post">
+<form name="modifyForm" action="<%=path%>/workspace/Workspace_save.action" method="post">
 <table width="400" >
   <tr>
-    <td width="30%">输入关键字：</td>
-    <td><input type="text" name="keyword"/></td>
+    <td width="30%">id：</td>
+    <td><input type="text" name="id" value='<s:property value="#session.modify_workspace.id"/>'  readonly="readonly"/></td>
   </tr>
-	<tr>
-		<td><input class="button" onclick="search();" value="查询"></td>
-	</tr>
+  <tr>
+    <td width="30%">wid：</td>
+    <td><input type="text" name="wid" value='<s:property value="#session.modify_workspace.wid"/>'/></td>
+  </tr>
+  <tr>
+    <td>name：</td>
+      <td><input type="text" name="wname" value='<s:property value="#session.modify_workspace.name"/>'/></td>
+  </tr>
+    <td>description：</td>
+    <td><input type="text" name="description" value='<s:property value="#session.modify_workspace.description"/>'/></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><input class="button" type="submit" value="修改"></td>
+  </tr>
 </table>
 </form>
 
-	<table class="default" width="100%">
-		<col width="20%">
-		<col width="30%">
-		<col width="30%">
-		<tr class="title">
-			<td>数据库名称</td>
-
-			<td>直接备份</td>
-			<td>策略备份</td>
-		</tr>
-
-		<!-- 遍历开始 -->
-
-		<s:iterator value="#session.relist" var="relist">
-			<tr class="list">
-				<td><s:property value="#relist"/></td>
-				<td><a href="<%=path%>/backup/Backup_backup.action?dbname=<s:property value='#dblist'/>" onclick="javascript: return confirm('确定备份吗？');">备份</a></td>
-				<td><a href="<%=path%>/backup/backup_cron.jsp?dbname=<s:property value='#relist'/>">策略备份</a></td>
-			</tr>
-		</s:iterator>
-		<!-- 遍历结束 -->
-	</table>
 
 </div>
 </body>
-<script type="text/javascript">
-	function search(){
-		document.connectForm.action="<%=path%>/backup/Backup_search.action";
-		document.connectForm.submit();
-	}
-
-</script>
-
 </html>
