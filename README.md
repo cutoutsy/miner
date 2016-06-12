@@ -1,11 +1,6 @@
 # 关于平台开发者搭建开发环境及导入代码
-本平台代码托管在coding上，私有项目，项目成员可见
 
 1、Clone平台代码到本地工程目录,并切换到dev分支
-```shell
-git clone https://git.coding.net/cutoutsy/miner.git
-git checkout dev
-```
 
 2、导入代码到IDE中
 
