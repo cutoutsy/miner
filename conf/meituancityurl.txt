@@ -1,6 +1,0 @@
-cq.meituan.com
-bj.meituan.com
-gz.meituan.com
-sz.meituan.com
-xa.meituan.com
-cd.meituan.com
