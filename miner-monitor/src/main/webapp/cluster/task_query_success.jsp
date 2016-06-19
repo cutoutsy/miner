@@ -118,7 +118,7 @@
 				<td><s:property value="#clustertask_list.wid"/></td>
 				<td><s:property value="#clustertask_list.pid"/></td>
 				<td><a href="<%=path%>>/cluster/Cluster_modify.action?id=<s:property value="#clustertask_list.id"/>"><s:property value="#clustertask_list.status"/></a></td>
-				<td><s:property value="#clustertask_list.execnum"/></td>
+				<td><s:property value="#clustertask_list.execuNum"/></td>
                 <td><a href="<%=path%>/cluster/Cluster_start.action?id=<s:property value="#workspace_list.id"/>" onclick="javascript: return confirm('真的要启动吗？');">启动</a></td>
 			</tr>
 		</s:iterator>
