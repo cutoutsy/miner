@@ -101,14 +101,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <td><input type="text" name="pid" /></td>
     </tr>
   <tr>
-    <td>name：</td>
-	  <td><input type="text" name="wname" /></td>
-  </tr>
-  <tr>
-    <td>description：</td>
-    <td><input type="text" name="description" /></td>
-  </tr>
-  <tr>
     <td colspan="2" align="center"><input class="button" type="submit" value="添加"></td>
   </tr>
 </table>
