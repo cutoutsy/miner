@@ -2,7 +2,10 @@ package service.impl;
 
 import entity.ClusterTask;
 import entity.Task;
+import miner.spider.utils.IOUtil;
+import miner.topo.platform.Project;
 import miner.utils.RedisUtil;
+import org.apache.struts2.ServletActionContext;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,9 +15,9 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import redis.clients.jedis.Jedis;
 import service.ClusterDAO;
-import service.TaskDAO;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +26,7 @@ import java.util.Set;
  */
 public class ClusterDAOImpl implements ClusterDAO{
 
-    //查询所有workspace信息
+    //query cluster tasks info
     public List<ClusterTask> queryAllTask() {
         List<ClusterTask> list = new ArrayList<ClusterTask>();
 
@@ -76,31 +79,16 @@ public class ClusterDAOImpl implements ClusterDAO{
     }
 
     //增加工作空间
-    public boolean addTask(Task task) {
-        Transaction tx = null;
-        Configuration config = new Configuration().configure();
+    public boolean addTask(ClusterTask cTask) {
+        RedisUtil ru = new RedisUtil();
+        Jedis redis = ru.getJedisInstance();
 
-        config.addClass(Task.class);
+        String key = cTask.getWid()+"-"+cTask.getPid();
+        redis.hset("project_executenum", key, cTask.getExecuNum());
+        redis.hset("project_cronstate", key, "3");
+        redis.hset("project_state", key, cTask.getStatus());
 
-        ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties())
-                .build();
-        SessionFactory sessionFactory = config.buildSessionFactory(serviceRegistry);
-        Session session        = sessionFactory.getCurrentSession();
-        try{
-            tx = session.beginTransaction();
-            session.save(task);
-            tx.commit();
-            return true;
-        }catch (Exception ex){
-            ex.printStackTrace();
-            tx.commit();
-            return false;
-        }finally {
-            if(tx != null){
-                tx = null;
-            }
-            sessionFactory.close();
-        }
+        return true;
     }
 
     //更新工作空间
@@ -131,32 +119,38 @@ public class ClusterDAOImpl implements ClusterDAO{
         }
     }
 
-    //删除工作空间
-    public boolean deleteTask(int id) {
-        Transaction tx = null;
-        Configuration config = new Configuration().configure();
+    //删除集群上的任务信息
+    public boolean deleteTask(ClusterTask cTask) {
+        RedisUtil ru = new RedisUtil();
+        Jedis redis = ru.getJedisInstance();
 
-        config.addClass(Task.class);
+        String key = cTask.getWid()+"-"+cTask.getPid();
 
-        ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties())
-                .build();
-        SessionFactory sessionFactory = config.buildSessionFactory(serviceRegistry);
-        Session session        = sessionFactory.getCurrentSession();
-        try {
-            tx = session.beginTransaction();
-            Task task = session.get(Task.class, id);
-            session.delete(task);
-            tx.commit();
-            return true;
-        }catch (Exception ex){
-            ex.printStackTrace();
-            tx.commit();
-            return false;
-        }finally {
-            if(tx != null){
-                tx = null;
-            }
-            sessionFactory.close();
+        redis.hdel("project_executenum", key);
+        redis.hdel("project_cronstate", key);
+        redis.hdel("project_state", key);
+
+        return true;
+    }
+
+    //启动任务
+    public boolean startTask(ClusterTask cTask){
+        RedisUtil ru = new RedisUtil();
+        Jedis redis = ru.getJedisInstance();
+        String key = cTask.getWid()+"-"+cTask.getPid();
+        Project po = new Project(key);
+        String path = ServletActionContext.getServletContext().getRealPath("/files");
+        System.out.println(path+"=====");
+        Set<String> dataSet = IOUtil.readFileToSet(path+"/"+key+".txt", "UTF-8");
+        Iterator it = dataSet.iterator();
+        while (it.hasNext()){
+            String temp = it.next().toString();
+            redis.sadd(po.getDatasource(), temp);
+            redis.lpush(po.getDatasource()+"1", temp);
         }
+
+        redis.lpush("project_execute", key);
+
+        return true;
     }
 }

@@ -17,19 +17,19 @@ public class LinkedinTest extends TestCase{
 
     public void testLinkeinParse() {
         Map<String, RuleItem> data_rule_map = new HashMap<String, RuleItem>();
-        data_rule_map.put("id_picture", new RuleItem("name_picture", "html0.body0.div0.main0.div0.div0.section0.div0.div0.a0.img.title"));
+        data_rule_map.put("id_name", new RuleItem("name_name", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.h10.text"));
 
     /* 封装数据的规则库map */
         Set<DataItem> data_item_set = new HashSet<DataItem>();
 
-        data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none", "none", "none", "id_picture"));
+        data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none", "none", "none", "id_name"));
         //        data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none", "none", "none", "id_price"));
         /* 数据生成器 */
         Generator g = new Generator();
         StringBuffer doc_str = new StringBuffer();
         try {
-//            String productUrl = "https://www.linkedin.com/in/%C3%B8ystein-wahl-77517b95";
-            String productUrl = "https://www.linkedin.com/in/jeffweiner08";
+            String productUrl = "https://www.linkedin.com/in/d-redd-woulard-2439942b";
+//            String productUrl = "https://www.linkedin.com/in/jeffweiner08";
             String pageSource = Crawl4HttpClient.downLoadPage(productUrl);
             doc_str.append(pageSource);
         } catch (Exception ex) {

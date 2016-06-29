@@ -64,6 +64,18 @@
       <version>${project.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>xd</groupId>
+      <artifactId>miner-spider</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+      <dependency>
+          <groupId>xd</groupId>
+          <artifactId>miner-topo</artifactId>
+          <version>${project.version}</version>
+      </dependency>
+
   </dependencies>
 
   <build>

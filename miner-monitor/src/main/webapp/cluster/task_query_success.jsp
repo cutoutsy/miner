@@ -98,17 +98,19 @@
 <div id="mainContainer">
 
 	<table class="default" width="100%">
-		<col width="20%">
-		<col width="20%">
-		<col width="20%">
-		<col width="20%">
+		<col width="16%">
+		<col width="16%">
+		<col width="16%">
+		<col width="16%">
+        <col width="16%">
         <col width="20%">
 		<tr class="title">
 			<td>wid</td>
 			<td>pid</td>
 			<td>status</td>
 			<td>运行次数</td>
-            <td>操作</td>
+            <td>启动</td>
+			<td>删除</td>
 		</tr>
 
 		<!-- 遍历开始 -->
@@ -117,10 +119,11 @@
 			<tr class="list">
 				<td><s:property value="#clustertask_list.wid"/></td>
 				<td><s:property value="#clustertask_list.pid"/></td>
-				<td><a href="<%=path%>>/cluster/Cluster_modify.action?id=<s:property value="#clustertask_list.id"/>"><s:property value="#clustertask_list.status"/></a></td>
+				<td><a href="<%=path%>>/cluster/Cluster_modify.action?wid=<s:property value="#clustertask_list.wid"/>"><s:property value="#clustertask_list.status"/></a></td>
 				<td><s:property value="#clustertask_list.execuNum"/></td>
-                <td><a href="<%=path%>/cluster/Cluster_start.action?id=<s:property value="#workspace_list.id"/>" onclick="javascript: return confirm('真的要启动吗？');">启动</a></td>
-			</tr>
+                <td><a href="<%=path%>/cluster/task_start.jsp?wid=<s:property value="#clustertask_list.wid"/>&pid=<s:property value="#clustertask_list.pid"/>" onclick="javascript: return confirm('真的要启动吗？');">启动</a></td>
+                <td><a href="<%=path%>/cluster/Cluster_delete.action?wid=<s:property value="#clustertask_list.wid"/>&pid=<s:property value="#clustertask_list.pid"/>" onclick="javascript: return confirm('真的要删除吗？');">删除</a></td>
+            </tr>
 		</s:iterator>
 		<!-- 遍历结束 -->
 	</table>

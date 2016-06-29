@@ -2,6 +2,9 @@
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
+    <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+    <constant name="struts.devMode" value="true" />
+
 	<package name="workspace" namespace="/workspace" extends="struts-default">
 		<action name="*_*" class="action.{1}Action" method="{2}">
 			<result name="workspace_query_success">/workspace/workspace_query_success.jsp</result>
@@ -55,10 +58,16 @@
     <package name="cluster" namespace="/cluster" extends="struts-default">
         <action name="*_*" class="action.{1}Action" method="{2}">
             <result name="clustertask_query_success">/cluster/task_query_success.jsp</result>
-            <result name="delete_success" type="chain">Regex_query</result><!--删除成功,跳转到查询动作-->
-            <result name="add_success" type="chain">Regex_query</result>
+            <result name="delete_success" type="chain">Cluster_query</result>
+            <result name="add_success" type="chain">Cluster_query</result>
             <result name="modify_success">/regex/regex_modify.jsp</result>
             <result name="update_success" type="chain">Regex_query</result>
+            <result name="start_success" type="chain">Cluster_query</result>
+        </action>
+
+        <action name="upload" class="action.FileUploadAction">
+            <result>/cluster/task_start.jsp</result>
+            <result name="input">/cluster/upload_error.jsp</result>
         </action>
     </package>
 

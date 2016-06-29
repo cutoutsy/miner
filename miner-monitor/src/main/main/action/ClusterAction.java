@@ -26,27 +26,26 @@ public class ClusterAction extends SuperAction{
 
     //删除工作空间动作
     public String delete(){
-        TaskDAO tdao = new TaskDAOImpl();
-        String id = request.getParameter("id");
-        tdao.deleteTask(Integer.valueOf(id));  //调用删除方法
+        ClusterDAO cdao = new ClusterDAOImpl();
+        ClusterTask cTask = new ClusterTask();
+        cTask.setWid(request.getParameter("wid"));
+        cTask.setPid(request.getParameter("pid"));
+        System.out.println(cTask.toString());
+        cdao.deleteTask(cTask);  //调用删除方法
         //没有考虑删除失败的情况
         return "delete_success";
     }
 
     //增加工作空间
     public String add(){
-        TaskDAO tdao = new TaskDAOImpl();
-        Task t = new Task();
-        t.setWid(request.getParameter("wid"));
-        t.setPid(request.getParameter("pid"));
-        t.setTid(request.getParameter("tid"));
-        t.setName(request.getParameter("tname"));
-        t.setDescription(request.getParameter("description"));
-        t.setUrlpattern(request.getParameter("urlpattern"));
-        t.setUrlgenerate(request.getParameter("urlgenerate"));
-        t.setIsloop(request.getParameter("isloop"));
-        t.setProxy_open(request.getParameter("proxy_open"));
-        tdao.addTask(t);
+        ClusterDAO cdao = new ClusterDAOImpl();
+        ClusterTask cTask = new ClusterTask();
+        cTask.setWid(request.getParameter("wid"));
+        cTask.setPid(request.getParameter("pid"));
+        cTask.setExecuNum("0");
+        cTask.setStatus("die");
+
+        cdao.addTask(cTask);
 
         return "add_success";
     }
@@ -81,5 +80,17 @@ public class ClusterAction extends SuperAction{
         tdao.updateTask(t);
 
         return "update_success";
+    }
+
+    //启动集群上的任务
+    public String start(){
+        ClusterDAO cdao = new ClusterDAOImpl();
+        ClusterTask cTask = new ClusterTask();
+        cTask.setWid(request.getParameter("wid"));
+        cTask.setPid(request.getParameter("pid"));
+
+        cdao.startTask(cTask);
+
+        return "start_success";
     }
 }

@@ -17,11 +17,14 @@ public interface ClusterDAO {
     public Task queryTaskByWid(int id);
 
     //添加workspace信息
-    public boolean addTask(Task task);
+    public boolean addTask(ClusterTask cTask);
 
     //修改Workspace信息
     public boolean updateTask(Task task);
 
     //删除workspace信息
-    public boolean deleteTask(int id);
+    public boolean deleteTask(ClusterTask cTask);
+
+    //启动集群上的任务
+    public boolean startTask(ClusterTask cTask);
 }
