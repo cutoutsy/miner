@@ -18,11 +18,18 @@ public class LinkedinTest extends TestCase{
     public void testLinkeinParse() {
         Map<String, RuleItem> data_rule_map = new HashMap<String, RuleItem>();
         data_rule_map.put("id_name", new RuleItem("name_name", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.h10.text"));
+        data_rule_map.put("id_headline", new RuleItem("name_headline", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.p0.span0.text"));
+        data_rule_map.put("id_locality", new RuleItem("name_locality", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.dl0.dd0.span0.text"));
+        data_rule_map.put("id_industry", new RuleItem("name_industry", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.dl0.dd1.text"));
+        data_rule_map.put("id_currpos", new RuleItem("name_currpos", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.table0.tbody0.tr0.td0.ol0.li0.span0.text"));
+        data_rule_map.put("id_prevpos", new RuleItem("name_prevpos", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.table0.tbody0.tr1.td0.ol0.li0.span0.text"));
+        data_rule_map.put("id_edu", new RuleItem("name_edu", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.table0.tbody0.tr2.td0.ol0.li0.span0.text"));
+        data_rule_map.put("id_conn", new RuleItem("name_conn", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.div0.strong0.text"));
 
     /* 封装数据的规则库map */
         Set<DataItem> data_item_set = new HashSet<DataItem>();
 
-        data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none", "none", "none", "id_name"));
+        data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none", "none", "none", "id_name", "id_headline", "id_locality", "id_industry", "id_currpos", "id_prevpos", "id_edu", "id_conn"));
         //        data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none", "none", "none", "id_price"));
         /* 数据生成器 */
         Generator g = new Generator();
@@ -30,7 +37,8 @@ public class LinkedinTest extends TestCase{
         try {
             String productUrl = "https://www.linkedin.com/in/d-redd-woulard-2439942b";
 //            String productUrl = "https://www.linkedin.com/in/jeffweiner08";
-            String pageSource = Crawl4HttpClient.downLoadPage(productUrl);
+            String proxy = "114.228.112.254:8998";
+            String pageSource = Crawl4HttpClient.downLoadPage(productUrl, proxy);
             doc_str.append(pageSource);
         } catch (Exception ex) {
             ex.printStackTrace();
