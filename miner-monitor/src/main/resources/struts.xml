@@ -4,6 +4,7 @@
 
     <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
     <constant name="struts.devMode" value="true" />
+    <constant name="struts.multipart.maxSize" value="100000000" /><!--大约100M-->
 
 	<package name="workspace" namespace="/workspace" extends="struts-default">
 		<action name="*_*" class="action.{1}Action" method="{2}">
@@ -68,6 +69,12 @@
         <action name="upload" class="action.FileUploadAction">
             <result>/cluster/task_start.jsp</result>
             <result name="input">/cluster/upload_error.jsp</result>
+            <!-- 配置拦截器限制上传文件类型及大小 -->
+            <interceptor-ref name="fileUpload">
+                <param name="allowedTypes">text/plain</param>
+                <param name="maximumSize">1024*1024*100</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
         </action>
     </package>
 

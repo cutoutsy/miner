@@ -50,16 +50,20 @@ public class FileUploadAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception{
+        try {
+            String path = ServletActionContext.getServletContext().getRealPath("/files");
+            File file = new File(path);
+            if (!file.exists()) {
+                file.mkdir();
+            }
 
-        String path = ServletActionContext.getServletContext().getRealPath("/files");
-        File file = new File(path);
-        if(!file.exists()){
-            file.mkdir();
+            FileUtils.copyFile(upload, new File(file, uploadFileName));
+            result = "upload success";
+        }catch (Exception ex){
+            result = "upload error";
+            System.out.println("文件超过大小");
+            ex.printStackTrace();
         }
-
-        FileUtils.copyFile(upload, new File(file, uploadFileName));
-
-        result = "upload success";
 
         return SUCCESS;
     }
