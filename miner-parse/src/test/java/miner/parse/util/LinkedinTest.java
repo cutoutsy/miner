@@ -7,6 +7,10 @@ import miner.parse.data.DataItem;
 import miner.parse.data.Packer;
 import miner.spider.httpclient.Crawl4HttpClient;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.*;
 
 /**
@@ -17,29 +21,39 @@ public class LinkedinTest extends TestCase{
 
     public void testLinkeinParse() {
         Map<String, RuleItem> data_rule_map = new HashMap<String, RuleItem>();
-        data_rule_map.put("id_name", new RuleItem("name_name", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.h10.text"));
-        data_rule_map.put("id_headline", new RuleItem("name_headline", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.p0.span0.text"));
-        data_rule_map.put("id_locality", new RuleItem("name_locality", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.dl0.dd0.span0.text"));
-        data_rule_map.put("id_industry", new RuleItem("name_industry", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.dl0.dd1.text"));
-        data_rule_map.put("id_currpos", new RuleItem("name_currpos", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.table0.tbody0.tr0.td0.ol0.li0.span0.text"));
-        data_rule_map.put("id_prevpos", new RuleItem("name_prevpos", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.table0.tbody0.tr1.td0.ol0.li0.span0.text"));
-        data_rule_map.put("id_edu", new RuleItem("name_edu", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.table0.tbody0.tr2.td0.ol0.li0.span0.text"));
-        data_rule_map.put("id_conn", new RuleItem("name_conn", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.div0.strong0.text"));
+//        data_rule_map.put("id_name", new RuleItem("name_name", "html0.body0.main2.div1.div0.div1.div0.div1.h10"));
+        data_rule_map.put("id_city", new RuleItem("name_city", "html0.body0.main2.div1.div0.div1.div0.div1.div0.a0"));
+//        data_rule_map.put("id_time", new RuleItem("name_time", "html0.body0.main0.div1.div0.div1.div0.div1.div0.span0"));
+//        data_rule_map.put("id_inf0_0", new RuleItem("name_inf0_0", "html0.body0.main2.div1.div0.div0.div1.div1.dl0.ul0.li0.div0.div0.div0"));
+//        data_rule_map.put("id_inf0_1", new RuleItem("name_inf0_1", "html0.body0.main2.div1.div0.div1.div2.div0.div1.div0"));
+//        data_rule_map.put("id_school", new RuleItem("name_school", "html0.body0.main2.div1.div0.div0.div2.div1.dl0.dd0"));
+//        data_rule_map.put("gus_name", new RuleItem("name_gus_name", "html0.body0.main2.div1.div0.div1.div3.div1.div0.div0.div0.div0.div0.div0.a0.div1"));
+//        data_rule_map.put("gus_comment", new RuleItem("name_gus_comment", "html0.body0.main2.div1.div0.div1.div3.div1.div0.div0.div0.div0.div1.div0.div0.div0.p0"));
+//        data_rule_map.put("gus_city", new RuleItem("name_gus_city", "html0.body0.main2.div1.div0.div1.div3.div1.div0.div1.div0.div2.div1.div0.div1.a0"));
+//        data_rule_map.put("gus_time", new RuleItem("name_gus_time", "html0.body0.main2.div1.div0.div1.div3.div1.div0.div0.div0.div0.div0.div0.div0"));
+
 
     /* 封装数据的规则库map */
         Set<DataItem> data_item_set = new HashSet<DataItem>();
 
-        data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none", "none", "none", "id_name", "id_headline", "id_locality", "id_industry", "id_currpos", "id_prevpos", "id_edu", "id_conn"));
+        data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none", "none", "none", "id_city"));
+//        "id_city", "id_time", "id_inf0_0", "id_inf0_1", "id_school", "gus_name", "gus_comment","gus_city","gus_time"
         //        data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none", "none", "none", "id_price"));
         /* 数据生成器 */
         Generator g = new Generator();
         StringBuffer doc_str = new StringBuffer();
         try {
-            String productUrl = "https://www.linkedin.com/in/d-redd-woulard-2439942b";
+            String productUrl = "https://zh.airbnb.com/users/show/20928619";
 //            String productUrl = "https://www.linkedin.com/in/jeffweiner08";
-            String proxy = "114.228.112.254:8998";
-            String pageSource = Crawl4HttpClient.downLoadPage(productUrl, proxy);
+//            String proxy = "120.52.73.26:8080";
+            String pageSource = Crawl4HttpClient.downLoadPage(productUrl);
             doc_str.append(pageSource);
+//            URL url = new URL("https://zh.airbnb.com/users/show/20928619");
+//            URLConnection uc = url.openConnection();
+//            BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+//            String inputLine;
+//            while ((inputLine = in.readLine()) != null)
+//                doc_str.append(inputLine);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -54,8 +68,9 @@ public class LinkedinTest extends TestCase{
         while (data_item_it.hasNext()) {
             Packer packer = new Packer(data_item_it.next(), m, data_rule_map);
             String[] result_str = packer.pack();
-            System.out.println(result_str.length + "====");
-            System.out.println(result_str[0]);
+            for(int i=0;i<result_str.length;i++){
+                System.out.println(result_str[i]+"\n");
+            }
         }
     }
 }

@@ -75,7 +75,7 @@ public class ProjectParseTest extends TestCase{
     public void testPath(){
         StringBuffer doc_str = new StringBuffer();
         try {
-            URL url = new URL("http://mailuntai.cn/product/4937.html");
+            URL url = new URL("https://zh.airbnb.com/users/show/20928619");
             URLConnection uc = url.openConnection();
             BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
             String inputLine;
@@ -85,18 +85,18 @@ public class ProjectParseTest extends TestCase{
             ex.printStackTrace();
         }
 
-        System.out.println(doc_str);
+//        System.out.println(doc_str);
         DocObject docObject = new DocObject(doc_str.toString(), DocType.HTML);
         docObject.parse();
         String[] path = new String[10];
-        String[] value = {"565元", "米其林", "ENERGY XM2", "205/55R16", "91", "V", "国产", "420", "A", "A"};
+        String[] value = {"您好, 我是Sheinn！","Tainan City, Taiwan","注册时间：2014年9月","电子邮件地址","已验证","吉蘭丹中華獨立中學, National Cheng Kung University, 國立臺灣師範大學林口校區僑生先修部","Szu-Wei","這是一間布置得很舒服的舊房子喔","Taipei, Taiwan","2015年7月"};
 
         for (int i = 0; i < value.length; i++){
             path[i] = docObject.search(value[i]);
         }
 
         for(int i=0; i < path.length; i++){
-            System.out.println(path[i]);
+            System.out.println(path[i]+"--------"+value[i]);
         }
 
         //载重指数:html0.body0.div3.div1.div1.div1.div0.dl4.dd0
