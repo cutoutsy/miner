@@ -1,6 +1,7 @@
 package service.impl;
 
 import entity.ClusterTask;
+import entity.Proxy;
 import entity.Task;
 import miner.spider.utils.IOUtil;
 import miner.topo.platform.Project;
@@ -143,6 +144,13 @@ public class ClusterDAOImpl implements ClusterDAO{
         System.out.println(path+"=====");
         Set<String> dataSet = IOUtil.readFileToSet(path+"/"+key+".txt", "UTF-8");
         Iterator it = dataSet.iterator();
+        //在写入前删除数据库
+        if(redis.exists(po.getDatasource())){
+            redis.del(po.getDatasource());
+        }
+        if (redis.exists(po.getDatasource()+"1")){
+            redis.del(po.getDatasource()+"1");
+        }
         while (it.hasNext()){
             String temp = it.next().toString();
             redis.sadd(po.getDatasource(), temp);
@@ -152,5 +160,24 @@ public class ClusterDAOImpl implements ClusterDAO{
         redis.lpush("project_execute", key);
 
         return true;
+    }
+
+    //返回所有的代理
+    public List<Proxy> queryAllProxy(){
+        List<Proxy> list = new ArrayList<Proxy>();
+
+        RedisUtil ru = new RedisUtil();
+        Jedis redis = ru.getJedisInstance();
+
+        Set<String> proxys = redis.smembers("proxy_pool");
+        Iterator it = proxys.iterator();
+        while (it.hasNext()){
+            String tempProxy = it.next().toString();
+            Proxy proxy = new Proxy(tempProxy.split(":")[0], tempProxy.split(":")[1]);
+            list.add(proxy);
+        }
+
+
+        return list;
     }
 }

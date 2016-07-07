@@ -1,6 +1,7 @@
 package action;
 
 import entity.ClusterTask;
+import entity.Proxy;
 import entity.Task;
 import service.ClusterDAO;
 import service.TaskDAO;
@@ -22,6 +23,17 @@ public class ClusterAction extends SuperAction{
             session.setAttribute("clustertask_list", list);
         }
         return "clustertask_query_success";
+    }
+
+    //实现查询所有代理的动作
+    public String proxyquery(){
+        ClusterDAO cdao = new ClusterDAOImpl();
+        List<Proxy> list = cdao.queryAllProxy();
+        //放进session中
+        if(list != null && list.size()>0){
+            session.setAttribute("proxy_list", list);
+        }
+        return "clusterproxy_query_success";
     }
 
     //删除工作空间动作

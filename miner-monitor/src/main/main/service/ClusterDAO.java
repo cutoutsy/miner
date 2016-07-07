@@ -1,6 +1,7 @@
 package service;
 
 import entity.ClusterTask;
+import entity.Proxy;
 import entity.Task;
 
 import java.util.List;
@@ -12,6 +13,9 @@ public interface ClusterDAO {
 
     //查询Workspace的资料
     public List<ClusterTask> queryAllTask();
+
+    //查询Wproxy的资料
+    public List<Proxy> queryAllProxy();
 
     //根据workspace id查询信息
     public Task queryTaskByWid(int id);

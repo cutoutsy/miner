@@ -24,7 +24,7 @@ var treeMenu = [
 	
 	{ level:1, name:"集群状态"},
 	{ level:2, name:"任务列表", ico:"img/icon_default.gif",link:"cluster/Cluster_query.action"},
-	{ level:2, name:"查询备份", ico:"img/icon_default.gif",link:"backup/database_search.jsp"},
+	{ level:2, name:"代理状态", ico:"img/icon_default.gif",link:"cluster/Cluster_proxyquery.action"},
 	
 	{ level:1, name:"数据还原"},
 	{ level:2, name:"数据还原", ico:"img/icon_default.gif",link:"recovery/Recovery_listback.action"},
