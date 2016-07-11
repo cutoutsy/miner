@@ -1,5 +1,7 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=utf-8" %>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -8,6 +10,9 @@
 <html>
 <meta http-equiv="content-type" content="text/html;charset=UTF-8">
 <link rel="stylesheet" type="text/css" href="../css/default.css" />
+<link rel="stylesheet" type="text/css" href="../css/pagination.css">
+<script type="text/javascript" src="../js/jquery-1.11.3.js"></script>
+<script type="text/javascript" src="../js/jquery.pagination.js"></script>
 <style type="text/css">
 	* {
 		background: none repeat scroll 0 0 transparent;
@@ -76,6 +81,28 @@
 		font-size:12px;
 	}
 </style>
+
+<script type="text/javascript">
+//点击分页按钮以后触发的动作
+function handlePaginationClick(new_page_index, pagination_container){
+    $("#regForm").attr("action", "<%=path%>/regex/Regex_page.action?pageNum=" + (new_page_index + 1));
+    alert("<%=path%>/regex/Regex_page.action?pageNum=" + (new_page_index + 1));
+    $("#regForm").submit();
+    return false;
+}
+
+$(function(){
+    $("#News-Pagination").pagination(${result.totalRecord}, {
+        items_per_page:${result.pageSize}, // 每页显示多少条记录
+        current_page:${result.currentPage} - 1, // 当前显示第几页数据
+        num_display_entries:8, // 分页显示的条目数
+        next_text:"下一页",
+        prev_text:"上一页",
+        num_edge_entries:2, // 连接分页主体，显示的条目数
+        callback:handlePaginationClick
+    });
+});
+</script>
 <body>
 <div id="navi">
 	<div id='naviDiv'>
@@ -96,7 +123,8 @@
 	</div>
 
 <div id="mainContainer">
-
+    <form action="<%=path%>/regex/Regex_page.action" id="regForm" method="post">
+    </form>
 	<table class="default" width="100%">
 		<tr class="title">
 			<td>id</td>
@@ -108,21 +136,23 @@
             <td>操作</td>
 		</tr>
 
-		<!-- 遍历开始 -->
+        <c:forEach items="${result.dataList}" var="regex">
+            <tr class="list">
+                <td><c:out value="${regex.id}"></c:out></td>
+                <td><c:out value="${regex.wid}"></c:out></td>
+                <td><c:out value="${regex.pid}"></c:out></td>
+                <td><c:out value="${regex.tid}"></c:out></td>
+                <td><a href="<%=path%>>/regex/Regex_modify.action?id=${regex.id}"><c:out value="${regex.tagname}"></c:out></a></td>
+                <td><c:out value="${regex.path}"></c:out></td>
+                <td><a href="<%=path%>/regex/Regex_delete.action?id=${regex.id}" onclick="javascript: return confirm('真的要删除吗？');">删除</a></td>
+            </tr>
+        </c:forEach>
 
-		<s:iterator value="#session.regex_list" var="regex_list">
-			<tr class="list">
-				<td><s:property value="#regex_list.id"/></td>
-				<td><s:property value="#regex_list.wid"/></td>
-                <td><s:property value="#regex_list.pid"/></td>
-                <td><s:property value="#regex_list.tid"/></td>
-				<td><a href="<%=path%>>/regex/Regex_modify.action?id=<s:property value="#regex_list.id"/>"><s:property value="#regex_list.tagname"/></a></td>
-				<td><s:property value="#regex_list.path"/></td>
-                <td><a href="<%=path%>/regex/Regex_delete.action?id=<s:property value="#regex_list.id"/>" onclick="javascript: return confirm('真的要删除吗？');">删除</a></td>
-			</tr>
-		</s:iterator>
+		<!-- 遍历开始 -->
 		<!-- 遍历结束 -->
 	</table>
+    <br>
+    <div id="News-Pagination"></div>
 </div>
 </body>
 </html>

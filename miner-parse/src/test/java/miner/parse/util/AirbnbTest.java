@@ -24,12 +24,12 @@ public class AirbnbTest extends TestCase{
 //        data_rule_map.put("id_currpos", new RuleItem("name_currpos", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.table0.tbody0.tr0.td0.ol0.li0.span0.text"));
 //        data_rule_map.put("id_prevpos", new RuleItem("name_prevpos", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.table0.tbody0.tr1.td0.ol0.li0.span0.text"));
         data_rule_map.put("id_edu", new RuleItem("name_edu", "html0.body0.main2.div1.div0.div0.div2.div1.dl0.dd0.text"));
-//        data_rule_map.put("id_conn", new RuleItem("name_conn", "html0.body0.div0.main0.div4.div0.section0.div0.div1.div0.div0.strong0.text"));
+        data_rule_map.put("id_conn", new RuleItem("name_conn", "html0.body0.main2.div1.div0.div1.div3.div1.div0.div0.div0.div0.div0.div0.a0.div1.text"));
 
     /* 封装数据的规则库map */
         Set<DataItem> data_item_set = new HashSet<DataItem>();
 
-        data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none", "none", "none", "id_name", "id_time", "id_locality", "id_edu"));
+        data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none", "none", "none", "id_name", "id_time", "id_locality", "id_edu", "id_conn"));
 //        data_item_set.add(new DataItem("1", "1", "1", "1", "none", "none", "none", "none", "id_name"));
         /* 数据生成器 */
         Generator g = new Generator();

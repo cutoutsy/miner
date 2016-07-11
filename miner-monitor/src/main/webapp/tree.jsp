@@ -20,7 +20,7 @@ var treeMenu = [
 	{ level:2, name:"工程列表", ico:"img/icon_default.gif",link:"project/Project_query.action"},
 	{ level:2, name:"任务列表", ico:"img/icon_default.gif",link:"task/Task_query.action"},
 	{ level:2, name:"数据列表", ico:"img/icon_default.gif",link:"data/Data_query.action"},
-	{ level:2, name:"正则列表", ico:"img/icon_default.gif",link:"regex/Regex_query.action"},
+	{ level:2, name:"正则列表", ico:"img/icon_default.gif",link:"regex/Regex_page.action"},
 	
 	{ level:1, name:"集群状态"},
 	{ level:2, name:"任务列表", ico:"img/icon_default.gif",link:"cluster/Cluster_query.action"},

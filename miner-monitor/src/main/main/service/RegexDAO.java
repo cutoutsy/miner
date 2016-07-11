@@ -1,5 +1,6 @@
 package service;
 
+import entity.Pager;
 import entity.Regex;
 import entity.Workspace;
 
@@ -24,4 +25,7 @@ public interface RegexDAO {
 
     //删除workspace信息
     public boolean deleteRegex(int id);
+
+    //根据查询条件,查询任务正则信息
+    public Pager<Regex> findRegex(Regex searchModel, int pageNum, int pageSize);
 }
