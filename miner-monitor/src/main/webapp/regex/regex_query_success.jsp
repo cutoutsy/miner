@@ -86,7 +86,6 @@
 //点击分页按钮以后触发的动作
 function handlePaginationClick(new_page_index, pagination_container){
     $("#regForm").attr("action", "<%=path%>/regex/Regex_page.action?pageNum=" + (new_page_index + 1));
-    alert("<%=path%>/regex/Regex_page.action?pageNum=" + (new_page_index + 1));
     $("#regForm").submit();
     return false;
 }

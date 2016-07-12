@@ -1,6 +1,7 @@
 package service;
 
 import entity.ClusterTask;
+import entity.Pager;
 import entity.Proxy;
 import entity.Task;
 
@@ -31,4 +32,6 @@ public interface ClusterDAO {
 
     //启动集群上的任务
     public boolean startTask(ClusterTask cTask);
+
+    public Pager<Proxy> findProxy(Proxy searchModel, int pageNum, int pageSize);
 }

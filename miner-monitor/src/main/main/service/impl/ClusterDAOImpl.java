@@ -1,6 +1,7 @@
 package service.impl;
 
 import entity.ClusterTask;
+import entity.Pager;
 import entity.Proxy;
 import entity.Task;
 import miner.spider.utils.IOUtil;
@@ -160,6 +161,14 @@ public class ClusterDAOImpl implements ClusterDAO{
         redis.lpush("project_execute", key);
 
         return true;
+    }
+
+    public Pager<Proxy> findProxy(Proxy searchModel, int pageNum, int pageSize){
+        List<Proxy> allProxy = queryAllProxy();
+
+        Pager<Proxy> pager = new Pager<Proxy>(pageNum, pageSize, allProxy);
+
+        return pager;
     }
 
     //返回所有的代理

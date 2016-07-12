@@ -1,11 +1,11 @@
 package action;
 
-import entity.ClusterTask;
-import entity.Proxy;
-import entity.Task;
+import entity.*;
 import service.ClusterDAO;
+import service.RegexDAO;
 import service.TaskDAO;
 import service.impl.ClusterDAOImpl;
+import service.impl.RegexDAOImpl;
 import service.impl.TaskDAOImpl;
 
 import java.util.List;
@@ -104,5 +104,24 @@ public class ClusterAction extends SuperAction{
         cdao.startTask(cTask);
 
         return "start_success";
+    }
+
+    //分页
+    public String page(){
+        String pageNumStr = request.getParameter("pageNum");
+        int pageNum = 1;
+        if(pageNumStr != null && !"".equals(pageNumStr.trim())){
+            pageNum = Integer.parseInt(pageNumStr);
+        }
+
+        int pageSize = 10;
+
+        Proxy searchModel = new Proxy();
+        ClusterDAO cdao = new ClusterDAOImpl();
+        //调用service获取查询结果
+        Pager<Proxy> result = cdao.findProxy(searchModel, pageNum, pageSize);
+
+        request.setAttribute("result", result);
+        return "page_proxy_success";
     }
 }

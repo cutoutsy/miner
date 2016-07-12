@@ -60,7 +60,7 @@
     <package name="cluster" namespace="/cluster" extends="struts-default">
         <action name="*_*" class="action.{1}Action" method="{2}">
             <result name="clustertask_query_success">/cluster/task_query_success.jsp</result>
-            <result name="clusterproxy_query_success">/cluster/proxy_query_success.jsp</result>
+            <result name="page_proxy_success">/cluster/proxy_query_success.jsp</result>
             <result name="delete_success" type="chain">Cluster_query</result>
             <result name="add_success" type="chain">Cluster_query</result>
             <result name="modify_success">/regex/regex_modify.jsp</result>
