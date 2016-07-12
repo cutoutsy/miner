@@ -5,7 +5,8 @@ import miner.utils.MySysLogger;
 import miner.utils.PlatformParas;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
-import org.apache.hadoop.hbase.client.HBaseAdmin;
+import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.filter.FirstKeyOnlyFilter;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -30,6 +31,22 @@ public class CreateTable {
         //new CreateTable().mysqlCheck("1","1");
         new CreateTable().createTable(configuration, "cutoutsy", true);
 
+    }
+
+    public static int rowCount(String tableName) {
+        int rowCount = 0;
+        try {
+            HTable table = new HTable(configuration, tableName);
+            Scan scan = new Scan();
+            scan.setFilter(new FirstKeyOnlyFilter());
+            ResultScanner resultScanner = table.getScanner(scan);
+            for (Result result : resultScanner) {
+                rowCount += result.size();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return rowCount;
     }
 
     public static void mysqlCheck(String tableWid,String tablePid) throws SQLException{
