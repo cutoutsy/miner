@@ -1,5 +1,6 @@
 package service.impl;
 
+import entity.Pager;
 import entity.Regex;
 import entity.Workspace;
 import org.hibernate.Query;
@@ -12,7 +13,10 @@ import org.hibernate.service.ServiceRegistry;
 import service.RegexDAO;
 import service.WorkspaceDAO;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Workspace业务逻辑接口的实现类
@@ -165,5 +169,70 @@ public class RegexDAOImpl implements RegexDAO{
             }
             sessionFactory.close();
         }
+    }
+
+    //使用Hibernate实现分页
+    public Pager<Regex> findRegex(Regex searchModel, int pageNum, int pageSize) {
+        Pager<Regex> result = null;
+        Transaction tx = null;
+
+        //存放查询参数
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+
+        StringBuffer hql = new StringBuffer("from Regex where 1=1");
+        StringBuffer countHql = new StringBuffer("select count(id) from Regex where 1=1");
+
+        //起始索引
+        int fromIndex = pageSize * (pageNum - 1);
+
+        //存放所有查询出来的正则对象
+        List<Regex> regexList = new ArrayList<Regex>();
+        Session session = null;
+        SessionFactory sessionFactory = null;
+        try {
+            Configuration config = new Configuration().configure();
+
+            config.addClass(Regex.class);
+
+            ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties())
+                    .build();
+            sessionFactory = config.buildSessionFactory(serviceRegistry);
+            session = sessionFactory.getCurrentSession();
+            tx = session.beginTransaction();
+
+            //获取query对象
+            Query hqlQuery = session.createQuery(hql.toString());
+            Query countHqlQuery = session.createQuery(countHql.toString());
+
+            //从第几条记录开始查询
+            hqlQuery.setFirstResult(fromIndex);
+
+            //一共查询多少条记录
+            hqlQuery.setMaxResults(pageSize);
+
+            //获取查询的结果
+            regexList = hqlQuery.list();
+            //获取总计条数
+            List<?> countResult = countHqlQuery.list();
+            int totalRecord = ((Number) countResult.get(0)).intValue();
+            tx.commit();
+            //获取总页数
+            int totalPage = totalRecord / pageSize;
+            if (totalRecord % pageSize != 0) {
+                totalPage++;
+            }
+
+            //组装paper对象
+            result = new Pager<Regex>(pageSize, pageNum, totalRecord, totalPage, regexList);
+        }catch (Exception e){
+            tx.commit();
+            throw  new RuntimeException("查询所有数据异常!", e);
+        }finally {
+            if(tx != null){
+                tx = null;
+            }
+            sessionFactory.close();
+        }
+        return result;
     }
 }

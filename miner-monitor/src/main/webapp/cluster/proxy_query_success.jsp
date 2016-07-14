@@ -81,73 +81,69 @@
 		font-size:12px;
 	}
 </style>
-
 <script type="text/javascript">
-//点击分页按钮以后触发的动作
-function handlePaginationClick(new_page_index, pagination_container){
-    $("#regForm").attr("action", "<%=path%>/regex/Regex_page.action?pageNum=" + (new_page_index + 1));
-    $("#regForm").submit();
-    return false;
-}
+    //点击分页按钮以后触发的动作
+    function handlePaginationClick(new_page_index, pagination_container){
+        $("#regForm").attr("action", "<%=path%>/cluster/Cluster_page.action?pageNum=" + (new_page_index + 1));
+        $("#regForm").submit();
+        return false;
+    }
 
-$(function(){
-    $("#News-Pagination").pagination(${result.totalRecord}, {
-        items_per_page:${result.pageSize}, // 每页显示多少条记录
-        current_page:${result.currentPage} - 1, // 当前显示第几页数据
-        num_display_entries:8, // 分页显示的条目数
-        next_text:"下一页",
-        prev_text:"上一页",
-        num_edge_entries:2, // 连接分页主体，显示的条目数
-        callback:handlePaginationClick
+    $(function(){
+        $("#News-Pagination").pagination(${result.totalRecord}, {
+            items_per_page:${result.pageSize}, // 每页显示多少条记录
+            current_page:${result.currentPage} - 1, // 当前显示第几页数据
+            num_display_entries:8, // 分页显示的条目数
+            next_text:"下一页",
+            prev_text:"上一页",
+            num_edge_entries:2, // 连接分页主体，显示的条目数
+            callback:handlePaginationClick
+        });
     });
-});
 </script>
 <body>
 <div id="navi">
 	<div id='naviDiv'>
-		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;项目信息<span>&nbsp;</span>
-		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="<%=path%>/regex/regex_query_success.jsp">正则列表</a><span>&nbsp;</span>
+		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;集群状态<span>&nbsp;</span>
+		<span><img src="../img/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="#">任务列表</a><span>&nbsp;</span>
 	</div>
 </div>
 	<div id="tips">
 		<div id="buttonGroup">
 			<div class="button" onmouseout="this.style.backgroundColor='';this.style.fontWeight='normal'" onmouseover="this.style.backgroundColor='#77D1F6';this.style.fontWeight='bold'">
-				<a href="<%=path%>/regex/regex_add.jsp">添加正则</a>
+				<a href="<%=path%>/cluster/task_add.jsp">添加代理</a>
 			</div>
 			<div class="button" onmouseout="this.style.backgroundColor='';this.style.fontWeight='normal'" onmouseover="this.style.backgroundColor='#77D1F6';this.style.fontWeight='bold'">
-				<a>查找正则</a>
+				<a>查找代理</a>
 			</div>
 			</div>
 		</div>
 	</div>
 
 <div id="mainContainer">
-    <form action="<%=path%>/regex/Regex_page.action" id="regForm" method="post">
+
+    <form action="<%=path%>/cluster/Cluster_page.action" id="regForm" method="post">
     </form>
+
 	<table class="default" width="100%">
+		<col width="40%">
+		<col width="40%">
+		<col width="20%">
 		<tr class="title">
-			<td>id</td>
-			<td>wid</td>
-			<td>pid</td>
-			<td>tid</td>
-			<td>tagname</td>
-			<td>path</td>
-            <td>操作</td>
+			<td>ip</td>
+			<td>port</td>
+			<td>删除</td>
 		</tr>
 
-        <c:forEach items="${result.dataList}" var="regex">
+		<!-- 遍历开始 -->
+        <c:forEach items="${result.dataList}" var="proxy">
             <tr class="list">
-                <td><c:out value="${regex.id}"></c:out></td>
-                <td><c:out value="${regex.wid}"></c:out></td>
-                <td><c:out value="${regex.pid}"></c:out></td>
-                <td><c:out value="${regex.tid}"></c:out></td>
-                <td><a href="<%=path%>>/regex/Regex_modify.action?id=${regex.id}"><c:out value="${regex.tagname}"></c:out></a></td>
-                <td><c:out value="${regex.path}"></c:out></td>
-                <td><a href="<%=path%>/regex/Regex_delete.action?id=${regex.id}" onclick="javascript: return confirm('真的要删除吗？');">删除</a></td>
+                <td><c:out value="${proxy.ip}"></c:out></td>
+                <td><c:out value="${proxy.port}"></c:out></td>
+                <td><a href="<%=path%>/regex/Regex_delete.action?id=${proxy.ip}" onclick="javascript: return confirm('真的要删除吗？');">删除</a></td>
             </tr>
         </c:forEach>
 
-		<!-- 遍历开始 -->
 		<!-- 遍历结束 -->
 	</table>
     <br>

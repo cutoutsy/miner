@@ -26,8 +26,9 @@ public class Generator {
 	}
 
     public DocType judge_doc_type(String document){
+        document = document.trim();
         DocType type=DocType.HTML;
-        if(document.endsWith("</html>")){
+        if(document.endsWith("</html>") || document.startsWith("<!DOCTYPE html>")){
             type=DocType.HTML;
         }else if(document.startsWith("<")){
             type=DocType.XML;

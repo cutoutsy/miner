@@ -1,5 +1,6 @@
 package action;
 
+import entity.Pager;
 import entity.Regex;
 import entity.Workspace;
 import service.RegexDAO;
@@ -74,5 +75,25 @@ public class RegexAction extends SuperAction{
         rdao.updateRegex(regex);
 
         return "update_success";
+    }
+
+    //分页
+    public String page(){
+        String pageNumStr = request.getParameter("pageNum");
+        int pageNum = 1;
+        if(pageNumStr != null && !"".equals(pageNumStr.trim())){
+            pageNum = Integer.parseInt(pageNumStr);
+        }
+
+        int pageSize = 10;
+
+        Regex searchModel = new Regex();
+        RegexDAO rdao = new RegexDAOImpl();
+        //调用service获取查询结果
+
+        Pager<Regex> result = rdao.findRegex(searchModel, pageNum, pageSize);
+
+        request.setAttribute("result", result);
+        return "page_success";
     }
 }

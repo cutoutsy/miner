@@ -81,38 +81,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <div id="navi">
 	<div id='naviDiv'>
 		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;集群状态&nbsp;
-		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="#">任务列表</a>&nbsp;
+		<span><img src="../images/arror.gif" width="7" height="11" border="0" alt=""></span>&nbsp;<a href="#">上传失败</a>&nbsp;
 	</div>
 </div>
 <div id="tips">
 </div>
 <div id="mainContainer">
-<strong>添加任务</strong>
+<strong>上传失败</strong>
 <br>
 <br>
-<form name="addForm" action="<%=path%>/cluster/Cluster_add.action" method="post">
-<table width="400" >
-  <tr>
-    <td width="30%">wid：</td>
-    <td><input type="text" name="wid" /></td>
-  </tr>
-    <tr>
-        <td>pid：</td>
-        <td><input type="text" name="pid" /></td>
-    </tr>
-  <tr>
-    <td>name：</td>
-	  <td><input type="text" name="wname" /></td>
-  </tr>
-  <tr>
-    <td>description：</td>
-    <td><input type="text" name="description" /></td>
-  </tr>
-  <tr>
-    <td colspan="2" align="center"><input class="button" type="submit" value="添加"></td>
-  </tr>
-</table>
-</form>
+
+<s:fielderror></s:fielderror>
+
 
 
 </div>
