@@ -43,12 +43,29 @@ public class reflectTest extends TestCase{
 //        System.out.print(content);
 //        System.out.print(uniContent);
 //        Elements links = content.getElementsByTag("a");
+        int i = 0;
+        String replyRes = "{" ;
         for (Element content : contents) {
-            System.out.print(content.getElementsByClass("profile-name").text()+"  + ");
-            System.out.print(content.getElementsByClass("show-sm").text()+"  + ");
-            System.out.print(content.getElementsByClass("link-reset").text()+"  + ");
-            System.out.print(content.getElementsByClass("expandable-content").text()+"   \n-------------------------\n");
+            String com_name =  content.getElementsByClass("profile-name").text();
+            String com_link = "wwww.airbnb.com"+content.select("a[href]").first().attr("href");
+            String com_comment = content.getElementsByClass("expandable-content").text();
+            String com_city = "none";
+            if (content.getElementsByClass("link-reset").text().toString().length() >= 1){
+                com_city = content.getElementsByClass("link-reset").text();
+            }
+            String com_time = "none";
+            if (content.getElementsByClass("show-sm").text().toString().length() >= 1){
+                com_time = content.getElementsByClass("show-sm").text();
+            }
+            replyRes = replyRes+"\"comment"+i+"\":\""+com_name+"$$"+com_link+"$$"+com_comment+"$$"+com_city+"$$"+com_time+"\",";
+//            System.out.print(com_name+"  + ");
+//            System.out.print(com_link +"  + ");
+//            System.out.print(com_time+"  + ");
+//            System.out.print(com_city+"  + ");
+//            System.out.print(com_comment+"   \n-------------------------\n");
+            i++;
         }
-
+        replyRes = replyRes.substring(0,replyRes.length()-1)+"}";
+        System.out.print(replyRes);
     }
 }
