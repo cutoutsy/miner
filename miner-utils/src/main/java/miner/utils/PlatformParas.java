@@ -45,6 +45,9 @@ public class PlatformParas {
     //日志服务器端口
     public static String logserver_port = readConfigUtil.getValue("logserver_port");
 
+    //代理的订单号
+    public static String orderid =readConfigUtil.getValue("orderid");
+
     public static void main(String[] args) {
         System.out.println(redis_host);
         System.out.println(redis_auth);

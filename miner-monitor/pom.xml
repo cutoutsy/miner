@@ -10,11 +10,19 @@
 
   <artifactId>miner-monitor</artifactId>
   <packaging>war</packaging>
-  <name>miner-monitor Maven Webapp</name>
+  <name>miner-monitor</name>
   <url>http://maven.apache.org</url>
 
-  <dependencies>
+    <properties>
+        <!-- 文件拷贝时的编码 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- 编译时的编码 -->
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+    </properties>
 
+    
+  <dependencies>
     <dependency>
       <groupId>org.apache.struts</groupId>
       <artifactId>struts2-core</artifactId>
@@ -78,6 +86,7 @@
 
   </dependencies>
 
+  <!--
   <build>
     <finalName>miner-monitor</finalName>
     <plugins>
@@ -87,4 +96,34 @@
       </plugin>
     </plugins>
   </build>
+  -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <warName>miner-monitor</warName><!--打成war包的名字-->
+                    <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/webapp</directory>
+                            <includes>
+                                <include>**/*.jsp</include>
+                                <include>**/*.css</include>
+                                <include>**/*.js</include>
+                                <include>**/*.gif</include>
+                                <include>**/*.png</include>
+                                <include>**/*.jpg</include>
+                            </includes>
+                            <targetPath>/src/</targetPath><!--打包后target文件夹所在目录-->
+                            <filtering>true</filtering>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
