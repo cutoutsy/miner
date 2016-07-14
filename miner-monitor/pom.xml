@@ -86,7 +86,7 @@
 
   </dependencies>
 
-  <!--
+
   <build>
     <finalName>miner-monitor</finalName>
     <plugins>
@@ -96,7 +96,8 @@
       </plugin>
     </plugins>
   </build>
-  -->
+
+    <!--
     <build>
         <plugins>
             <plugin>
@@ -104,7 +105,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
-                    <warName>miner-monitor</warName><!--打成war包的名字-->
+                    <warName>miner-monitor</warName>
                     <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
                     <webResources>
                         <resource>
@@ -117,7 +118,7 @@
                                 <include>**/*.png</include>
                                 <include>**/*.jpg</include>
                             </includes>
-                            <targetPath>/src/</targetPath><!--打包后target文件夹所在目录-->
+                            <targetPath>/src/</targetPath>
                             <filtering>true</filtering>
                         </resource>
                     </webResources>
@@ -125,5 +126,5 @@
             </plugin>
         </plugins>
     </build>
-
+-->
 </project>

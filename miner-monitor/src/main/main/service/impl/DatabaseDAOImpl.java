@@ -1,9 +1,6 @@
 package service.impl;
 
-import entity.Data;
-import entity.Database;
-import entity.Pager;
-import entity.Proxy;
+import entity.*;
 import miner.store.CreateTable;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -28,6 +25,28 @@ public class DatabaseDAOImpl implements DatabaseDAO{
         Pager<Database> pager = new Pager<Database>(pageNum, pageSize, allDatabase);
 
         return pager;
+    }
+
+    public Pager<DataSet> findDataSet(DataSet searchModel, int pageNum, int pageSize) {
+        List<DataSet> allDataSet = queryAllDataSet(searchModel);
+
+        Pager<DataSet> pager = new Pager<DataSet>(pageNum, pageSize, allDataSet);
+        return pager;
+    }
+
+    public List<DataSet> queryAllDataSet(DataSet searchModel){
+        List<DataSet> relist = new ArrayList<DataSet>();
+        String tableNme = searchModel.getTableName();
+        List<String> result = CreateTable.getDataSetByTableName(tableNme);
+
+        for (int i = 0; i < result.size(); i++){
+            String temp = result.get(i);
+            DataSet tempDs = new DataSet(tableNme, temp.split("$$")[0], Integer.valueOf(temp.split("$$")[1]), temp.split("$$")[2], temp.split("$$")[3]);
+            System.out.println(tempDs.toString());
+            relist.add(tempDs);
+        }
+
+        return relist;
     }
 
     //得到集群所有的数据库信息
@@ -65,7 +84,6 @@ public class DatabaseDAOImpl implements DatabaseDAO{
             String tempTableName = list.get(i).getWid()+list.get(i).getPid()+list.get(i).getTid()+list.get(i).getDataid();
             int tempCountRow = CreateTable.rowCount(tempTableName);
             Database tempDb = new Database(tempTableName, tempCountRow);
-            System.out.println(tempDb.toString());
             relist.add(tempDb);
         }
 

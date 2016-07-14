@@ -7,12 +7,15 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.filter.FirstKeyOnlyFilter;
+import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreateTable {
 
@@ -47,6 +50,30 @@ public class CreateTable {
             e.printStackTrace();
         }
         return rowCount;
+    }
+
+    //根据表名获取最近一段时间的数据
+    public static List<String> getDataSetByTableName(String tableName){
+        List<String> reList = new ArrayList<String>();
+        try {
+            HTable table = new HTable(configuration, tableName);
+            Scan s = new Scan();
+            long currentTimeStamp = System.currentTimeMillis();
+            long startTimeStamp = currentTimeStamp - 10*60;     //抽取最近10分钟的数据
+            s.setTimeRange(startTimeStamp, currentTimeStamp);
+            ResultScanner rs = table.getScanner(s);
+            for (Result r : rs) {
+                for (Cell cell : r.rawCells()) {
+                    StringBuffer tempSb = new StringBuffer();
+                    //行健$$时间$$列$$值
+                    tempSb.append(Bytes.toString(r.getRow()) + "$$" + cell.getTimestamp() + "$$" + Bytes.toString(CellUtil.cloneQualifier(cell))+"$$" + Bytes.toString(CellUtil.cloneValue(cell)));
+                    reList.add(tempSb.toString());
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return reList;
     }
 
     public static void mysqlCheck(String tableWid,String tablePid) throws SQLException{

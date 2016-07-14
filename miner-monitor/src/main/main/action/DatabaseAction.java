@@ -42,4 +42,25 @@ public class DatabaseAction extends SuperAction{
         request.setAttribute("result", result);
         return "page_database_success";
     }
+
+    //数据分页
+    public String datapage(){
+        String pageNumStr = request.getParameter("pageNum");
+        String tableName = request.getParameter("tableName");
+        int pageNum = 1;
+        if(pageNumStr != null && !"".equals(pageNumStr.trim())){
+            pageNum = Integer.parseInt(pageNumStr);
+        }
+
+        int pageSize = 10;
+
+        DataSet searchModel = new DataSet();
+        searchModel.setTableName(tableName);
+        DatabaseDAO ddao = new DatabaseDAOImpl();
+        //调用service获取查询结果
+        Pager<DataSet> result = ddao.findDataSet(searchModel, pageNum, pageSize);
+
+        request.setAttribute("result", result);
+        return "page_data_success";
+    }
 }
