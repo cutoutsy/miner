@@ -1,5 +1,6 @@
 package service;
 
+import entity.DataSet;
 import entity.Database;
 import entity.Pager;
 import entity.Regex;
@@ -15,5 +16,8 @@ public interface DatabaseDAO {
 
     //根据查询条件,查询任务正则信息
     public Pager<Database> findDatabase(Database searchModel, int pageNum, int pageSize);
+
+    //根据表名列出数据
+    public Pager<DataSet> findDataSet(DataSet searchModel, int pageNum, int pageSize);
 
 }

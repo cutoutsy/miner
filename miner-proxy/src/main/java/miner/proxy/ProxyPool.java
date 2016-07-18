@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import miner.utils.MySysLogger;
+import miner.utils.PlatformParas;
 import miner.utils.RedisUtil;
 import miner.utils.StaticValue;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -137,7 +138,7 @@ public class ProxyPool extends Thread {
 		/* 订单的参数和配置 */
 		Map<String, String> proxy_param_map = new HashMap<String, String>();
 		/* 订单号 */
-		String orderid = "904228416555060";
+		String orderid = PlatformParas.orderid;
 		/* 提取数量 */
 		String num = "1000";
 		/* 质量2，SVIP非常稳定 */
@@ -179,21 +180,6 @@ public class ProxyPool extends Thread {
 //				proxy_param_map);
 		ProxyPool pp = new ProxyPool(0, 0, 60, proxy_param_map);
 		pp.start();
-
-		// /* 从配置文件读入的task参数 */
-		// Map<String, TaskProxySetting> task_proxy_setting_map = new
-		// HashMap<String, TaskProxySetting>();
-		// task_proxy_setting_map.put("task0", new TaskProxySetting(2000));
-		// task_proxy_setting_map.put("task1", new TaskProxySetting(1000));
-		// task_proxy_setting_map.put("task2", new TaskProxySetting(1500));
-		/* 下面控制task代理池的行为 */
-		// ExecutorService pool = Executors.newCachedThreadPool();
-		// pool.execute(new TaskProxyPool(new TaskProxySetting(2000), pp
-		// .get_redis_util(), "task0"));
-		// pool.execute(new TaskProxyPool(new TaskProxySetting(2000, 35000), pp
-		// .get_redis_util(), "task1"));
-		// pool.execute(new TaskProxyPool(new TaskProxySetting(2000), pp
-		// .get_redis_util(), "task2"));
 
 	}
 }

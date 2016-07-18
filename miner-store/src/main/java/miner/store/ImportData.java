@@ -32,23 +32,26 @@ public class ImportData {
     private static Configuration configuration = null;
     static{
         configuration = HBaseConfiguration.create();
-        configuration.set("hbase.zookeeper.quorum", PlatformParas.hbase_zookeeper_host);
-        configuration.set("hbase.rootdir","hdfs://master:8020/hbase");
-        configuration.set("hbase.master", "hdfs://master:60000");
+//        configuration.set("hbase.zookeeper.quorum", PlatformParas.hbase_zookeeper_host);
+//        configuration.set("hbase.rootdir","hdfs://master:8020/hbase");
+//        configuration.set("hbase.master", "hdfs://master:60000");
+        configuration.set("hbase.zookeeper.quorum", "127.0.0.1");
+        configuration.set("hbase.rootdir","hdfs://127.0.0.1:8020/hbase");
+        configuration.set("hbase.master", "hdfs://127.0.0.1:60000");
     }
 
     public static  void main(String[] args){
        String data = "{\n" +
-                "\"workstation_id\":\"1\",\n" +
+                "\"workstation_id\":\"3\",\n" +
                 "\"project_id\":\"1\",\n" +
-                "\"task_id\":\"1\",\n" +
+                "\"task_id\":\"2\",\n" +
                 "\"data_id\":\"1\",\n" +
                 "\"description\":\"city\",\n" +
                 "\"property\":{\n" +
                 "\t\"cityname\":\"Xian\",\n" +
                 "\t\"url\":[\"12\",\"34\"]\n" +
                 "},\n" +
-                "\"row_key\":\"12233\",\n" +
+                "\"row_key\":\"12233aa\",\n" +
                 "\"foreign_key\":\"1233344\",\n" +
                 "\"foreign_value\":\"kp\",\n" +
                 "\"link\":\"alone\"\n" +
