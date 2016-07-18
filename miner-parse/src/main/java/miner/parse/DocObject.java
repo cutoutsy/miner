@@ -73,7 +73,8 @@ public class DocObject {
 			this.document = document;
 		}
 		this.doc_type = doc_type;
-		System.out.println(this.document);
+//		System.out.println(this.document);
+		System.out.println("文本获取成功\n");
 		this.html_map = new HashMap<String, Element>();
 		this.json_map = new HashMap<String, String>();
 	}

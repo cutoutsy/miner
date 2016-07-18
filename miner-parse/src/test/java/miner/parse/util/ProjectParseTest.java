@@ -9,8 +9,7 @@ import miner.parse.data.DataItem;
 import miner.parse.data.Packer;
 //import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
@@ -73,30 +72,38 @@ public class ProjectParseTest extends TestCase{
     }
 
     public void testPath(){
-        StringBuffer doc_str = new StringBuffer();
+        File input = new File("/home/mafu/Templates/airbnb.html");
+        BufferedReader reader = null;
+        String result = "";
         try {
-            URL url = new URL("https://zh.airbnb.com/users/show/20928619");
-            URLConnection uc = url.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-            String inputLine;
-            while ((inputLine = in.readLine()) != null)
-                doc_str.append(inputLine);
-        }catch (Exception ex){
-            ex.printStackTrace();
+//            System.out.println("以行为单位读取文件内容，一次读一整行：");
+            reader = new BufferedReader(new FileReader(input));
+            String tempString = null;
+            int line = 1;
+            // 一次读入一行，直到读入null为文件结束
+            while ((tempString = reader.readLine()) != null) {
+                // 显示行号
+//                System.out.println("line " + line + ": " + tempString);
+                result = result+tempString;
+                line++;
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
 //        System.out.println(doc_str);
-        DocObject docObject = new DocObject(doc_str.toString(), DocType.HTML);
+        DocObject docObject = new DocObject(result.toString(), DocType.HTML);
         docObject.parse();
         String[] path = new String[10];
-        String[] value = {"您好, 我是Sheinn！","Tainan City, Taiwan","注册时间：2014年9月","电子邮件地址","已验证","吉蘭丹中華獨立中學, National Cheng Kung University, 國立臺灣師範大學林口校區僑生先修部","Szu-Wei","這是一間布置得很舒服的舊房子喔","Taipei, Taiwan","2015年7月"};
+        String[] value = {"(11)"};
 
         for (int i = 0; i < value.length; i++){
             path[i] = docObject.search(value[i]);
         }
 
         for(int i=0; i < path.length; i++){
-            System.out.println(path[i]+"--------"+value[i]);
+            System.out.println(path[i]+"--------"+value[0]);
         }
 
         //载重指数:html0.body0.div3.div1.div1.div1.div0.dl4.dd0
