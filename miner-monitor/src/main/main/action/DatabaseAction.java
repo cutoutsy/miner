@@ -47,6 +47,7 @@ public class DatabaseAction extends SuperAction{
     public String datapage(){
         String pageNumStr = request.getParameter("pageNum");
         String tableName = request.getParameter("tableName");
+        System.out.println("tableName:"+tableName+"========");
         int pageNum = 1;
         if(pageNumStr != null && !"".equals(pageNumStr.trim())){
             pageNum = Integer.parseInt(pageNumStr);

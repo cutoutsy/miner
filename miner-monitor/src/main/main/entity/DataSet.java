@@ -7,14 +7,14 @@ public class DataSet {
 
     private String tableName;   //表名
     private String rowKey;  //主键
-    private long timestamp; //时间戳
+    private String timestamp; //时间戳
     private String property;    //数据属性
     private String value;       //数据属性值
 
     public DataSet() {
     }
 
-    public DataSet(String tableName, String rowKey, long timestamp, String property, String value) {
+    public DataSet(String tableName, String rowKey, String timestamp, String property, String value) {
         this.tableName = tableName;
         this.rowKey = rowKey;
         this.timestamp = timestamp;
@@ -38,11 +38,11 @@ public class DataSet {
         this.rowKey = rowKey;
     }
 
-    public long getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 

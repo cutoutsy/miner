@@ -1,6 +1,7 @@
 package service.impl;
 
 import entity.*;
+import miner.spider.utils.DateUtil;
 import miner.store.CreateTable;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -38,11 +39,9 @@ public class DatabaseDAOImpl implements DatabaseDAO{
         List<DataSet> relist = new ArrayList<DataSet>();
         String tableNme = searchModel.getTableName();
         List<String> result = CreateTable.getDataSetByTableName(tableNme);
-
         for (int i = 0; i < result.size(); i++){
             String temp = result.get(i);
-            DataSet tempDs = new DataSet(tableNme, temp.split("$$")[0], Integer.valueOf(temp.split("$$")[1]), temp.split("$$")[2], temp.split("$$")[3]);
-            System.out.println(tempDs.toString());
+            DataSet tempDs = new DataSet(tableNme, temp.split("\\$\\$")[0], DateUtil.TimeStamp2DateNormal(temp.split("\\$\\$")[1], "yyyy-MM-dd HH:mm:ss"), temp.split("\\$\\$")[2], temp.split("\\$\\$")[3]);
             relist.add(tempDs);
         }
 

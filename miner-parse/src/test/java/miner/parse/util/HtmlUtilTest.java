@@ -97,8 +97,8 @@ public class HtmlUtilTest extends TestCase {
         Generator g = new Generator();
         StringBuffer doc_str = new StringBuffer();
         try {
-//            URL url = new URL("https://account.wandoujia.com/v4/api/simple/profile?uid=23");
-            URL url = new URL("http://storm.apache.org/releases/0.9.6/index.html");
+            URL url = new URL("https://account.wandoujia.com/v4/api/simple/profile?uid=23");
+//            URL url = new URL("http://storm.apache.org/releases/0.9.6/index.html");
             URLConnection uc = url.openConnection();
             BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
             String inputLine;

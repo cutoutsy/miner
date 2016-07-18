@@ -222,6 +222,12 @@ public class DateUtil {
         return date;
     }
 
+    public static String TimeStamp2DateNormal(String timestampString, String formats){
+        Long timestamp = Long.parseLong(timestampString);
+        String date = new SimpleDateFormat(formats).format(new Date(timestamp));
+        return date;
+    }
+
     //时间戳转换成指定格式的日期
     public static String TimeStamp2Date(long timestampString, String formats){
         Long timestamp = timestampString;
@@ -231,7 +237,8 @@ public class DateUtil {
 
     public static void main(String[] args) throws Exception {
        // Date date = new Date();
+        String kk = String.valueOf(System.currentTimeMillis());
 
-        System.out.println(GetTodayDate());
+        System.out.println(TimeStamp2DateNormal(kk, "yyyy-MM-dd HH:mm:ss"));
     }
 }

@@ -122,24 +122,19 @@ $(function(){
 	</div>
 
 <div id="mainContainer">
-    <form action="<%=path%>/database/Database_datapage.action" id="regForm" method="post">
+    <form action="<%=path%>/database/Database_page.action" id="regForm" method="post">
     </form>
 	<table class="default" width="100%">
 		<tr class="title">
-			<td>数据表</td>
-			<td>主键</td>
-			<td>时间戳</td>
-            <td>属性</td>
-			<td>属性值</td>
+			<td>数据库表</td>
+			<td>记录总数数</td>
+            <td>操作</td>
 		</tr>
 
-        <c:forEach items="${result.dataList}" var="dataset">
+        <c:forEach items="${result.dataList}" var="database">
             <tr class="list">
-                <td><c:out value="${dataset.tableName}"></c:out></td>
-                <td><c:out value="${dataset.rowKey}"></c:out></td>
-				<td><c:out value="${dataset.timestamp}"></c:out></td>
-				<td><c:out value="${dataset.property}"></c:out></td>
-				<td><c:out value="${dataset.value}"></c:out></td>
+                <td><a href="<%=path%>/database/Database_datapage.action?tableName=${database.tableName}"><c:out value="${database.tableName}"></c:out></a></td>
+                <td><c:out value="${database.countRow}"></c:out></td>
                 <td><a href="<%=path%>/database/Database_delete.action?id=${database.tableName}" onclick="javascript: return confirm('真的要删除吗？');">删除</a></td>
             </tr>
         </c:forEach>
