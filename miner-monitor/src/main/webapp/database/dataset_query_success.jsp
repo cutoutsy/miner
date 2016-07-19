@@ -85,7 +85,7 @@
 <script type="text/javascript">
 //点击分页按钮以后触发的动作
 function handlePaginationClick(new_page_index, pagination_container){
-    $("#regForm").attr("action", "<%=path%>/database/Database_datapage.action?pageNum=" + (new_page_index + 1));
+    $("#regForm").attr("action", "<%=path%>/database/Database_datapage.action?tableName=${dataset.tableName}&pageNum=" + (new_page_index + 1));
     $("#regForm").submit();
     return false;
 }

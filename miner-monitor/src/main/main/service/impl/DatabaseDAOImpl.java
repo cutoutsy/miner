@@ -3,6 +3,7 @@ package service.impl;
 import entity.*;
 import miner.spider.utils.DateUtil;
 import miner.store.CreateTable;
+import miner.utils.MySysLogger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -19,6 +20,8 @@ import java.util.List;
  * 集群数据库实现类
  */
 public class DatabaseDAOImpl implements DatabaseDAO{
+
+    private static MySysLogger logger = new MySysLogger(DatabaseDAOImpl.class);
 
     public Pager<Database> findDatabase(Database searchModel, int pageNum, int pageSize){
         List<Database> allDatabase = queryAllDatabase();
@@ -41,7 +44,20 @@ public class DatabaseDAOImpl implements DatabaseDAO{
         List<String> result = CreateTable.getDataSetByTableName(tableNme);
         for (int i = 0; i < result.size(); i++){
             String temp = result.get(i);
-            DataSet tempDs = new DataSet(tableNme, temp.split("\\$\\$")[0], DateUtil.TimeStamp2DateNormal(temp.split("\\$\\$")[1], "yyyy-MM-dd HH:mm:ss"), temp.split("\\$\\$")[2], temp.split("\\$\\$")[3]);
+            System.out.println(temp + "===");
+            DataSet tempDs = new DataSet();
+            tempDs.setTableName(tableNme);
+            tempDs.setRowKey(temp.split("\\$\\$")[0]);
+            tempDs.setTimestamp(DateUtil.TimeStamp2DateNormal(temp.split("\\$\\$")[1], "yyyy-MM-dd HH:mm:ss"));
+            tempDs.setProperty(temp.split("\\$\\$")[2]);
+            //可能存在数据库属性没有值的情况,此时截取后length=3
+            if(temp.split("\\$\\$").length == 3){
+                tempDs.setValue("null");
+            }else if(temp.split("\\$\\$").length == 4){
+                tempDs.setValue(temp.split("\\$\\$")[3]);
+            }else{
+                tempDs.setValue("数据有问题");
+            }
             relist.add(tempDs);
         }
 
